@@ -1,7 +1,7 @@
-import Login from './user/login/login'
-import Register from './user/register/register'
-import RetrievePassword from './user/retrievePassword/retrievePassword';
-import Welcome from './welcome/welcome'
+import Login from './pages/user/login/login'
+import Register from './pages/user/register/register'
+import RetrievePassword from './pages/user/retrievePassword/retrievePassword';
+import Welcome from './pages/welcome/welcome'
 
 // router类型组件
 /**
