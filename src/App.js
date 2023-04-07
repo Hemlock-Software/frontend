@@ -1,15 +1,25 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './user/login/login.jsx';
+import routes from './routes';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
+    <div>
+      {/* router 界面 */}
+      <Router>
+        <Routes>
+          {routes.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              element={route.element}
+              exact={route.exact}
+            />
+          ))}
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
