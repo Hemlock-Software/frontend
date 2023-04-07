@@ -12,7 +12,7 @@ function Login() {
   };
 
   const handleLogin = async () => {
-    axios.post('/api/user/login', postData)
+    axios.post('/user/login', postData)
       .then(response => {
         // 请求成功的处理
         console.log(response.data);
