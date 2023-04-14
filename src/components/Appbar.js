@@ -25,6 +25,7 @@ export default function ButtonAppBar() {
             News
           </Typography>
           <Button color="inherit">Login</Button>
+          <Button color="inherit">Register</Button>
         </Toolbar>
       </AppBar>
     </Box>
