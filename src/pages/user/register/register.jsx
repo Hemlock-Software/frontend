@@ -4,13 +4,15 @@ import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
 import Typography from '@mui/material/Typography'
 
-import axios from 'axios'
-
+import { UserSendMail, UserRegister } from '../../../services/api'
+import { useNavigate } from 'react-router'
 function Register() {
   const [mail, setMail] = useState('')
   const [password, setPassword] = useState('')
   const [nickname, setNickname] = useState('')
   const [verifyCode, setVerifiedCode] = useState('')
+  const [token, setToken] = useState('')
+  const navigate = useNavigate()
 
   function onMail(e) {
     //console.log(e.target.value)
@@ -31,13 +33,17 @@ function Register() {
   function submitMail() {
     const postData = {
       mail: mail,
+      type: 1,
     }
     console.log(postData)
-    axios
-      .post('/user/sendMail', postData)
+    UserSendMail(postData)
       .then((response) => {
         // 请求成功的处理
+        if (response.code != '200') {
+          console.error(response.msg)
+        }
         console.log(response.data)
+        setToken(response.data)
       })
       .catch((error) => {
         // 请求失败的处理
@@ -54,10 +60,14 @@ function Register() {
       verifyCode: verifyCode,
     }
     console.log(postData)
-    axios
-      .post('user/join', postData)
+    UserRegister({ info: postData, token: token })
       .then((response) => {
         // 请求成功的处理
+        if (response.code != '200') {
+          console.error(response.msg)
+        } else {
+          navigate('/login')
+        }
         console.log(response.data)
       })
       .catch((error) => {
