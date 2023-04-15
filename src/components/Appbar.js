@@ -8,6 +8,15 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
 export default function MyAppBar() {
+
+  function  JumpLogin(){
+    window.location.href = "http://localhost:3000/login";
+  }
+
+  function  Jumpregister(){
+    window.location.href = "http://localhost:3000/register";
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -24,8 +33,8 @@ export default function MyAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography>
-          <Button color="inherit">Login</Button>
-          <Button color="inherit">Register</Button>
+          <Button color="inherit" onClick = {JumpLogin}>Login</Button>
+          <Button color="inherit" onClick = {Jumpregister}>Register</Button>
         </Toolbar>
       </AppBar>
     </Box>

@@ -1,12 +1,41 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
+import { RetrievePassword, SendMail } from '../../../services/api'
 
 export default function Retrivepassword() {
+
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [code, setCode] = useState('');
+
+  const mailData = {
+    mail: name,
+    type: 2,
+  };
+
+  const submitData = {
+    mail: name,
+    password: password,
+    code: code,
+  };
+
+  const getCode = async () => {
+    SendMail(mailData).then(res=>{
+      console.log(res);
+    });
+  };
+
+  const submit = async () => {
+    RetrievePassword(submitData).then(res=>{
+      console.log(res)
+    })
+  }
+
   return (
     <center>
       <br />
@@ -24,17 +53,17 @@ export default function Retrivepassword() {
             noValidate
             autoComplete="off"
           >
-            <TextField id="standard-basic" label="E-mail address" variant="standard" />
+            <TextField id="standard-basic" label="E-mail address" variant="standard" onChange={(e) => setName(e.target.value)}/>
             <br/>
-            <Button size='small'>Get code</Button>
+            <Button size='small' onClick={getCode}>Get code</Button>
             <br/>
-            <TextField id="standard-basic" label="Varification code" variant="standard" />
+            <TextField id="standard-basic" label="Varification code" variant="standard" onChange={(e) => setCode(e.target.value)}/>
             <br/>
-            <TextField id="standard-basic" label="New password" variant="standard" />
+            <TextField id="standard-basic" label="New password" variant="standard" onChange={(e) => setPassword(e.target.value)}/>
             <br/>
             <TextField id="standard-basic" label="Repeat password" variant="standard" />
             <br/>
-            <Button>Submit</Button>
+            <Button onClick={submit}>Submit</Button>
           </Box>
           <br/>
         </Paper>

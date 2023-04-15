@@ -5,3 +5,15 @@ export const UserLogin = (info) =>request({
   data: info,
   method: 'post'
 });
+
+export const SendMail = (info) =>request({
+  url: '/user/sendMail',
+  data: info,
+  method: 'post'
+});
+
+export const RetrievePassword = (info) =>request({
+  url: '/user/retrievePassword',
+  data: info,
+  method: 'post'
+});
