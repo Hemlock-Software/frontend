@@ -41,6 +41,7 @@ function Login() {
         console.error(error)
       })
   }
+  
   function submitRegister(){
     navigate('/register')
   }
