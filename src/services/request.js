@@ -19,8 +19,9 @@ const instance = axios.create({
 // request interceptor
 instance.interceptors.request.use(
   (configItem) => {
-    configItem.headers['Access-Control-Allow-Origin'] = 'http://10.214.241.121:15100/'
-    return configItem
+    configItem.headers['Access-Control-Allow-Origin'] = 'http://10.214.241.121:15100/';
+    return configItem;
+
   },
   (error) =>
     // do something with request error
