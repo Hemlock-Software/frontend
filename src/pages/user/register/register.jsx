@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
 import Typography from '@mui/material/Typography'
-import { UserSendMail, UserRegister } from '../../../services/api'
+import { SendMail, UserRegister } from '../../../services/api'
 import { useNavigate } from 'react-router'
 function Register() {
   const [mail, setMail] = useState('')
@@ -34,19 +34,13 @@ function Register() {
       mail: mail,
       type: 1,
     }
-    console.log(postData)
-    UserSendMail(postData)
+    SendMail(postData)
       .then((response) => {
         // 请求成功的处理
-        if (response.code != '200') {
-          console.error(response.msg)
+        if (!response.ok) {
+          console.error({"error code": response.status})
         }
-        console.log(response.data)
         setToken(response.data)
-      })
-      .catch((error) => {
-        // 请求失败的处理
-        console.error(error)
       })
   }
 
@@ -58,7 +52,6 @@ function Register() {
       isManager: false,
       verifyCode: verifyCode,
     }
-    console.log(postData)
     UserRegister({ info: postData, token: token })
       .then((response) => {
         // 请求成功的处理

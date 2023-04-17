@@ -32,10 +32,6 @@ instance.interceptors.response.use(
     const res = response.data
     return res
   },
-  (error) => {
-    console.error('请求出错啦！')
-    return Promise.reject(error)
-  }
 )
 
 export default instance;

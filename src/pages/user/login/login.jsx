@@ -32,7 +32,7 @@ function Login() {
     UserLogin(postData)
       .then((response) => {
         // 请求成功的处理
-        if (response.code != '200') {
+        if (response.code != 200) {
           console.error(response.msg)
         } else {
           navigate('../')
