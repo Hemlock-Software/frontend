@@ -3,7 +3,6 @@ import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
 import Typography from '@mui/material/Typography'
-
 import { UserSendMail, UserRegister } from '../../../services/api'
 import { useNavigate } from 'react-router'
 function Register() {

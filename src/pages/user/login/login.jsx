@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { UserLogin } from '../../../services/api'
+import CryptoJS from 'crypto-js';
 
 function Login() {
   const [name, setName] = useState('')
@@ -11,6 +12,8 @@ function Login() {
   }
 
   const handleLogin = async () => {
+    const sha256Password = CryptoJS.SHA256(password);
+    console.log("sha256加密后的结果:"+sha256Password.toString(CryptoJS.enc.Hex));
     UserLogin(postData).then((res) => {
       console.log(res)
     })

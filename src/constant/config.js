@@ -1,6 +1,6 @@
 export default {
-    //  axios 基础url地址
-    baseURL: process.env.NODE_ENV === 'development' ? 'http://10.214.241.121:15100/' : '/api',
+    //  axios 基础url地址, true代表正式连接，false代表使用mock连接 
+    baseURL: true ? 'http://10.214.241.121:15100/' : '/mock',
     // 操作正常返回的code,根据后端第一
     successCode: [200, 0],
     // 超时时间
