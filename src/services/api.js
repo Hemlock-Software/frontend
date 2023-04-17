@@ -1,9 +1,20 @@
-import axios from 'axios';
+import request from './request'
 
-const instance = axios.create({
-  baseURL: '/api',
-  timeout: 5000
-});
+export const UserLogin = (info) => request({
+  url: '/user/login',
+  data: info,
+  method: 'post'
+})
 
-// 登录
-export const login = (data) => instance.post('/user/login', data);
+export const UserSendMail = (info) => request({
+  url: '/user/sendMail',
+  data: info,
+  method: 'post'
+})
+
+export const UserRegister = ({ info, token }) => request({
+  url: '/user/join',
+  data: info,
+  method: 'post',
+  token: token,
+})
