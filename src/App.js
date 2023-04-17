@@ -1,16 +1,17 @@
-import './App.css';
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import routes from './routes';
+import './App.css'
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import routes from './routes'
 import './mock/mock'
 import MyAppBar from './components/Appbar'
 
-function App() {
+function App () {
   return (
     <div>
-      <MyAppBar/>
-      {/* router 界面 */}
       <Router>
+        <MyAppBar />
+        {/* router 界面 */}
+
         <Routes>
           {routes.map((route, index) => (
             <Route
@@ -23,7 +24,7 @@ function App() {
         </Routes>
       </Router>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

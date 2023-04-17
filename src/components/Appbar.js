@@ -1,11 +1,13 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import * as React from 'react'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import MenuIcon from '@mui/icons-material/Menu'
+
+import { Router, useNavigate } from 'react-router-dom'
 
 export default function MyAppBar() {
 
@@ -16,7 +18,7 @@ export default function MyAppBar() {
   function  Jumpregister(){
     window.location.href = "http://localhost:3000/register";
   }
-
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -38,5 +40,8 @@ export default function MyAppBar() {
         </Toolbar>
       </AppBar>
     </Box>
-  );
+  )
 }
+
+export default MyAppBar
+
