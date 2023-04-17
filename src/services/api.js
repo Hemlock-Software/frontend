@@ -18,9 +18,8 @@ export const RetrievePassword = (info) =>request({
   method: 'post'
 });
 
-export const UserRegister = ({ info, token }) => request({
+export const UserRegister = (info) => request({
   url: '/user/join',
   data: info,
   method: 'post',
-  token: token,
 });

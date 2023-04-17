@@ -1,71 +1,39 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
 import Typography from '@mui/material/Typography'
-import { SendMail, UserRegister } from '../../../services/api'
+import { UserRegister } from '../../../services/api'
 import { useNavigate } from 'react-router'
+import { useStoreActions, useStoreState } from 'easy-peasy';
+
 function Register() {
-  const [mail, setMail] = useState('')
-  const [password, setPassword] = useState('')
-  const [nickname, setNickname] = useState('')
-  const [verifyCode, setVerifiedCode] = useState('')
-  const [token, setToken] = useState('')
+
+  const {mail, password, nickname, isManager, verifyCode} = useStoreState((state) => state.user);
+  const {setState, sendMail} = useStoreActions((actions) => actions.user);
+
   const navigate = useNavigate()
 
-  function onMail(e) {
-    //console.log(e.target.value)
-    setMail(e.target.value)
-  }
-  function onPassword(e) {
-    //console.log(e.target.value)
-    setPassword(e.target.value)
-  }
-  function onNickname(e) {
-    //console.log(e.target.value)
-    setNickname(e.target.value)
-  }
-  function onVerify(e) {
-    setVerifiedCode(e.target.value)
-  }
-
-  function submitMail() {
-    const postData = {
-      mail: mail,
-      type: 1,
-    }
-    SendMail(postData)
-      .then((response) => {
-        // 请求成功的处理
-        if (!response.ok) {
-          console.error({"error code": response.status})
-        }
-        setToken(response.data)
-      })
+  function submitMail(){
+    sendMail()
   }
 
   function submitRegister() {
-    const postData = {
+    UserRegister({
       mail: mail,
       password: password,
       nickname: nickname,
-      isManager: false,
+      isManager: isManager,
       verifyCode: verifyCode,
-    }
-    UserRegister({ info: postData, token: token })
-      .then((response) => {
-        // 请求成功的处理
-        if (response.code != '200') {
-          console.error(response.msg)
-        } else {
-          navigate('/login')
-        }
-        console.log(response.data)
-      })
-      .catch((error) => {
-        // 请求失败的处理
-        console.error(error)
-      })
+    })
+    .then((response) => {
+      // 请求成功的处理
+      if (response.code !== 200) {
+        console.error(response.msg)
+      }else {
+        navigate('/login')
+      }
+    })
   }
   return (
     <center>
@@ -84,7 +52,7 @@ function Register() {
           id="standard-basic"
           label="E-mail address"
           variant="standard"
-          onChange={onMail}
+          onChange={(e) => setState({mail: e.target.value})}
         />
         <br />
         <Button size="small" onClick={submitMail}>
@@ -95,21 +63,21 @@ function Register() {
           id="standard-basic"
           label="verify code"
           variant="standard"
-          onChange={onVerify}
+          onChange={(e) => setState({verifyCode: e.target.value})}
         />
         <br></br>
         <TextField
           id="standard-basic"
           label="password"
           variant="standard"
-          onChange={onPassword}
+          onChange={(e) => setState({password: e.target.value})}
         />
         <br />
         <TextField
           id="standard-basic"
           label="nickname"
           variant="standard"
-          onChange={onNickname}
+          onChange={(e) => setState({nickname: e.target.value})}
         />
         <br />
         <Button onClick={submitRegister}>Submit</Button>

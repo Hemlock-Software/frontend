@@ -1,50 +1,38 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
 import Typography from '@mui/material/Typography'
-import { UserLogin } from '../../../services/api'
 import { useNavigate } from 'react-router'
 import CryptoJS from 'crypto-js';
+import { UserLogin } from '../../../services/api'
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
-function Login() {
-  const [mail, setMail] = useState('')
-  const [password, setPassword] = useState('')
+function Login(){
+  
+  const {mail, password} = useStoreState((state) => state.user);
+  const {setState} = useStoreActions((actions) => actions.user);
+  
   const navigate = useNavigate()
 
-  function onMail(e) {
-    //console.log(e.target.value)
-    setMail(e.target.value)
-  }
-  function onPassword(e) {
-    //console.log(e.target.value)
-    setPassword(e.target.value)
+  async function submitLogin() {
+    const sha256Password = CryptoJS.SHA256(password);
+    const response = await UserLogin(
+      {
+        mail: mail,
+        password: password,
+      }
+    )
+    if (response.status === 200) {
+      // navigate('../')
+      console.log("LOGIN SUCCESS")
+    }
+    else{
+      // 报错
+      console.log(response.data)
+    }
   }
 
-  function submitLogin() {
-    const postData = {
-      mail: mail,
-      password: password,
-    }
-    console.log(postData)
-    const sha256Password = CryptoJS.SHA256(password);
-    console.log("sha256加密后的结果:"+sha256Password.toString(CryptoJS.enc.Hex));
-    UserLogin(postData)
-      .then((response) => {
-        // 请求成功的处理
-        if (response.code != 200) {
-          console.error(response.msg)
-        } else {
-          navigate('../')
-        }
-        console.log(response)
-      })
-      .catch((error) => {
-        // 请求失败的处理
-        console.error(error)
-      })
-  }
-  
   function submitRegister(){
     navigate('/register')
   }
@@ -68,14 +56,14 @@ function Login() {
           id="standard-basic"
           label="E-mail address"
           variant="standard"
-          onChange={onMail}
+          onChange={(e) => setState({mail: e.target.value})}
         />
         <br />
         <TextField
           id="standard-basic"
           label="password"
           variant="standard"
-          onChange={onPassword}
+          onChange={(e) => setState({password: e.target.value})}
         />
         <br />
         <Button onClick={submitLogin}>Login</Button>

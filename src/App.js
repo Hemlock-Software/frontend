@@ -5,25 +5,30 @@ import routes from './routes'
 import './mock/mock'
 import MyAppBar from './components/Appbar'
 
+import { StoreProvider } from 'easy-peasy';
+import { globalModel } from './store/globalStoreModel';
+
 function App () {
   return (
-    <div>
-      <Router>
-        <MyAppBar />
-        {/* router 界面 */}
+    <StoreProvider store={globalModel}>
+      <div>
+        <Router>
+          <MyAppBar />
+          {/* router 界面 */}
 
-        <Routes>
-          {routes.map((route, index) => (
-            <Route
-              key={index}
-              path={route.path}
-              element={route.element}
-              exact={route.exact}
-            />
-          ))}
-        </Routes>
-      </Router>
-    </div>
+          <Routes>
+            {routes.map((route, index) => (
+              <Route
+                key={index}
+                path={route.path}
+                element={route.element}
+                exact={route.exact}
+              />
+            ))}
+          </Routes>
+        </Router>
+      </div>
+    </StoreProvider>
   )
 }
 
