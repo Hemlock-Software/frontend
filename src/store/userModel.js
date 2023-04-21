@@ -1,6 +1,6 @@
 import { action, thunk } from 'easy-peasy';
-import { SendMail, RetrievePassword} from '../services/api';
-
+import { SendMail, RetrievePassword, UserRegister, UserLogin} from '../services/api';
+import CryptoJS from 'crypto-js'
 
 export const userModel = {
 // 定义一些变量
@@ -11,7 +11,6 @@ export const userModel = {
   type: 1,              //type:搜寻类别
   isManager: false,     //isManager: 用户是否为管理员
   verifyCode: 0,        //verifyCode: 邮箱验证的验证码
-
 
   checkFlag: true,
   passwordFlag: true,
@@ -41,26 +40,52 @@ export const userModel = {
     if (response.status === 200) {
       // 注意，这里要更新一下token
       localStorage.setItem('token', response.data)
-      console.log(response)
     }
+  }),
+
+  login: thunk(async(actions, payload, { getState }) => {
+    const {mail, password} = getState()
+    const sha256Password = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+    const response = await UserLogin(
+      {
+        mail: mail,
+        password: sha256Password,
+      }
+    )
+    return response
   }),
 
   retrievePassword: thunk(async(actions, payload, { getState }) => {
     const {mail, password, verifyCode} = getState()
+    const sha256Password = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
     const response = await RetrievePassword(
       {
         mail: mail,
-        password: password,
-        code: verifyCode,
+        password: sha256Password,
+        verifyCode: verifyCode,
       }
     )
-    if (response.status === 200) {
-      console.log(response)
-    }
+    return response
+  }),
+
+  register: thunk(async(actions, payload, { getState }) => {
+    const {mail, password, nickname, isManager, verifyCode} = getState()
+    const sha256Password = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+    const response = await UserRegister(
+      {
+        mail: mail,
+        password: sha256Password,
+        nickname: nickname,
+        isManager: isManager,
+        verifyCode: verifyCode,
+      }
+    )
+    return response
   }),
 
 //  邮箱验证
   onMailChange: action((state, payload) => {
+    state.mail = payload
     if (payload.length === 0 || payload.indexOf('@') === -1) {
         state.mailFlag = false;
     } else {
@@ -70,12 +95,14 @@ export const userModel = {
 
 // 密码验证
   onPasswordChange: action((state, payload) => {
+    state.password = payload
     state.passwordFlag =  true
     if (payload.length < 6 || payload.length > 16) {
         state.passwordFlag = false;
         state.errorMsg = 'password length must be 6-16';
     }
-    else if (/^[0-9a-zA-Z]+(\.[0-9]+)*$/.test(payload) === false) {
+    // ??
+    else if (!/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(payload) === false) {
         state.passwordFlag = false;
         state.errorMsg = 'can only contain 0-9,a-z,A-Z,and .';
     }
@@ -106,7 +133,7 @@ export const userModel = {
       alert("check password can not be empty")
     }
     else{
-      return true;
+      action.register()
     }
-    return false;
   })
+};

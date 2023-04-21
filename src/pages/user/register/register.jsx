@@ -3,7 +3,6 @@ import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
 import Typography from '@mui/material/Typography'
-import { UserRegister } from '../../../services/api'
 import { useNavigate } from 'react-router'
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import Visibility from '@mui/icons-material/Visibility'
@@ -13,20 +12,12 @@ import IconButton from '@mui/material/IconButton'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import Input from '@mui/material/Input'
-import CryptoJS from 'crypto-js'
 
 function Register() {
   const {
-    password,
-    nickname,
-    isManager,
-    verifyCode,
-    mail,
-    checkFlag, passwordFlag, mailFlag, errorMsg, showPassword, showCheckPassword
+    mail, checkFlag, passwordFlag, mailFlag, errorMsg, showPassword, showCheckPassword
   } = useStoreState((state) => state.user)
-  const { setState, sendMail, onMailChange, onPasswordChange, onCheckPasswordChange, onCheckFill} = useStoreActions((actions) => actions.user)
-
-
+  const { setState, sendMail, onMailChange, onPasswordChange, onCheckPasswordChange, register} = useStoreActions((actions) => actions.user)
   const navigate = useNavigate()
 
   function submitMail() {
@@ -38,23 +29,14 @@ function Register() {
   }
 
   function submitRegister() {
-    if(onCheckFill()){
-      const sha256Password = CryptoJS.SHA256(password)
-      UserRegister({
-        mail: mail,
-        password: sha256Password,
-        nickname: nickname,
-        isManager: isManager,
-        verifyCode: verifyCode,
-      }).then((response) => {
-        // 请求成功的处理
-        if (response.status !== 200) {
-          console.log(response.data)
-        } else {
-          navigate('/login')
-        }
-      })
-    }
+    register().then((response) => {
+      // 请求成功的处理
+      if (response.status !== 200) {
+        alert(response.data)
+      } else {
+        navigate('/login')
+      }
+    })
   }
   return (
     <center>

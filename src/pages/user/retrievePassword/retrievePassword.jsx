@@ -1,13 +1,11 @@
 import React from 'react';
-import CryptoJS from 'crypto-js';
-import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useStoreActions } from 'easy-peasy';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
-import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -66,9 +64,8 @@ export default function Retrivepassword() {
 
   const submit = async () => {
     retrievePassword().then(res=>{
-      if(res.code !== 200){
-        console.error(res.msg)
-        alert("Retrieve fail")
+      if(res.status !== 200){
+        alert(res.data)
       }else{
         navigate('/login')
       }
