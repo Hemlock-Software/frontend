@@ -21,7 +21,7 @@ export default function Retrivepassword() {
   const submitData = {
     mail: name,
     password: password,
-    code: code,
+    verifyCode: code,
   };
 
   const getCode = async () => {

@@ -13,7 +13,7 @@ export const SendMail = (info) =>request({
 });
 
 export const RetrievePassword = (info) =>request({
-  url: '/user/retrievePassword',
+  url: '/user/findPassword',
   data: info,
   method: 'post'
 });

@@ -22,7 +22,7 @@ instance.interceptors.request.use(
     if (token) {
       configItem.headers['Authorization'] = `Bearer ${token}`
     }
-    configItem.headers['Access-Control-Allow-Origin'] = 'http://10.214.241.121:15100/';
+    configItem.headers['Access-Control-Allow-Origin'] = baseURL;
     return configItem;
   },
   (error) => Promise.reject(error)

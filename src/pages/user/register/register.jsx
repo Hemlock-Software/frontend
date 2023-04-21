@@ -28,8 +28,8 @@ function Register() {
     })
     .then((response) => {
       // 请求成功的处理
-      if (response.code !== 200) {
-        console.error(response.msg)
+      if (response.status !== 200) {
+        console.log(response.data)
       }else {
         navigate('/login')
       }
