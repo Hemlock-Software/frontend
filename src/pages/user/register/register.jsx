@@ -5,35 +5,56 @@ import { Button } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { UserRegister } from '../../../services/api'
 import { useNavigate } from 'react-router'
-import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import InputAdornment from '@mui/material/InputAdornment'
+import IconButton from '@mui/material/IconButton'
+import InputLabel from '@mui/material/InputLabel'
+import FormControl from '@mui/material/FormControl'
+import Input from '@mui/material/Input'
+import CryptoJS from 'crypto-js'
 
 function Register() {
+  const {
+    password,
+    nickname,
+    isManager,
+    verifyCode,
+    mail,
+    checkFlag, passwordFlag, mailFlag, errorMsg, showPassword, showCheckPassword
+  } = useStoreState((state) => state.user)
+  const { setState, sendMail, onMailChange, onPasswordChange, onCheckPasswordChange, onCheckFill} = useStoreActions((actions) => actions.user)
 
-  const {mail, password, nickname, isManager, verifyCode} = useStoreState((state) => state.user);
-  const {setState, sendMail} = useStoreActions((actions) => actions.user);
 
   const navigate = useNavigate()
 
-  function submitMail(){
+  function submitMail() {
+    setState({
+      mail: mail,
+      type: 1,
+    })
     sendMail()
   }
 
   function submitRegister() {
-    UserRegister({
-      mail: mail,
-      password: password,
-      nickname: nickname,
-      isManager: isManager,
-      verifyCode: verifyCode,
-    })
-    .then((response) => {
-      // 请求成功的处理
-      if (response.code !== 200) {
-        console.error(response.msg)
-      }else {
-        navigate('/login')
-      }
-    })
+    if(onCheckFill()){
+      const sha256Password = CryptoJS.SHA256(password)
+      UserRegister({
+        mail: mail,
+        password: sha256Password,
+        nickname: nickname,
+        isManager: isManager,
+        verifyCode: verifyCode,
+      }).then((response) => {
+        // 请求成功的处理
+        if (response.status !== 200) {
+          console.log(response.data)
+        } else {
+          navigate('/login')
+        }
+      })
+    }
   }
   return (
     <center>
@@ -49,36 +70,87 @@ function Register() {
         noValidate
         autoComplete="off">
         <TextField
-          id="standard-basic"
-          label="E-mail address"
+          label={mailFlag ? 'E-mail address' : 'invalid e-mail'}
           variant="standard"
-          onChange={(e) => setState({mail: e.target.value})}
+          onChange={(e) => onMailChange(e.target.value)}
+          error={!mailFlag}
         />
         <br />
         <Button size="small" onClick={submitMail}>
           Get Verified code
         </Button>
         <br />
+
         <TextField
-          id="standard-basic"
           label="verify code"
           variant="standard"
-          onChange={(e) => setState({verifyCode: e.target.value})}
+          onChange={(e) => setState({ verifyCode: e.target.value })}
         />
         <br></br>
         <TextField
-          id="standard-basic"
-          label="password"
+          label="*nickname"
           variant="standard"
-          onChange={(e) => setState({password: e.target.value})}
+          onChange={(e) => setState({ nickname: e.target.value })}
         />
+        <br></br>
+        <FormControl
+          sx={{ m: 1, width: '25ch' }}
+          variant="outlined"
+          error={!passwordFlag}>
+          <InputLabel
+            htmlFor="outlined-adornment-password"
+            variant="standard"
+            error={!passwordFlag}>
+            {passwordFlag ? 'valid password' : errorMsg}
+          </InputLabel>
+          <Input
+            label="password"
+            variant="standard"
+            onChange={(e) => onPasswordChange(e.target.value)}
+            type={showPassword ? 'text' : 'password'}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() =>
+                    setState({showPassword: !showPassword})
+                  }
+                  edge="end">
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
         <br />
-        <TextField
-          id="standard-basic"
-          label="nickname"
-          variant="standard"
-          onChange={(e) => setState({nickname: e.target.value})}
-        />
+        <FormControl
+          sx={{ m: 1, width: '25ch' }}
+          variant="outlined"
+          error={!checkFlag}>
+          <InputLabel
+            htmlFor="outlined-adornment-password"
+            variant="standard"
+            error={!checkFlag}>
+            {checkFlag ? 'password matched' : 'password not checked'}
+          </InputLabel>
+          <Input
+            variant="standard"
+            onChange={(e) => onCheckPasswordChange(e.target.value)}
+            type={showCheckPassword ? 'text' : 'password'}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() =>
+                    setState({showCheckPassword: !showCheckPassword})
+                  }
+                  edge="end">
+                  {showCheckPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
         <br />
         <Button onClick={submitRegister}>Submit</Button>
       </Box>

@@ -39,6 +39,7 @@ export default function Retrivepassword() {
     setEmailError(!/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(e.target.value))
   };
 
+
   const handlePasswordChange = (e) => {
     setState({password: e.target.value})
     password = e.target.value
