@@ -1,5 +1,6 @@
-import { action, thunk } from 'easy-peasy'
-import { SendMail } from '../services/api'
+import { action, thunk } from 'easy-peasy';
+import { SendMail, RetrievePassword} from '../services/api';
+
 
 export const userModel = {
 // 定义一些变量
@@ -40,6 +41,20 @@ export const userModel = {
     if (response.status === 200) {
       // 注意，这里要更新一下token
       localStorage.setItem('token', response.data)
+      console.log(response)
+    }
+  }),
+
+  retrievePassword: thunk(async(actions, payload, { getState }) => {
+    const {mail, password, verifyCode} = getState()
+    const response = await RetrievePassword(
+      {
+        mail: mail,
+        password: password,
+        code: verifyCode,
+      }
+    )
+    if (response.status === 200) {
       console.log(response)
     }
   }),
@@ -95,4 +110,3 @@ export const userModel = {
     }
     return false;
   })
-}
