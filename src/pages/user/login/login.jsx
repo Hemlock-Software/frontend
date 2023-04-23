@@ -1,17 +1,25 @@
-import React from 'react'
-import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
-import { Button } from '@mui/material'
-import Typography from '@mui/material/Typography'
-import { useNavigate } from 'react-router'
+import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import { Button, IconButton, InputAdornment, OutlinedInput } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
-import { UserLogin } from '../../../services/api'
+import { UserLogin } from '../../../services/api';
 import { useStoreActions, useStoreState } from 'easy-peasy';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
+/*
+已完成：密码隐式显示
+目前需要做内容：输入不存在的账号：提示账户不存在
+输入存在账号但密码错误，提示密码错误
+*/
 function Login(){
   
   const {mail, password} = useStoreState((state) => state.user);
   const {setState} = useStoreActions((actions) => actions.user);
+  const [showPassword, setShowPassword] = useState(false);
   
   const navigate = useNavigate()
 
@@ -39,6 +47,10 @@ function Login(){
   function submitRetrievePassword(){
     navigate('/retrievePassword')
   }
+  const handleShowPasswordClick = () => {
+    setShowPassword((prevState) => !prevState);
+  };
+
   return (
     <center>
       <br />
@@ -59,12 +71,24 @@ function Login(){
           onChange={(e) => setState({mail: e.target.value})}
         />
         <br />
-        <TextField
+        
+          <TextField
           id="standard-basic"
           label="password"
+          type={showPassword?'text':'password'}
           variant="standard"
           onChange={(e) => setState({password: e.target.value})}
+          InputProps={{
+            endAdornment: (
+              <React.Fragment>
+                <IconButton onClick={handleShowPasswordClick} edge="end">
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </IconButton>
+              </React.Fragment> 
+            ),
+          }}
         />
+                
         <br />
         <Button onClick={submitLogin}>Login</Button>
         <br />
