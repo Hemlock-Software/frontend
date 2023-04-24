@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
@@ -12,7 +12,6 @@ import IconButton from '@mui/material/IconButton'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import Input from '@mui/material/Input'
-import { Password } from '@mui/icons-material'
 
 function Register() {
   const {
@@ -20,6 +19,7 @@ function Register() {
     password,
     checkPassword,
     checkFlag,
+    verifyCode,
     passwordFlag,
     mailFlag,
     errorMsg,
@@ -50,9 +50,10 @@ function Register() {
 
   function submitRegister() {
     if (
-      mail == '' ||
-      password == '' ||
-      checkPassword == '' ||
+      mail === '' ||
+      password === '' ||
+      checkPassword === '' ||
+      verifyCode === 0 ||
       !mailFlag ||
       !checkFlag ||
       !passwordFlag
