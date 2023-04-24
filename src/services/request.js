@@ -8,6 +8,7 @@ import config from '../constant/config'
 const { baseURL, requestTimeout, contentType } = config
 
 const instance = axios.create({
+  validateStatus: null,
   baseURL,
   timeout: requestTimeout,
   headers: {
@@ -24,12 +25,10 @@ instance.interceptors.request.use(
     }
     configItem.headers['Access-Control-Allow-Origin'] = baseURL;
     return configItem;
-  },
-  (error) => Promise.reject(error)
+  }
 )
 
 // response interceptor
-
 instance.interceptors.response.use(
   (response) => {
     const res = response
@@ -38,11 +37,3 @@ instance.interceptors.response.use(
 )
 
 export default instance;
-
-
-
-
-
-
-
-
