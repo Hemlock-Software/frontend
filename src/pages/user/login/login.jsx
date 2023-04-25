@@ -1,101 +1,147 @@
-import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { Button, IconButton, InputAdornment, OutlinedInput } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
-import CryptoJS from 'crypto-js';
-import { UserLogin } from '../../../services/api';
-import { useStoreActions, useStoreState } from 'easy-peasy';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import React from 'react'
+import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper';
+import Container from '@mui/material/Container';
+import TextField from '@mui/material/TextField'
+import { Button } from '@mui/material'
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography'
+import { useStoreActions, useStoreState} from 'easy-peasy';
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import InputAdornment from '@mui/material/InputAdornment'
+import IconButton from '@mui/material/IconButton'
+import InputLabel from '@mui/material/InputLabel'
+import FormControl from '@mui/material/FormControl'
+import Input from '@mui/material/Input'
 
-/*
-已完成：密码隐式显示
-目前需要做内容：输入不存在的账号：提示账户不存在
-输入存在账号但密码错误，提示密码错误
-*/
 function Login(){
-  
-  const {mail, password} = useStoreState((state) => state.user);
-  const {setState} = useStoreActions((actions) => actions.user);
-  const [showPassword, setShowPassword] = useState(false);
-  
-  const navigate = useNavigate()
+  const {
+    mail,
+    password,
+    passwordFlag, 
+    mailFlag, 
+    errorMsg, 
+    showPassword
+  } 
+  = useStoreState((state) => state.user)
+  const { 
+    setState, 
+    login, 
+    onMailChange, 
+    onPasswordChange
+  } 
+  = useStoreActions((actions) => actions.user)
 
-  async function submitLogin() {
-    const sha256Password = CryptoJS.SHA256(password);
-    const response = await UserLogin(
-      {
-        mail: mail,
-        password: password,
-      }
+  function submitLogin() {
+    if (
+      mail === '' 
     )
-    if (response.status === 200) {
-      // navigate('../')
-      console.log("LOGIN SUCCESS")
+    {
+      alert('mail can not be void!')
+      return
     }
-    else{
-      // 报错
-      console.log(response.data)
+    else if (
+      password === '' 
+    )
+    {
+      alert('password can not be void!')
+      return
     }
+    login().then((response) => {
+      // 请求成功的处理
+      if (response.status !== 200) {
+        console.log(response)
+        alert(response.data)
+      } else {
+        console.log("LOGIN SUCCESS")
+      }
+    })
   }
-
-  function submitRegister(){
-    navigate('/register')
-  }
-  function submitRetrievePassword(){
-    navigate('/retrievePassword')
-  }
-  const handleShowPasswordClick = () => {
-    setShowPassword((prevState) => !prevState);
-  };
 
   return (
     <center>
       <br />
+      <Container maxWidth="sm" sx = {{ mt : 1 }}>
+        <Paper elevation={4}>
+        <br/>
       <Typography variant="h3" gutterBottom color={'#1976d2'}>
         Login
       </Typography>
       <Box
         component="form"
         sx={{
-          '& > :not(style)': { m: 1, width: '25ch' },
+          '& > :not(style)': { m: 1, width: '40ch' },
         }}
         noValidate
         autoComplete="off">
         <TextField
-          id="standard-basic"
-          label="E-mail address"
+          label={mailFlag ? 'E-mail address' : 'invalid e-mail'}
           variant="standard"
-          onChange={(e) => setState({mail: e.target.value})}
+          onChange={(e) => onMailChange(e.target.value)}
+          error={!mailFlag}
         />
-        <br />
         
-          <TextField
-          id="standard-basic"
-          label="password"
-          type={showPassword?'text':'password'}
-          variant="standard"
-          onChange={(e) => setState({password: e.target.value})}
-          InputProps={{
-            endAdornment: (
-              <React.Fragment>
-                <IconButton onClick={handleShowPasswordClick} edge="end">
-                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+        <br />
+        <FormControl
+          sx={{ m: 1, width: '25ch' }}
+          variant="outlined"
+          error={!passwordFlag}>
+          <InputLabel
+            htmlFor="outlined-adornment-password"
+            variant="standard"
+            error={!passwordFlag}>
+            {passwordFlag ? 'valid password' : errorMsg}
+          </InputLabel>
+          <Input
+            label="password"
+            variant="standard"
+            onChange={(e) => onPasswordChange(e.target.value)}
+            type={showPassword ? 'text' : 'password'}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() =>
+                    setState({showPassword: !showPassword})
+                  }
+                  edge="end">
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
-              </React.Fragment> 
-            ),
-          }}
-        />
-                
+              </InputAdornment>
+            }
+          />
+        </FormControl>
         <br />
         <Button onClick={submitLogin}>Login</Button>
-        <br />
-        <Button onClick={submitRegister}>register</Button>
-        <br />
-        <Button onClick={submitRetrievePassword}>retrieve Password</Button>
+  <Grid item xs={12}>
+    <Grid container spacing={4} justifyContent="space-between">
+      <Grid item >
+        <Link href="/retrievePassword" variant="standard">
+          Forgot password?
+        </Link>
+      </Grid>
+      <Grid item>
+        <Link href="/register" variant="standard">
+          No account? Register
+        </Link>
+      </Grid>
+    </Grid>
+  </Grid>
+
+        <br/>
+      <Typography 
+        variant="caption" 
+        color="textSecondary" 
+        style={{ marginBottom: '20px'}}
+      >
+        © 2023 The Website designed by G01
+      </Typography>
       </Box>
+      <br/>
+      </Paper>
+      </Container>
     </center>
   )
 }
