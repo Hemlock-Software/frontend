@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
@@ -12,12 +12,28 @@ import IconButton from '@mui/material/IconButton'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import Input from '@mui/material/Input'
+import { Password } from '@mui/icons-material'
 
 function Register() {
   const {
-    mail, checkFlag, passwordFlag, mailFlag, errorMsg, showPassword, showCheckPassword
+    mail,
+    password,
+    checkPassword,
+    checkFlag,
+    passwordFlag,
+    mailFlag,
+    errorMsg,
+    showPassword,
+    showCheckPassword,
   } = useStoreState((state) => state.user)
-  const { setState, sendMail, onMailChange, onPasswordChange, onCheckPasswordChange, register} = useStoreActions((actions) => actions.user)
+  const {
+    setState,
+    sendMail,
+    onMailChange,
+    onPasswordChange,
+    onCheckPasswordChange,
+    register,
+  } = useStoreActions((actions) => actions.user)
   const navigate = useNavigate()
 
   function submitMail() {
@@ -25,15 +41,18 @@ function Register() {
       mail: mail,
       type: 1,
     })
+    if (!mailFlag) {
+      alert('mail format invalid!')
+      return
+    }
     sendMail()
   }
 
   function submitRegister() {
     if (
-      mail === '' ||
-      password === '' ||
-      checkPassword === '' ||
-      verifyCode === 0 ||
+      mail == '' ||
+      password == '' ||
+      checkPassword == '' ||
       !mailFlag ||
       !checkFlag ||
       !passwordFlag
@@ -106,9 +125,7 @@ function Register() {
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
-                  onClick={() =>
-                    setState({showPassword: !showPassword})
-                  }
+                  onClick={() => setState({ showPassword: !showPassword })}
                   edge="end">
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
@@ -136,7 +153,7 @@ function Register() {
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={() =>
-                    setState({showCheckPassword: !showCheckPassword})
+                    setState({ showCheckPassword: !showCheckPassword })
                   }
                   edge="end">
                   {showCheckPassword ? <VisibilityOff /> : <Visibility />}
