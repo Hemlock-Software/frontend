@@ -29,6 +29,18 @@ function Register() {
   }
 
   function submitRegister() {
+    if (
+      mail === '' ||
+      password === '' ||
+      checkPassword === '' ||
+      verifyCode === 0 ||
+      !mailFlag ||
+      !checkFlag ||
+      !passwordFlag
+    ) {
+      alert('please enter the valid information!')
+      return
+    }
     register().then((response) => {
       // 请求成功的处理
       if (response.status !== 200) {
