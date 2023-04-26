@@ -36,17 +36,11 @@ function Login(){
 
   function submitLogin() {
     if (
-      mail === '' 
-    )
-    {
-      alert('mail can not be void!')
-      return
-    }
-    else if (
-      password === '' 
-    )
-    {
-      alert('password can not be void!')
+      mail === '' ||
+      password === '' ||
+      !passwordFlag
+    ) {
+      alert('please enter the valid information!')
       return
     }
     login().then((response) => {
