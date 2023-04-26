@@ -23,9 +23,11 @@ function Login(){
   const navigate = useNavigate()
 
   function submitLogin() {
+
     login().then((response) => {
       // 请求成功的处理
       if (response.status !== 200) {
+        console.log(response)
         alert(response.data)
       } else {
         console.log("LOGIN SUCCESS")

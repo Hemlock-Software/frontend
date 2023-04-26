@@ -15,25 +15,9 @@ import Input from '@mui/material/Input'
 
 function Register() {
   const {
-    mail,
-    password,
-    checkPassword,
-    checkFlag,
-    verifyCode,
-    passwordFlag,
-    mailFlag,
-    errorMsg,
-    showPassword,
-    showCheckPassword,
+    mail, checkFlag, passwordFlag, mailFlag, errorMsg, showPassword, showCheckPassword
   } = useStoreState((state) => state.user)
-  const {
-    setState,
-    sendMail,
-    onMailChange,
-    onPasswordChange,
-    onCheckPasswordChange,
-    register,
-  } = useStoreActions((actions) => actions.user)
+  const { setState, sendMail, onMailChange, onPasswordChange, onCheckPasswordChange, register} = useStoreActions((actions) => actions.user)
   const navigate = useNavigate()
 
   function submitMail() {
@@ -41,10 +25,6 @@ function Register() {
       mail: mail,
       type: 1,
     })
-    if (!mailFlag) {
-      alert('mail format invalid!')
-      return
-    }
     sendMail()
   }
 
@@ -126,7 +106,9 @@ function Register() {
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
-                  onClick={() => setState({ showPassword: !showPassword })}
+                  onClick={() =>
+                    setState({showPassword: !showPassword})
+                  }
                   edge="end">
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
@@ -154,7 +136,7 @@ function Register() {
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={() =>
-                    setState({ showCheckPassword: !showCheckPassword })
+                    setState({showCheckPassword: !showCheckPassword})
                   }
                   edge="end">
                   {showCheckPassword ? <VisibilityOff /> : <Visibility />}
