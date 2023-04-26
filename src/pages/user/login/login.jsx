@@ -1,9 +1,12 @@
 import React from 'react'
 import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper';
+import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography'
-import { useNavigate } from 'react-router'
 import { useStoreActions, useStoreState} from 'easy-peasy';
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
@@ -13,17 +16,39 @@ import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import Input from '@mui/material/Input'
 
-
 function Login(){
   const {
-    passwordFlag, mailFlag, errorMsg, showPassword
-  } = useStoreState((state) => state.user)
-  const { setState, login, onMailChange, onPasswordChange} = useStoreActions((actions) => actions.user)
-  
-  const navigate = useNavigate()
+    mail,
+    password,
+    passwordFlag, 
+    mailFlag, 
+    errorMsg, 
+    showPassword
+  } 
+  = useStoreState((state) => state.user)
+  const { 
+    setState, 
+    login, 
+    onMailChange, 
+    onPasswordChange
+  } 
+  = useStoreActions((actions) => actions.user)
 
   function submitLogin() {
-
+    if (
+      mail === '' 
+    )
+    {
+      alert('mail can not be void!')
+      return
+    }
+    else if (
+      password === '' 
+    )
+    {
+      alert('password can not be void!')
+      return
+    }
     login().then((response) => {
       // 请求成功的处理
       if (response.status !== 200) {
@@ -35,22 +60,19 @@ function Login(){
     })
   }
 
-  function submitRegister(){
-    navigate('/register')
-  }
-  function submitRetrievePassword(){
-    navigate('/retrievePassword')
-  }
   return (
     <center>
       <br />
+      <Container maxWidth="sm" sx = {{ mt : 1 }}>
+        <Paper elevation={4}>
+        <br/>
       <Typography variant="h3" gutterBottom color={'#1976d2'}>
         Login
       </Typography>
       <Box
         component="form"
         sx={{
-          '& > :not(style)': { m: 1, width: '25ch' },
+          '& > :not(style)': { m: 1, width: '40ch' },
         }}
         noValidate
         autoComplete="off">
@@ -93,11 +115,33 @@ function Login(){
         </FormControl>
         <br />
         <Button onClick={submitLogin}>Login</Button>
-        <br />
-        <Button onClick={submitRegister}>register</Button>
-        <br />
-        <Button onClick={submitRetrievePassword}>retrieve Password</Button>
+  <Grid item xs={12}>
+    <Grid container spacing={4} justifyContent="space-between">
+      <Grid item >
+        <Link href="/retrievePassword" variant="standard">
+          Forgot password?
+        </Link>
+      </Grid>
+      <Grid item>
+        <Link href="/register" variant="standard">
+          No account? Register
+        </Link>
+      </Grid>
+    </Grid>
+  </Grid>
+
+        <br/>
+      <Typography 
+        variant="caption" 
+        color="textSecondary" 
+        style={{ marginBottom: '20px'}}
+      >
+        © 2023 The Website designed by G01
+      </Typography>
       </Box>
+      <br/>
+      </Paper>
+      </Container>
     </center>
   )
 }
