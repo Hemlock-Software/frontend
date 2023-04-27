@@ -15,6 +15,8 @@ export const userModel = {
   checkFlag: true,
   passwordFlag: true,
   mailFlag: true,
+  nameFlag: true, 
+  verifyCodeFlag: true,
 
 // 显示错误信息
   errorMsg: "",
@@ -101,12 +103,40 @@ export const userModel = {
         state.passwordFlag = false;
         state.errorMsg = 'password length must be 6-16';
     }
-    // ??
     else if (!/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(payload) === false) {
         state.passwordFlag = false;
         state.errorMsg = 'can only contain 0-9,a-z,A-Z,and .';
     }
   }),
+
+// 密码验证
+onUserNameChange: action((state, payload) => {
+  state.password = payload
+  state.passwordFlag =  true
+  if (payload.length < 2 || payload.length > 16) {
+      state.passwordFlag = false;
+      state.errorMsg = 'name length must be 2-16';
+  }
+  else if (!/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(payload) === false) {
+      state.passwordFlag = false;
+      state.errorMsg = 'can only contain 0-9,a-z,A-Z,and .';
+  }
+}),
+
+// 密码验证
+onVerifyCodeChange: action((state, payload) => {
+  state.password = payload
+  state.passwordFlag =  true
+  if (payload.length !== 6) {
+      state.passwordFlag = false;
+      state.errorMsg = 'verify code length must be 6';
+  }
+  // ??
+  else if (!/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(payload) === false) {
+      state.passwordFlag = false;
+      state.errorMsg = 'can only contain 0-9,a-z,A-Z,and .';
+  }
+}),
 
 // 确认密码验证
   onCheckPasswordChange: action((state, payload) => {
