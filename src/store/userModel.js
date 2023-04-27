@@ -20,6 +20,8 @@ export const userModel = {
 
 // 显示错误信息
   errorMsg: "",
+  errorNameMsg: "",
+  errorVerifyCodeMsg: "",
 // 显示图标
   showPassword: false,
   showCheckPassword: false,
@@ -41,6 +43,7 @@ export const userModel = {
     )
     if (response.status === 200) {
       // 注意，这里要更新一下token
+      alert("Mail Send OK")
       localStorage.setItem('token', response.data)
     }
   }),
@@ -88,7 +91,7 @@ export const userModel = {
 //  邮箱验证
   onMailChange: action((state, payload) => {
     state.mail = payload
-    state.mailFlag = /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(payload)
+    state.mailFlag = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,14}$/.test(payload)
   }),
 
 // 密码验证
@@ -106,31 +109,30 @@ export const userModel = {
   }),
 
 // 密码验证
-onUserNameChange: action((state, payload) => {
-  state.password = payload
-  state.passwordFlag =  true
+onNameChange: action((state, payload) => {
+  state.name = payload
+  state.nameFlag =  true
   if (payload.length < 2 || payload.length > 16) {
-      state.passwordFlag = false;
-      state.errorMsg = 'name length must be 2-16';
+      state.nameFlag = false;
+      state.errorNameMsg = 'name length must be 2-16';
   }
-  else if (!/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(payload) === false) {
-      state.passwordFlag = false;
-      state.errorMsg = 'can only contain 0-9,a-z,A-Z,and .';
+  else if (/^[\u4E00-\u9FA5A-Za-z0-9]+$/.test(payload) === false) {
+      state.nameFlag = false;
+      state.errorNameMsg = 'can only contain 0-9,a-z,A-Z,and Chinese Char';
   }
 }),
 
-// 密码验证
+// 验证码验证
 onVerifyCodeChange: action((state, payload) => {
-  state.password = payload
-  state.passwordFlag =  true
+  state.verifyCode = payload
+  state.verifyCodeFlag =  true
   if (payload.length !== 6) {
-      state.passwordFlag = false;
-      state.errorMsg = 'verify code length must be 6';
+      state.verifyCodeFlag = false;
+      state.errorVerifyCodeMsg = 'verify code length must be 6';
   }
-  // ??
-  else if (/\W/.test(payload)) {
-      state.passwordFlag = false;
-      state.errorMsg = 'Only allows 0-9,a-z,A-Z and _';
+  else if (!/^\d+$/.test(payload)) {
+      state.verifyCodeFlag = false;
+      state.errorVerifyCodeMsg = 'Only allows 0-9';
   }
 }),
 

@@ -21,10 +21,13 @@ export default function Retrivepassword() {
     mail,
     password,
     checkPassword,
+    verifyCode,
     checkFlag,
     passwordFlag,
+    verifyCodeFlag,
     mailFlag,
     errorMsg,
+    errorVerifyCodeMsg,
     showPassword,
     showCheckPassword,
   } = useStoreState((state) => state.user)
@@ -34,6 +37,7 @@ export default function Retrivepassword() {
     onMailChange,
     onPasswordChange,
     onCheckPasswordChange,
+    onVerifyCodeChange,
     retrievePassword,
   } = useStoreActions((actions) => actions.user)
 
@@ -50,12 +54,14 @@ export default function Retrivepassword() {
 
   const submit = async () => {
     if (
-      mail == '' ||
-      password == '' ||
-      checkPassword == '' ||
+      mail === '' ||
+      password === '' ||
+      checkPassword === '' ||
+      verifyCode === '' ||
       !mailFlag ||
       !checkFlag ||
-      !passwordFlag
+      !passwordFlag ||
+      !verifyCodeFlag
     ) {
       alert('Please enter the valid information!')
       return
@@ -101,10 +107,10 @@ export default function Retrivepassword() {
 
             <br/>
             <TextField
-              id="standard-basic"
-              label="Varification code"
+              label={verifyCodeFlag ? 'verify code' : errorVerifyCodeMsg}
               variant="standard"
-              onChange={(e) => setState({verifyCode:e.target.value})}
+              onChange={(e) => onVerifyCodeChange(e.target.value)}
+              error={!verifyCodeFlag}
             />
 
             <br/>
