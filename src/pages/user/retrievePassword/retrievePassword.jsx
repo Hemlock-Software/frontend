@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStoreActions } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
@@ -17,52 +17,49 @@ import { useNavigate } from 'react-router'
 
 export default function Retrivepassword() {
 
-  const {setState, sendMail} = useStoreActions((actions) => actions.user);
-  const {retrievePassword} = useStoreActions((actions) => actions.user);
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [showRepeatPassword, setShowRepeatPassword] = React.useState(false);
-  const [emailError, setEmailError] = React.useState(false);
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorType, setPasswordErrorType] = React.useState('');
-  const [repeatError, setRepeatError] = React.useState(false);
-  var password;
+  const {
+    mail,
+    password,
+    checkPassword,
+    checkFlag,
+    passwordFlag,
+    mailFlag,
+    errorMsg,
+    showPassword,
+    showCheckPassword,
+  } = useStoreState((state) => state.user)
+  const {
+    setState,
+    sendMail,
+    onMailChange,
+    onPasswordChange,
+    onCheckPasswordChange,
+    retrievePassword,
+  } = useStoreActions((actions) => actions.user)
 
   const navigate = useNavigate()
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleClickShowRepeatPassword = () => setShowRepeatPassword((show) => !show);
-
-  const handleEmailChange = (e) => {
-    setState({mail: e.target.value})
-    setEmailError(!/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(e.target.value))
-  };
-
-
-  const handlePasswordChange = (e) => {
-    setState({password: e.target.value})
-    password = e.target.value
-    setPasswordError(!/^\w{6,15}$/.test(e.target.value))
-    if(!/^\w{6,15}$/.test(e.target.value)) {
-      if(/\W/.test(e.target.value)) {
-        setPasswordErrorType('Only number and latter allowes')
-      }else if(/^[0-9A-Za-z]{0,5}$/.test(e.target.value)) {
-        setPasswordErrorType('Too short')
-      }else{
-        setPasswordErrorType('Too long')
-      }
-    }
-  };
-
-  const handleRepeatChange = (e) => {
-    setRepeatError(!(password === e.target.value))
-  };
-
   function submitMail(){
+    if (!mailFlag) {
+      alert('E-mail format invalid!')
+      return
+    }
     setState({type: 2})
     sendMail()
   }
 
   const submit = async () => {
+    if (
+      mail == '' ||
+      password == '' ||
+      checkPassword == '' ||
+      !mailFlag ||
+      !checkFlag ||
+      !passwordFlag
+    ) {
+      alert('Please enter the valid information!')
+      return
+    }
     retrievePassword().then(res=>{
       if(res.status !== 200){
         alert(res.data)
@@ -91,11 +88,10 @@ export default function Retrivepassword() {
           >
             <TextField
               id="standard-basic"
-              label="E-mail address"
+              label={mailFlag ? 'E-mail address' : 'Invalid e-mail'}
               variant="standard"
-              onChange={handleEmailChange}
-              error={emailError}
-              helperText={emailError ? 'Invalid email' : ''}
+              onChange={(e) => onMailChange(e.target.value)}
+              error={!mailFlag}
             />
 
             <br/>
@@ -113,20 +109,19 @@ export default function Retrivepassword() {
 
             <br/>
             <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-              <InputLabel htmlFor="password" error={passwordError}>
-                New password
+              <InputLabel htmlFor="password" error={!passwordFlag}>
+                {passwordFlag ? 'New password' : errorMsg}
               </InputLabel>
               <Input
               id="New password"
               type={showPassword ? 'text' : 'password'}
-              onChange={handlePasswordChange}
-              error={passwordError}
-              helpertext={passwordError ? passwordErrorType : ''}
+              onChange={(e) => onPasswordChange(e.target.value)}
+              error={!passwordFlag}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
+                    onClick={() => setState({ showPassword: !showPassword })}
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
@@ -137,22 +132,21 @@ export default function Retrivepassword() {
 
             <br/>
             <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-              <InputLabel htmlFor="password" error={repeatError}> 
-                Repeat password
+              <InputLabel htmlFor="password" error={!checkFlag}> 
+                {checkFlag ? 'Repeat password' : 'Password not matched'}
               </InputLabel>
               <Input
               id="Repeat password"
-              type={showRepeatPassword ? 'text' : 'password'}
-              onChange={handleRepeatChange}
-              error={repeatError}
-              helpertext={repeatError ? 'Password doesn\'t match' : ''}
+              type={showCheckPassword ? 'text' : 'password'}
+              onChange={(e) => onCheckPasswordChange(e.target.value)}
+              error={!checkFlag}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
-                    onClick={handleClickShowRepeatPassword}
+                    onClick={() => setState({ showCheckPassword: !showCheckPassword })}
                   >
-                    {showRepeatPassword ? <VisibilityOff /> : <Visibility />}
+                    {showCheckPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               }
