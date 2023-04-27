@@ -88,11 +88,7 @@ export const userModel = {
 //  邮箱验证
   onMailChange: action((state, payload) => {
     state.mail = payload
-    if (payload.length === 0 || payload.indexOf('@') === -1) {
-        state.mailFlag = false;
-    } else {
-        state.mailFlag = true;
-    }
+    state.mailFlag = /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(payload)
   }),
 
 // 密码验证
@@ -132,9 +128,9 @@ onVerifyCodeChange: action((state, payload) => {
       state.errorMsg = 'verify code length must be 6';
   }
   // ??
-  else if (!/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(payload) === false) {
+  else if (/\W/.test(payload)) {
       state.passwordFlag = false;
-      state.errorMsg = 'can only contain 0-9,a-z,A-Z,and .';
+      state.errorMsg = 'Only allows 0-9,a-z,A-Z and _';
   }
 }),
 
