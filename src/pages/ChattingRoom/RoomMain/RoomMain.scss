@@ -1,0 +1,36 @@
+/* 细长透明拖动条 */
+::-webkit-scrollbar {
+    width: 8px; /* 宽度 */
+    background-color: transparent; /* 背景色 */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5); /* 拖动条颜色 */
+    border-radius: 5px; /* 圆角半径 */
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* 鼠标悬浮时的颜色 */
+  }
+  
+  /* 在非webkit浏览器中使用 */
+  /* 细长透明拖动条 */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
+  }
+  
+  *::-webkit-scrollbar {
+    width: 8px; /* 宽度 */
+    background-color: transparent; /* 背景色 */
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5); /* 拖动条颜色 */
+    border-radius: 5px; /* 圆角半径 */
+  }
+  
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* 鼠标悬浮时的颜色 */
+  }
+  

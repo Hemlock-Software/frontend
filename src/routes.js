@@ -2,6 +2,8 @@ import Login from './pages/user/login/login'
 import Register from './pages/user/register/register'
 import RetrievePassword from './pages/user/retrievePassword/retrievePassword';
 import Welcome from './pages/welcome/welcome'
+import RoomCreate from './pages/ChattingRoom/RoomCreate'
+import RoomMain from './pages/ChattingRoom/RoomMain/RoomMain'
 
 // router类型组件
 /**
@@ -31,6 +33,16 @@ const routes = [
     exact: true,
     element: <RetrievePassword />
   },
+  {
+    path: '/room/create',
+    exact: true,
+    element: <RoomCreate />
+  },
+  {
+    path: '/room/main',
+    exact: true,
+    element: <RoomMain />
+  }
 ];
 
 export default routes;

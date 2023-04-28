@@ -4,6 +4,7 @@ import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField'
 import { Button } from '@mui/material'
+import { useNavigate } from 'react-router'
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography'
@@ -16,7 +17,9 @@ import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import Input from '@mui/material/Input'
 
+
 function Login(){
+  const navigate = useNavigate()
   const {
     mail,
     password,
@@ -50,6 +53,7 @@ function Login(){
         alert(response.data)
       } else {
         console.log("LOGIN SUCCESS")
+        navigate('/room/main')
       }
     })
   }
