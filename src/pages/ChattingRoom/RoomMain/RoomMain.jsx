@@ -97,7 +97,7 @@ function RoomMain() {
   };
   const [isListScrollable, setIsListScrollable] = React.useState(false);
   const [ChattingInfor, setChattingInfor] = React.useState(datalist);
-  const chatRooms = Array.from({ length: 20 }, (_, i) => `Chatting Room ${i + 1}`);
+  const chatRooms = Array.from({ length: 5 }, (_, i) => `Chatting Room ${i + 1}`);
 
   const messages = [
     {

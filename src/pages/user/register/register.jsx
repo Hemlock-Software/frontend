@@ -76,6 +76,7 @@ function Register() {
       if (response.status !== 200) {
         alert(response.data)
       } else {
+        alert("register success")
         navigate('/login')
       }
     })

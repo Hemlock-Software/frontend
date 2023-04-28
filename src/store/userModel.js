@@ -18,6 +18,7 @@ export const userModel = {
   nameFlag: true, 
   verifyCodeFlag: true,
 
+
 // 显示错误信息
   errorMsg: "",
   errorNameMsg: "",
