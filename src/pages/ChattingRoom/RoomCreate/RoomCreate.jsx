@@ -1,19 +1,17 @@
 import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import RoomDetail from './RoomDetail';
 import Review from './Review';
 import { useNavigate } from 'react-router'
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 const steps = ['Room Detail', 'Review your settings'];
 
@@ -32,11 +30,29 @@ const theme = createTheme();
 
 export default function RoomCreate() {
 
-  const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
+  const navigate = useNavigate()
+  const {
+    name,
+    nameFlag,
+    passwordFlag,
+    maxUserNumberFlag,
+  } = useStoreState((state) => state.roomCreateModel)
+  const {
+    create,
+  } = useStoreActions((actions) => actions.roomCreateModel)
 
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+    if(activeStep !== steps.length - 1){
+      if(nameFlag && passwordFlag && maxUserNumberFlag && name !== ""){
+        setActiveStep(activeStep + 1);
+      }else {
+        alert('Please enter the valid information!')
+      }
+    }else{
+      create()
+      setActiveStep(activeStep + 1)
+    }
   };
 
   const handleBack = () => {

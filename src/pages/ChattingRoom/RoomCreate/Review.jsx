@@ -1,7 +1,16 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 export default function Review() {
+
+  const {
+    roomID,
+    name,
+    password,
+    maxUserNumber,
+  } = useStoreState((state) => state.roomCreateModel)
+
   return (
     <React.Fragment>
       <Typography variant="h5" gutterBottom>
@@ -12,28 +21,30 @@ export default function Review() {
         Room name
       </Typography>
       <Typography gutterBottom sx={{ ml : 4 }}>
-        _Dian__'s room
+        {name}
       </Typography>
 
-      <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+      {/* <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
         Room ID
       </Typography>
       <Typography gutterBottom sx={{ ml : 4 }}>
-        114514
-      </Typography>
+        {roomID}
+      </Typography> */}
 
-      <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+      {password !== "" ? (
+        <div><Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
         Password
       </Typography>
       <Typography gutterBottom sx={{ ml : 4 }}>
-        1919
-      </Typography>
+        {password}
+      </Typography></div>
+      ) : <div></div>}
 
       <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
         Maximum number of users
       </Typography>
       <Typography gutterBottom sx={{ ml : 4 }}>
-        810
+        {maxUserNumber}
       </Typography>
 
     </React.Fragment>
