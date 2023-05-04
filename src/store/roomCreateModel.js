@@ -3,8 +3,75 @@ import { action, thunk } from 'easy-peasy';
 export const roomCreateModel = {
   roomID: "",
 
-// 定义一些action函数，state有点像this的作用，调用本类
+  name: "",
+  nameFlag: true,
+  errorNameMsg: "",
+
+  password: "",
+  showPassword: false,
+  passwordFlag: true,
+  errorPasswordMsg: "",
+
+  maxUserNumber: 50,
+  maxUserNumberFlag: true,
+  errorMaxUserNumberMsg: "",
+
+  fillFlag: true,
+
   setState: action((state, payload) => {
     state = Object.assign(state, payload)
+  }),
+
+  // Form validation
+
+  onNameChange: action((state, payload) => {
+    state.name = payload
+    state.nameFlag =  true
+    if (payload.length < 2 || payload.length > 16) {
+        state.nameFlag = false;
+        state.errorNameMsg = 'Name length must be 2-16';
+    }
+    else if (/^[\u4E00-\u9FA5A-Za-z0-9]+$/.test(payload) === false) {
+        state.nameFlag = false;
+        state.errorNameMsg = 'Can only contain 0-9,a-z,A-Z,and Chinese Char';
+    }
+  }),
+
+  onPasswordChange: action((state, payload) => {
+    state.password = payload
+    state.passwordFlag =  true
+    if (payload.length < 6 || payload.length > 16) {
+        state.passwordFlag = false;
+        state.errorPasswordMsg = 'Password length must be 6-16';
+    }
+    else if (!/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(payload) === false) {
+        state.passwordFlag = false;
+        state.errorPasswordMsg = 'Can only contain 0-9,a-z,A-Z,and .';
+    }
+  }),
+
+  onMaxUserNumberChange: action((state, payload) => {
+    state.maxUserNumber = payload
+    state.maxUserNumberFlag = true
+    var num = parseInt(payload)
+    if(/[^0-9]/.test(payload) || isNaN(num)){
+      state.maxUserNumberFlag = false
+      state.errorMaxUserNumberMsg = 'Can only contain a integer'
+    }else if(num < 1 || num > 500){
+      state.maxUserNumberFlag = false
+      state.errorMaxUserNumberMsg = 'Maximum number of users must be 1-500'
+    }
+  }),
+
+  onCheckFill: action((state) => {
+    state.fillFlag = true
+    if (state.name === ""){
+      state.fillFlag = false
+      // alert("Room name can not be empty")
+    }
+  }),
+
+  create: thunk(async(actions, payload, { getState }) => {
+    // Unrealized
   }),
 };
