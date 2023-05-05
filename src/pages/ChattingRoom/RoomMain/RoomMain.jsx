@@ -14,6 +14,7 @@ import {
   ListItemIcon,
   ListItemText,
   IconButton,
+  Dialog, DialogTitle, DialogContent, DialogActions
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ChatIcon from '@mui/icons-material/Chat';
@@ -22,6 +23,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import './RoomMain.scss';
+import { useNavigate } from 'react-router-dom';
+import RoomCreate from '../RoomCreate/RoomCreate';
 
 function stringToColor(string) {
   let hash = 0;
@@ -89,65 +92,32 @@ function ChatMessage(props) {
   );
 }
 
+
 function RoomMain() {
   const datalist = {
     name: 'IEeya',
     mail: '3200103483@zju.edu.cn',
     room: 'Chatting room 1',
   };
+  const navigate = useNavigate();
   const [isListScrollable, setIsListScrollable] = React.useState(false);
   const [ChattingInfor, setChattingInfor] = React.useState(datalist);
   const chatRooms = Array.from({ length: 5 }, (_, i) => `Chatting Room ${i + 1}`);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  function handleCreateRoom(){
+    console.log("Ct")
+    navigate("/room/create")
+  }
 
   const messages = [
-    {
-      user: 'Alice',
-      text: 'Hello, Bob!',
-    },
-    {
-      user: 'Bob',
-      text: 'Hi, Alice!',
-    },
-    {
-      user: 'Alice',
-      text: 'Hello, Bob!',
-    },
-    {
-      user: 'Bob',
-      text: 'Hi, Alice!',
-    },
-    {
-      user: 'Alice',
-      text: 'Hello, Bob!',
-    },
-    {
-      user: 'Bob',
-      text: 'Hi, Alice!',
-    },
-    {
-      user: 'Alice',
-      text: 'Hello, Bob!',
-    },
-    {
-      user: 'Bob',
-      text: 'Hi, Alice!',
-    },
-    {
-      user: 'Alice',
-      text: 'Hello, Bob!',
-    },
-    {
-      user: 'Bob',
-      text: 'Hi, Alice!',
-    },
-    {
-      user: 'Alice',
-      text: 'Hello, Bob!',
-    },
-    {
-      user: 'Bob',
-      text: 'Hi, Alice!',
-    },
     {
       user: 'Alice',
       text: 'Hello, Bob!',
@@ -246,7 +216,7 @@ function RoomMain() {
                 <ListItemIcon>
                   <CreateIcon />
                 </ListItemIcon>
-                <ListItemText primary="Create New Chatting Room" />
+                <ListItemText primary="Create New Chatting Room" onClick={handleClickOpen}/>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
@@ -258,8 +228,17 @@ function RoomMain() {
               </ListItemButton>
             </ListItem>
           </List>
-        </Grid>
 
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Create a new chatting room</DialogTitle>
+            <DialogContent>
+              <RoomCreate />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>close</Button>
+            </DialogActions>
+          </Dialog>
+        </Grid>
 
         {/* <Grid>
           <Divider orientation="vertical" sx={{ borderStyle: 'dashed', borderWidth: 3 }} />
