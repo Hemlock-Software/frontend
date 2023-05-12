@@ -103,7 +103,7 @@ export const userModel = {
         state.passwordFlag = false;
         state.errorMsg = 'password length must be 6-16';
     }
-    else if (!/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(payload) === false) {
+    else if (/[^A-Za-z0-9.]/.test(payload)) {
         state.passwordFlag = false;
         state.errorMsg = 'can only contain 0-9,a-z,A-Z,and .';
     }
@@ -145,6 +145,7 @@ onVerifyCodeChange: action((state, payload) => {
     }else {
         state.checkFlag = false
     }
+    console.log(2)
   }),
 
 // 表单空验证

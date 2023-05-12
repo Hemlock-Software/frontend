@@ -1,4 +1,6 @@
 import { action, thunk } from 'easy-peasy';
+import {RoomCreate} from '../services/api';
+import CryptoJS from 'crypto-js'
 
 export const roomCreateModel = {
   roomID: "",
@@ -31,7 +33,7 @@ export const roomCreateModel = {
         state.nameFlag = false;
         state.errorNameMsg = 'Name length must be 2-16';
     }
-    else if (/^[\u4E00-\u9FA5A-Za-z0-9]+$/.test(payload) === false) {
+    else if (!/^[\u4E00-\u9FA5A-Za-z0-9]+$/.test(payload)) {
         state.nameFlag = false;
         state.errorNameMsg = 'Can only contain 0-9,a-z,A-Z,and Chinese Char';
     }
@@ -40,26 +42,30 @@ export const roomCreateModel = {
   onPasswordChange: action((state, payload) => {
     state.password = payload
     state.passwordFlag =  true
-    if (payload.length < 6 || payload.length > 16) {
-        state.passwordFlag = false;
-        state.errorPasswordMsg = 'Password length must be 6-16';
-    }
-    else if (!/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(payload) === false) {
-        state.passwordFlag = false;
-        state.errorPasswordMsg = 'Can only contain 0-9,a-z,A-Z,and .';
+    if(payload !== ""){
+      if (payload.length < 6 || payload.length > 16) {
+          state.passwordFlag = false;
+          state.errorPasswordMsg = 'Password length must be 6-16';
+      }
+      else if ((/[^A-Za-z0-9.]/.test(payload))) {
+          state.passwordFlag = false;
+          state.errorPasswordMsg = 'Can only contain 0-9,a-z,A-Z,and .';
+      }
     }
   }),
 
   onMaxUserNumberChange: action((state, payload) => {
     state.maxUserNumber = payload
     state.maxUserNumberFlag = true
-    var num = parseInt(payload)
-    if(/[^0-9]/.test(payload) || isNaN(num)){
-      state.maxUserNumberFlag = false
-      state.errorMaxUserNumberMsg = 'Can only contain a integer'
-    }else if(num < 1 || num > 500){
-      state.maxUserNumberFlag = false
-      state.errorMaxUserNumberMsg = 'Maximum number of users must be 1-500'
+    if(payload !== ""){
+      var num = parseInt(payload)
+      if(/[^0-9]/.test(payload) || isNaN(num)){
+        state.maxUserNumberFlag = false
+        state.errorMaxUserNumberMsg = 'Can only contain a integer'
+      }else if(num < 1 || num > 500){
+        state.maxUserNumberFlag = false
+        state.errorMaxUserNumberMsg = 'Maximum number of users must be 1-500'
+      }
     }
   }),
 
@@ -72,6 +78,15 @@ export const roomCreateModel = {
   }),
 
   create: thunk(async(actions, payload, { getState }) => {
-    // Unrealized
+    const {name, password, maxUserNumber} = getState()
+    const sha256Password = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+    const response = await RoomCreate(
+      {
+        name: name,
+        password: sha256Password,
+        maxUserNumber: maxUserNumber,
+      }
+    )
+    return response
   }),
 };
