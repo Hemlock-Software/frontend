@@ -2,34 +2,35 @@ import { action, thunk } from 'easy-peasy'
 
 export const roomSettingModel = {
   roomID: "",
+  roomName: 'homo 114514',
   roomMemberNum: 8,
   roomMemberInfo: [
     {
-      name: '1',
+      name: 'Jack',
       src: '',
     },
     {
-      name: '2',
+      name: 'Shit',
       src: '',
     },
     {
-      name: '3',
+      name: 'fuckyo',
       src: '',
     },
     {
-      name: '4',
+      name: 'Mary',
       src: '',
     },
     {
-      name: '5',
+      name: 'abcqwe',
       src: '',
     },
     {
-      name: '6',
+      name: 'kora',
       src: '',
     },
     {
-      name: '7',
+      name: 'Jay Chou',
       src: '',
     },
     {
