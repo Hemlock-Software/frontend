@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
@@ -13,40 +14,50 @@ export default function Review() {
 
   return (
     <React.Fragment>
-      <Typography variant="h5" gutterBottom>
-        Room summary
-      </Typography>
+      <Grid container spacing={3} ml={3}>
+        <Grid item xs={12}>
+          <Typography variant="h5" gutterBottom ml={6}>
+            Room summary
+          </Typography>
+        </Grid>
 
-      <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-        Room name
-      </Typography>
-      <Typography gutterBottom sx={{ ml : 4 }}>
-        {name}
-      </Typography>
+        <Grid item xs={12}>
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }} ml={6}>
+            Room name
+          </Typography>
+          <Typography gutterBottom sx={{ ml: 10 }}>
+            {name}
+          </Typography>
+        </Grid>
 
-      {/* <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+        {/* <Typography variant="h6" gutterBottom sx={{ mt: 2 }} ml={6}>
         Room ID
       </Typography>
-      <Typography gutterBottom sx={{ ml : 4 }}>
+      <Typography gutterBottom sx={{ ml : 10 }}>
         {roomID}
       </Typography> */}
 
-      {password !== "" ? (
-        <div><Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-        Password
-      </Typography>
-      <Typography gutterBottom sx={{ ml : 4 }}>
-        {password}
-      </Typography></div>
-      ) : <div></div>}
 
-      <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-        Maximum number of users
-      </Typography>
-      <Typography gutterBottom sx={{ ml : 4 }}>
-        {maxUserNumber}
-      </Typography>
+        {password !== "" ? (
+          <Grid item xs={12} sx={{ mt: 0 }}>
+            <Typography variant="h6" gutterBottom sx={{ mt: 0 }} ml={6}>
+              Password
+            </Typography>
+            <Typography gutterBottom sx={{ ml: 10 }}>
+              {password}
+            </Typography>
+          </Grid>
+        ) : <div></div>}
 
+        <Grid item xs={12} sx={{ mt: 0 }}>
+          <Typography variant="h6" gutterBottom sx={{ mt: 0 }} ml={6}>
+            Maximum number of users
+          </Typography>
+          <Typography gutterBottom sx={{ ml: 10 }}>
+            {maxUserNumber}
+          </Typography>
+        </Grid>
+      </Grid>
     </React.Fragment>
   );
 }

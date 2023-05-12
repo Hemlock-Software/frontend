@@ -43,13 +43,13 @@ export default function RoomCreate() {
   } = useStoreActions((actions) => actions.roomCreateModel)
 
   const handleNext = () => {
-    if(activeStep !== steps.length - 1){
-      if(nameFlag && passwordFlag && maxUserNumberFlag && name !== ""){
+    if (activeStep !== steps.length - 1) {
+      if (nameFlag && passwordFlag && maxUserNumberFlag && name !== "") {
         setActiveStep(activeStep + 1);
-      }else {
+      } else {
         alert('Please enter the valid information!')
       }
-    }else{
+    } else {
       create()
       setActiveStep(activeStep + 1)
     }
@@ -66,7 +66,7 @@ export default function RoomCreate() {
           <Typography component="h1" variant="h4" align="center">
             Create Room
           </Typography>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 , pl: 6, pr: 3}}>
+          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5, pl: 6, pr: 3 }}>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>

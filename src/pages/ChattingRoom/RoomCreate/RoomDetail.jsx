@@ -14,11 +14,14 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 export default function RoomDetail() {
 
   const {
+    name,
     nameFlag,
     errorNameMsg,
+    password,
     showPassword,
     passwordFlag,
     errorPasswordMsg,
+    maxUserNumber,
     maxUserNumberFlag,
     errorMaxUserNumberMsg,
   } = useStoreState((state) => state.roomCreateModel)
@@ -42,6 +45,7 @@ export default function RoomDetail() {
             id="roomName"
             label={nameFlag ? 'Room name' : errorNameMsg}
             variant="standard"
+            value={name}
             onChange={(e) => onNameChange(e.target.value)}
             error={!nameFlag}
           />
@@ -55,6 +59,7 @@ export default function RoomDetail() {
             id="password"
             type={showPassword ? 'text' : 'password'}
             onChange={(e) => onPasswordChange(e.target.value)}
+            value={password}
             error={!passwordFlag}
             endAdornment={
               <InputAdornment position="end">
@@ -76,6 +81,7 @@ export default function RoomDetail() {
             label={ maxUserNumberFlag ? "Maximum number of users" : errorMaxUserNumberMsg}
             fullWidth
             variant="standard"
+            value={maxUserNumber}
             error={!maxUserNumberFlag}
             onChange={(e) => onMaxUserNumberChange(e.target.value)}
           />

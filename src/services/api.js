@@ -23,3 +23,9 @@ export const UserRegister = (info) => request({
   data: info,
   method: 'post',
 })
+
+export const RoomCreate = (info) => request({
+  url: '/user/roomCreate',
+  data: info,
+  method: 'post',
+})
