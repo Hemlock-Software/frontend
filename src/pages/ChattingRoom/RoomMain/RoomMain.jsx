@@ -9,6 +9,7 @@ import {
   Button,
   TextField,
   List,
+  Drawer,
   ListItem,
   ListItemButton,
   ListItemIcon,
@@ -23,24 +24,25 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import './RoomMain.scss';
-import { useNavigate } from 'react-router-dom';
 import RoomCreate from '../RoomCreate/RoomCreate';
+import RoomSetting from '../RoomSetting/RoomSetting';
+import { useStoreActions, useStoreState} from 'easy-peasy';
 
-function stringToColor(string) {
-  let hash = 0;
-  let i, chr;
-  for (i = 0; i < string.length; i++) {
-    chr = string.charCodeAt(i);
-    hash = ((hash << 5) - hash) + chr;
-    hash |= 0;
+  function stringToColor(string) {
+    let hash = 0;
+    let i, chr;
+    for (i = 0; i < string.length; i++) {
+      chr = string.charCodeAt(i);
+      hash = ((hash << 5) - hash) + chr;
+      hash |= 0;
+    }
+    hash = hash & 0xffffff; // 修改这行代码
+    hash = Math.abs(hash);
+    const r = (hash % 255);
+    const g = ((hash >> 8) % 255);
+    const b = ((hash >> 16) % 255);
+    return `rgb(${r}, ${g}, ${b})`;
   }
-  hash = hash & 0xffffff; // 修改这行代码
-  hash = Math.abs(hash);
-  const r = (hash % 255);
-  const g = ((hash >> 8) % 255);
-  const b = ((hash >> 16) % 255);
-  return `rgb(${r}, ${g}, ${b})`;
-}
 
 function stringAvatar(name) {
   let abbr;
@@ -94,39 +96,19 @@ function ChatMessage(props) {
 
 
 function RoomMain() {
-  const datalist = {
-    name: 'IEeya',
-    mail: '3200103483@zju.edu.cn',
-    room: 'Chatting room 1',
-  };
-  const navigate = useNavigate();
   const [isListScrollable, setIsListScrollable] = React.useState(false);
-  const [ChattingInfor, setChattingInfor] = React.useState(datalist);
-  const chatRooms = Array.from({ length: 5 }, (_, i) => `Chatting Room ${i + 1}`);
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  function handleCreateRoom(){
-    console.log("Ct")
-    navigate("/room/create")
-  }
-
-  const messages = [
-    {
-      user: 'Alice',
-      text: 'Hello, Bob!',
-    },
-    {
-      user: 'Bob',
-      text: 'Hi, Alice!',
-    },
-  ];
+  const {
+    roomInfor,
+    roomList,
+    messages, 
+    roomCreateOpen, 
+    roomSettingOpen, 
+  } 
+  = useStoreState((state) => state.roomMainModel)
+  const { 
+    setState,
+  } 
+  = useStoreActions((actions) => actions.roomMainModel)
 
   const handleListScroll = (event) => {
     // 判断List组件是否需要滚动
@@ -148,13 +130,13 @@ function RoomMain() {
               justifyContent: 'center',
             }}>
               <div style={{ display: 'flex', alignItems: 'center',}}>
-              <Avatar {...stringAvatar(ChattingInfor.name)}/>
+              <Avatar {...stringAvatar("IEeya")}/>
                 <div>
                   <Typography variant="h6">
-                    {ChattingInfor.name}
+                    {"IEeya"}
                   </Typography>
                   <Typography variant="body1" sx={{ fontSize: '8px' }}>
-                    {ChattingInfor.mail}
+                    {"1287472657@qq.com"}
                   </Typography>
                 </div>
               </div>
@@ -192,13 +174,13 @@ function RoomMain() {
                   },
                 }}
               >
-                {chatRooms.map((item) => (
-                  <ListItem key={item}>
+                {roomList.map((item) => (
+                  <ListItem key={item.roomId}>
                     <ListItemButton>
                     <ListItemIcon>
                       <ChatIcon />
                     </ListItemIcon>
-                      <ListItemText primary={item}/>
+                      <ListItemText primary={item.roomName}/>
                     </ListItemButton>
                   </ListItem>
                 ))}
@@ -216,7 +198,7 @@ function RoomMain() {
                 <ListItemIcon>
                   <CreateIcon />
                 </ListItemIcon>
-                <ListItemText primary="Create New Chatting Room" onClick={handleClickOpen}/>
+                <ListItemText primary="Create New Chatting Room" onClick={() => setState({ roomCreateOpen: true })}/>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
@@ -229,13 +211,13 @@ function RoomMain() {
             </ListItem>
           </List>
 
-          <Dialog open={open} onClose={handleClose}>
+          <Dialog open={roomCreateOpen} onClose={() => setState({ roomCreateOpen: false })}>
             <DialogTitle>Create a new chatting room</DialogTitle>
             <DialogContent>
               <RoomCreate />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose}>close</Button>
+              <Button onClick={() => setState({ roomCreateOpen: false })}>close</Button>
             </DialogActions>
           </Dialog>
         </Grid>
@@ -264,10 +246,10 @@ function RoomMain() {
             }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Chip label="Now Chatting" color="primary" sx={{mr: 2}}/>
-                <Avatar {...stringAvatar(ChattingInfor.room)}/>
+                <Avatar {...stringAvatar(roomInfor.roomName)}/>
                 <div style={{ flex: 1 }}>
-                  <Typography variant="h6">{ChattingInfor.room}</Typography>
-                  <Typography variant="body1" sx={{ fontSize: '8px' }}>belonger: {ChattingInfor.name}</Typography>
+                  <Typography variant="h6">{roomInfor.roomName}</Typography>
+                  <Typography variant="body1" sx={{ fontSize: '8px' }}>belonger: {roomInfor.creatorName}</Typography>
                 </div>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mr: 2}}>
                   <IconButton sx={{ mr: 1}}>
@@ -277,9 +259,16 @@ function RoomMain() {
                     <PersonAddAltIcon />
                   </IconButton>
                   <IconButton sx={{ mr: 1}}>
-                    <SettingsIcon />
+                    <SettingsIcon onClick={() =>setState({roomSettingOpen: true})}/>
                   </IconButton>
                 </Box>
+                <Drawer
+                  anchor={'right'}
+                  open={roomSettingOpen}
+                  onClose={() =>setState({roomSettingOpen: false})}
+                >
+                  <RoomSetting/>
+                </Drawer>
               </div>
             </Box>
           </Box>
