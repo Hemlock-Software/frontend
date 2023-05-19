@@ -45,6 +45,13 @@ function Register() {
   const navigate = useNavigate()
 
   function submitMail() {
+    if(mail===''){
+      alert('please enter email')
+      return
+    }
+    console.log({
+      mail:mail,
+    })
     setState({
       mail: mail,
       type: 1,
@@ -119,7 +126,9 @@ function Register() {
             <TextField
               label={nameFlag ? '*nickname' : errorNameMsg}
               variant="standard"
-              onChange={(e) => onNameChange(e.target.value)}
+              onChange={(e) => setState({
+                nickname:e.target.value,
+              })}
               error={!nameFlag}
             />
             <br></br>

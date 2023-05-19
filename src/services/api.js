@@ -7,7 +7,7 @@ export const UserLogin = (info) => request({
 })
 
 export const SendMail = (info) => request({
-  url: '/user/sendMail',
+  url: '/user/send-mail',
   data: info,
   method: 'post'
 })
