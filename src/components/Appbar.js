@@ -7,19 +7,22 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
+import { useCookies } from 'react-cookie';
+import { Label } from '@mui/icons-material';
 
 export default function MyAppBar() {
 
   const navigate = useNavigate();
+  const [Cookie] = useCookies(['E-mail']);
 
-  function  JumpLogin(){
+  function JumpLogin() {
     navigate('/login');
   }
 
-  function  Jumpregister(){
+  function Jumpregister() {
     navigate('/register');
   }
-  
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -36,8 +39,12 @@ export default function MyAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Home
           </Typography>
-          <Button color="inherit" onClick = {JumpLogin}>Login</Button>
-          <Button color="inherit" onClick = {Jumpregister}>Register</Button>
+          {Cookie['E-mail'] ? (<Label>{JSON.parse(Cookie['E-mail'])}.nickname</Label>) : (
+            <React.Fragment>
+              <Button color="inherit" onClick={JumpLogin}>Login</Button>
+              <Button color="inherit" onClick={Jumpregister}>Register</Button>
+            </React.Fragment>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
