@@ -39,6 +39,9 @@ export default function RoomEnter() {
   const {
     Enter,
   } = useStoreActions((actions) => actions.roomEnterModel)
+  const {
+    setState
+  } = useStoreActions((actions) => actions.roomMainModel)
 
   const handleNext = () => {
     if(activeStep !== steps.length - 1)
@@ -55,9 +58,9 @@ export default function RoomEnter() {
     else
     {
       Enter().then((response) => {
-        if (response.result === true){
+        if (response.data.code === 200){
           //成功加入
-          navigate('/room/main')
+          setState({roomEnterOpen: false})
           console.log("Enter Success")
         }
         else{

@@ -27,6 +27,7 @@ import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import './RoomMain.scss';
 import RoomCreate from '../RoomCreate/RoomCreate';
 import RoomSetting from '../RoomSetting/RoomSetting';
+import RoomEnter from '../RoomEnter/RoomEnter';
 import { useStoreActions, useStoreState} from 'easy-peasy';
 
   function stringToColor(string) {
@@ -104,6 +105,7 @@ function RoomMain() {
     messages, 
     roomCreateOpen, 
     roomSettingOpen, 
+    roomEnterOpen,
   } 
   = useStoreState((state) => state.roomMainModel)
   const { 
@@ -120,7 +122,7 @@ function RoomMain() {
         console.log(response);
         alert(response.data);
       } else {
-        setState({ roomList: response.body });
+        setState({ roomList: response.data });
       }
     });
   }, []);
@@ -213,7 +215,7 @@ function RoomMain() {
                 <ListItemIcon>
                   <CreateIcon />
                 </ListItemIcon>
-                <ListItemText primary="Create New Chatting Room" onClick={() => setState({ roomCreateOpen: true })}/>
+                <ListItemText primary="Create New Chat Room" onClick={() => setState({ roomCreateOpen: true })}/>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
@@ -221,18 +223,28 @@ function RoomMain() {
                 <ListItemIcon>
                   <AddIcon />
                 </ListItemIcon>
-                <ListItemText primary="Enter Chatting Room" onClick={() => setState({ roomEnterOpen: true })} />
+                <ListItemText primary="Enter Chat Room" onClick={() => setState({ roomEnterOpen: true })} />
               </ListItemButton>
             </ListItem>
           </List>
 
           <Dialog open={roomCreateOpen} onClose={() => setState({ roomCreateOpen: false })}>
-            <DialogTitle>Create a new chatting room</DialogTitle>
+            <DialogTitle>Create a new chat room</DialogTitle>
             <DialogContent>
               <RoomCreate />
             </DialogContent>
             <DialogActions>
               <Button onClick={() => setState({ roomCreateOpen: false })}>close</Button>
+            </DialogActions>
+          </Dialog>
+
+          <Dialog open={roomEnterOpen} onClose={() => setState({ roomEnterOpen: false })}>
+            <DialogTitle>Enter a new chat room</DialogTitle>
+            <DialogContent>
+              <RoomEnter />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setState({ roomEnterOpen: false })}>close</Button>
             </DialogActions>
           </Dialog>
         </Grid>

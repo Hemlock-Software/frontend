@@ -109,7 +109,7 @@ function RoomSetting () {
   function limitLength (name) {
     let maxLength = 3
     if (/^[\u4e00-\u9fa5]+$/.test(name)) {
-      maxLength = 3
+      maxLength = 2
     } else {
       maxLength = 5
     }

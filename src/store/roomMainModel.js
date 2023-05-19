@@ -55,7 +55,12 @@ export const roomMainModel = {
 // 请求room_list
   getRoomList: thunk(async(actions, payload, { getState }) => {
     const response = await RoomGetList()
-    return response
+    if (response.status !== 200) {
+      console.log(response);
+      alert(response.data);
+    } else {
+      getState.roomList =  response.data.data ;
+    }
   }),
 
 // 请求room_info
@@ -65,14 +70,13 @@ export const roomMainModel = {
         roomID: payload
       }
     )
-    if(response.status === 200){
+    if(response.data.code === 200){
       // 更新Infor
-      getState.roomInfor = response.data
-      getState.hasEnterRoom = true
-      console.log(getState.roomInfor)
+      actions.setState({roomInfor: response.data.data})
+      actions.setState({hasEnterRoom: true})
     }
     else{
-      alert(response.data)
+      alert(response.data.data)
     }
   }),
 
