@@ -51,7 +51,7 @@ export default function RoomCreate() {
       if (nameFlag && passwordFlag && maxUserNumberFlag && name !== "") {
         setActiveStep(activeStep + 1);
       } else {
-        alert('Please enter the valid information!')
+        alert('The information you have entered is invalid.')
       }
     } else {
       // create()
@@ -60,7 +60,7 @@ export default function RoomCreate() {
         if (response.status !== 200) {
           alert(response.data)
         } else {
-          console.log("create success")
+          console.log("Successfully created")
           setState({ roomCreateOpen: false })
         }
       })
