@@ -45,7 +45,7 @@ function Login(){
       password === '' ||
       !passwordFlag
     ) {
-      alert('please enter the valid information!')
+      alert('The information you have entered is invalid.')
       return
     }
     login().then((response) => {
@@ -80,7 +80,7 @@ function Login(){
         noValidate
         autoComplete="off">
         <TextField
-          label={mailFlag ? 'E-mail address' : 'invalid e-mail'}
+          label={mailFlag ? 'Email address' : 'Invalid e-mail'}
           variant="standard"
           onChange={(e) => onMailChange(e.target.value)}
           error={!mailFlag}
@@ -95,7 +95,7 @@ function Login(){
             htmlFor="outlined-adornment-password"
             variant="standard"
             error={!passwordFlag}>
-            {passwordFlag ? 'valid password' : errorMsg}
+            {passwordFlag ? 'Password' : errorMsg}
           </InputLabel>
           <Input
             label="password"
@@ -105,7 +105,7 @@ function Login(){
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
-                  aria-label="toggle password visibility"
+                  aria-label="Toggle password visibility"
                   onClick={() =>
                     setState({showPassword: !showPassword})
                   }
@@ -139,7 +139,7 @@ function Login(){
         color="textSecondary" 
         style={{ marginBottom: '20px'}}
       >
-        © 2023 The Website designed by G01
+        © 2023 Hemlock Software
       </Typography>
       </Box>
       <br/>
