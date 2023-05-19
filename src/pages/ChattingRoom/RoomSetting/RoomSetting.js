@@ -33,6 +33,7 @@ function RoomSetting () {
     searchNameValue,
     roomName,
     roomID,
+    nickName,
     // roomMemberInfoHandled,
   } = useStoreState((state) => state.roomSettingModel)
 
@@ -109,14 +110,10 @@ function RoomSetting () {
   function limitLength (name) {
     let maxLength = 3
     if (/^[\u4e00-\u9fa5]+$/.test(name)) {
-      maxLength = 3
+      maxLength = 2
     } else {
       maxLength = 5
     }
-    console.log({
-      name: name,
-      length: name.length,
-    })
     let length = name.length
     if (length > maxLength) {
       return name.substring(0, maxLength) + "..."
@@ -263,6 +260,10 @@ function RoomSetting () {
               autoComplete="current-password"
               variant="standard"
               sx={{ alignSelf: "flex-start", justifyContent: "flex-start" }}
+              value={nickName}
+              onChange={(e) => setState({
+                nickName: e.target.value,
+              })}
             />
 
           </Stack>

@@ -15,6 +15,7 @@ export const roomSettingModel = {
   displayAll: true,
   // 搜索群成员时输入框内容
   searchNameValue: '',
+  nickName: '',
   // roomMemberInfoHandled: [],
 
   // 定义一些action函数，state有点像this的作用，调用本类
