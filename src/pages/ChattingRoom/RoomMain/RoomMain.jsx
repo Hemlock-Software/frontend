@@ -119,15 +119,7 @@ function RoomMain() {
   const [Cookie] = useCookies(['E-mail']);
 
   useEffect(() => {
-    getRoomList().then((response) => {
-      // 请求成功的处理
-      if (response.status !== 200) {
-        console.log(response);
-        alert(response.data);
-      } else {
-        setState({ roomList: response.data });
-      }
-    });
+    getRoomList();
   }, []);
 
   const handleListScroll = (event) => {
@@ -153,10 +145,10 @@ function RoomMain() {
               <Avatar {...stringAvatar("IEeya")}/>
                 <div>
                   <Typography variant="h6">
-                    {JSON.parse(Cookie['E-mail']).nickname}
+                    {Cookie['E-mail'].nickname}
                   </Typography>
                   <Typography variant="body1" sx={{ fontSize: '8px' }}>
-                    {JSON.parse(Cookie['E-mail']).email}
+                    {Cookie['E-mail'].email}
                   </Typography>
                 </div>
               </div>
@@ -195,12 +187,12 @@ function RoomMain() {
                 }}
               >
                 {roomList.map((item) => (
-                  <ListItem key={item.roomId} onClick={() => getRoomInfo(item.roomId)}>
+                  <ListItem key={item.ID} onClick={() => getRoomInfo(item.ID)}>
                     <ListItemButton>
                     <ListItemIcon>
                       <ChatIcon />
                     </ListItemIcon>
-                      <ListItemText primary={item.roomName}/>
+                      <ListItemText primary={item.name}/>
                     </ListItemButton>
                   </ListItem>
                 ))}

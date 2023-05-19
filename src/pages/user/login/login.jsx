@@ -53,8 +53,8 @@ function Login(){
       if (response.status !== 200) {
         alert(response.data)
       } else {
-        console.log("LOGIN SUCCESS")
-        const nickname = JSON.parse(response.data).nickname
+        localStorage.setItem('token', response.data.token)
+        let nickname = response.data.nickname;
         setCookie('E-mail', '{ "email":"'+ mail +'", "nickname":"'+ nickname +'"}', { path: '/' })
         navigate('/room/main')
       }

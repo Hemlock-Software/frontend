@@ -39,7 +39,7 @@ export default function MyAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Home
           </Typography>
-          {Cookie['E-mail'] ? (<Label>{JSON.parse(Cookie['E-mail'])}.nickname</Label>) : (
+          {Cookie['E-mail'] ? (<Label>{Cookie['E-mail'].nickname}</Label>) : (
             <React.Fragment>
               <Button color="inherit" onClick={JumpLogin}>Login</Button>
               <Button color="inherit" onClick={Jumpregister}>Register</Button>

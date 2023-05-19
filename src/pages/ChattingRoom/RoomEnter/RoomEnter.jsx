@@ -47,7 +47,7 @@ export default function RoomEnter() {
     if(activeStep !== steps.length - 1)
     {
       if(roomID !== ""){
-        if(roomID.length === 6)
+        if(roomID.length === 8)
         setActiveStep(activeStep + 1);
         else
         alert('Please enter the valid Room ID!')
@@ -65,7 +65,7 @@ export default function RoomEnter() {
         }
         else{
           console.log(response)
-          alert(response.message)
+          alert(response.data)
         }
       })
     }

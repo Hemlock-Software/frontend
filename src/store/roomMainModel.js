@@ -20,16 +20,8 @@ export const roomMainModel = {
   },
   roomList: [
     {
-      roomId: 1,
-      roomName: "123",
-    },
-    {
-      roomId: 2,
-      roomName: "234",
-    },
-    {
-      roomId: 3,
-      roomName: "456",
+      ID: 1,
+      name: "123",
     },
   ],
   messages: [
@@ -58,7 +50,7 @@ export const roomMainModel = {
     if (response.status !== 200) {
       alert(response.data);
     } else {
-      getState.roomList =  response.body ;
+      actions.setState({roomList: response.data});
     }
   }),
 
