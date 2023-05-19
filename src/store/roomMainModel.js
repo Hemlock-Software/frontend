@@ -4,8 +4,17 @@ export const roomMainModel = {
   roomInfor: {
     roomId: 1,
     roomName: 'Chatting room 1',
-    creatorName: 'IEeya',
-    creatorMail: '3200103483@zju.edu.cn',
+    roomOwner: {
+      mail: "",
+      nickname: "",
+    },
+    roomMaxUsers: 1,
+    roomMemberList: [
+      {
+        mail: "",
+        nickname: "",
+      },
+    ]
   },
   roomList: [
     {

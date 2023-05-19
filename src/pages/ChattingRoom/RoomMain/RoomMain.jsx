@@ -249,7 +249,7 @@ function RoomMain() {
                 <Avatar {...stringAvatar(roomInfor.roomName)}/>
                 <div style={{ flex: 1 }}>
                   <Typography variant="h6">{roomInfor.roomName}</Typography>
-                  <Typography variant="body1" sx={{ fontSize: '8px' }}>belonger: {roomInfor.creatorName}</Typography>
+                  <Typography variant="body1" sx={{ fontSize: '8px' }}>belonger: {roomInfor.roomOwner.nickname}</Typography>
                 </div>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mr: 2}}>
                   <IconButton sx={{ mr: 1}}>
