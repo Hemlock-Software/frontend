@@ -16,9 +16,11 @@ import IconButton from '@mui/material/IconButton'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import Input from '@mui/material/Input'
+import { useCookies } from 'react-cookie';
 
 
 function Login(){
+  const  [ Cookie, setCookie ]  =  useCookies ( [ 'E-mail' ] ) ; // DO NOT DELETE 'COOKIES', OR IT WILL CRAPT
   const navigate = useNavigate()
   const {
     mail,
@@ -53,6 +55,9 @@ function Login(){
         alert(response.data)
       } else {
         console.log("LOGIN SUCCESS")
+        console.log(response.data)
+        const nickname = JSON.parse(response.data).nickname
+        setCookie('E-mail', '{ "E-mail":"'+ mail +'", "nickname":"'+ nickname +'"}', { path: '/' })
         navigate('/room/main')
       }
     })

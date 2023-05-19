@@ -41,6 +41,10 @@ export default function RoomCreate() {
   const {
     create,
   } = useStoreActions((actions) => actions.roomCreateModel)
+  const { 
+    setState,
+  } 
+  = useStoreActions((actions) => actions.roomMainModel)
 
   const handleNext = () => {
     if (activeStep !== steps.length - 1) {
@@ -50,8 +54,9 @@ export default function RoomCreate() {
         alert('Please enter the valid information!')
       }
     } else {
-      create()
-      setActiveStep(activeStep + 1)
+      // create()
+      setState({ roomCreateOpen: false })
+      // setActiveStep(activeStep + 1)
     }
   };
 
