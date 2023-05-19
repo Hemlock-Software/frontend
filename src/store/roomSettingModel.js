@@ -2,42 +2,9 @@ import { action, thunk } from 'easy-peasy'
 
 export const roomSettingModel = {
   roomID: "",
-  roomName: 'homo 114514',
-  roomMemberNum: 8,
-  roomMemberInfo: [
-    {
-      name: 'Jack',
-      src: '',
-    },
-    {
-      name: 'Shit',
-      src: '',
-    },
-    {
-      name: 'fuckyo',
-      src: '',
-    },
-    {
-      name: 'Mary',
-      src: '',
-    },
-    {
-      name: 'abcqwe',
-      src: '',
-    },
-    {
-      name: 'kora',
-      src: '',
-    },
-    {
-      name: 'Jay Chou',
-      src: '',
-    },
-    {
-      name: '8',
-      src: '',
-    },
-  ],
+  roomName: '',
+  roomMemberNum: 0,
+  roomMemberInfo: [],
   // 控制是否显示'check more'按钮的flag变量
   checkMoreFlag: true,
   pinChatLoading: true,
