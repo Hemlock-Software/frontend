@@ -29,6 +29,7 @@ import RoomCreate from '../RoomCreate/RoomCreate';
 import RoomSetting from '../RoomSetting/RoomSetting';
 import RoomEnter from '../RoomEnter/RoomEnter';
 import { useStoreActions, useStoreState} from 'easy-peasy';
+import {useCookies} from 'react-cookie';
 
   function stringToColor(string) {
     let hash = 0;
@@ -115,6 +116,8 @@ function RoomMain() {
   } 
   = useStoreActions((actions) => actions.roomMainModel)
 
+  const [Cookie] = useCookies(['E-mail']);
+
   useEffect(() => {
     getRoomList().then((response) => {
       // 请求成功的处理
@@ -150,10 +153,10 @@ function RoomMain() {
               <Avatar {...stringAvatar("IEeya")}/>
                 <div>
                   <Typography variant="h6">
-                    {"IEeya"}
+                    {JSON.parse(Cookie['E-mail']).nickname}
                   </Typography>
                   <Typography variant="body1" sx={{ fontSize: '8px' }}>
-                    {"1287472657@qq.com"}
+                    {JSON.parse(Cookie['E-mail']).email}
                   </Typography>
                 </div>
               </div>

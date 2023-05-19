@@ -58,17 +58,15 @@ export default function RoomEnter() {
     else
     {
       Enter().then((response) => {
-        if (response.data.code === 200){
+        if (response.status === 200){
           //成功加入
           setState({roomEnterOpen: false})
-          console.log("Enter Success")
         }
         else{
           console.log(response)
           alert(response.message)
         }
       })
-      setActiveStep(activeStep + 1)
     }
   };
 
