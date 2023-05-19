@@ -51,13 +51,11 @@ function Login(){
     login().then((response) => {
       // 请求成功的处理
       if (response.status !== 200) {
-        console.log(response)
         alert(response.data)
       } else {
         console.log("LOGIN SUCCESS")
-        console.log(response.data)
         const nickname = JSON.parse(response.data).nickname
-        setCookie('E-mail', '{ "E-mail":"'+ mail +'", "nickname":"'+ nickname +'"}', { path: '/' })
+        setCookie('E-mail', '{ "email":"'+ mail +'", "nickname":"'+ nickname +'"}', { path: '/' })
         navigate('/room/main')
       }
     })
