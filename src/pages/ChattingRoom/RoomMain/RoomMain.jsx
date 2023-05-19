@@ -268,12 +268,13 @@ function RoomMain() {
             }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Chip label="Now Chatting" color="primary" sx={{mr: 2}}/>
-                <Avatar {...stringAvatar(roomInfor.roomName)}/>
+                <Avatar {...stringAvatar(roomInfor.name)}/>
                 <div style={{ flex: 1 }}>
-                  <Typography variant="h6">{roomInfor.roomName}</Typography>
-                  <Typography variant="body1" sx={{ fontSize: '8px' }}>belonger: {roomInfor.roomOwner.nickname}</Typography>
+                  <Typography variant="h6">{roomInfor.name}</Typography>
+                  <Typography variant="body1" sx={{ fontSize: '8px' }}>belonger: {roomInfor.owner.nickname}</Typography>
                 </div>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mr: 2}}>
+                  <Typography variant="h6">{roomInfor.id}</Typography>
                   <IconButton sx={{ mr: 1}}>
                     <FolderOpenIcon />
                   </IconButton>

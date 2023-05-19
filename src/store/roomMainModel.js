@@ -4,14 +4,14 @@ import { RoomGetInfo, RoomGetList} from '../services/api';
 export const roomMainModel = {
   hasEnterRoom: false,
   roomInfor: {
-    roomId: 1,
-    roomName: 'Chatting room 1',
-    roomOwner: {
+    id: 123,
+    name: 'Chatting room 1',
+    owner: {
       mail: "",
       nickname: "",
     },
-    roomMaxUsers: 1,
-    roomMemberList: [
+    maxUsers: 1,
+    members: [
       {
         mail: "",
         nickname: "",
@@ -63,6 +63,7 @@ export const roomMainModel = {
     )
     if(response.status === 200){
       // 更新Infor
+      response.data.id = payload;
       actions.setState({roomInfor: response.data})
       actions.setState({hasEnterRoom: true})
     }

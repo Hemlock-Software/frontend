@@ -49,16 +49,16 @@ function RoomSetting () {
   //依赖项
   useEffect(() => {
     setState({
-      roomID: roomInfor.roomId,
-      roomName: roomInfor.roomName,
-      roomMemberInfo: roomInfor.roomMemberList.map(member => {
+      roomID: roomInfor.id,
+      roomName: roomInfor.name,
+      roomMemberInfo: roomInfor.members.map(member => {
         return {
           //...member,
           name: member.nickname,
           //nickname: undefined
         }
       }),
-      roomMemberNum: roomInfor.roomMemberList.length,
+      roomMemberNum: roomInfor.members.length,
       checkMoreFlag: roomMemberNum > 18 ? true : false,
     })
   }, [roomInfor])
