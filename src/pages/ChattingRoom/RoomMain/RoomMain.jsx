@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
   Grid,
   Divider,
@@ -107,8 +108,22 @@ function RoomMain() {
   = useStoreState((state) => state.roomMainModel)
   const { 
     setState,
+    getRoomList,
+    getRoomInfo,
   } 
   = useStoreActions((actions) => actions.roomMainModel)
+
+  useEffect(() => {
+    getRoomList().then((response) => {
+      // 请求成功的处理
+      if (response.status !== 200) {
+        console.log(response);
+        alert(response.data);
+      } else {
+        setState({ roomList: response.body });
+      }
+    });
+  }, []);
 
   const handleListScroll = (event) => {
     // 判断List组件是否需要滚动
@@ -175,7 +190,7 @@ function RoomMain() {
                 }}
               >
                 {roomList.map((item) => (
-                  <ListItem key={item.roomId}>
+                  <ListItem key={item.roomId} onClick={() => getRoomInfo(item.roomId)}>
                     <ListItemButton>
                     <ListItemIcon>
                       <ChatIcon />
@@ -206,7 +221,7 @@ function RoomMain() {
                 <ListItemIcon>
                   <AddIcon />
                 </ListItemIcon>
-                <ListItemText primary="Enter Chatting Room" />
+                <ListItemText primary="Enter Chatting Room" onClick={() => setState({ roomEnterOpen: true })} />
               </ListItemButton>
             </ListItem>
           </List>

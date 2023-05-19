@@ -25,7 +25,31 @@ export const UserRegister = (info) => request({
 })
 
 export const RoomCreate = (info) => request({
-  url: '/user/roomCreate',
+  url: '/room/create',
+  data: info,
+  method: 'post',
+})
+
+export const RoomEnter = (info) => request({
+  url: '/room/enter',
+  data: info,
+  method: 'post',
+})
+
+export const RoomGetInfo = (info) => request({
+  url: '/room/getRoomInfo',
+  data: info,
+  method: 'post',
+})
+
+export const RoomGetList = (info) => request({
+  url: '/room/getList',
+  data: info,
+  method: 'post',
+})
+
+export const RoomSetting = (info) => request({
+  url: '/room/setting',
   data: info,
   method: 'post',
 })
