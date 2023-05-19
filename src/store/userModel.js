@@ -76,6 +76,8 @@ export const userModel = {
 
   register: thunk(async(actions, payload, { getState }) => {
     const {mail, password, nickname, isManager, verifyCode} = getState()
+
+
     const sha256Password = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
     const response = await UserRegister(
       {
