@@ -61,7 +61,7 @@ export default function RoomCreate() {
           alert(response.data)
         } else {
           console.log("create success")
-          navigate('/room/main')
+          setState({ roomCreateOpen: false })
         }
       })
       // setActiveStep(activeStep + 1)
