@@ -32,6 +32,7 @@ function RoomSetting () {
     displayAll,
     searchNameValue,
     roomName,
+    roomID,
     // roomMemberInfoHandled,
   } = useStoreState((state) => state.roomSettingModel)
 
@@ -39,6 +40,27 @@ function RoomSetting () {
     setState,
     handleRoomMemberInfo,
   } = useStoreActions((actions) => actions.roomSettingModel)
+
+  const {
+    roomInfor,
+  } = useStoreState((state) => state.roomMainModel)
+
+  //依赖项
+  useEffect(() => {
+    setState({
+      roomID: roomInfor.roomId,
+      roomName: roomInfor.roomName,
+      roomMemberInfo: roomInfor.roomMemberList.map(member => {
+        return {
+          //...member,
+          name: member.nickname,
+          //nickname: undefined
+        }
+      }),
+      roomMemberNum: roomInfor.roomMemberList.length,
+      checkMoreFlag: roomMemberNum > 18 ? true : false,
+    })
+  }, [roomInfor])
 
   function searchName (name) {
     const pattern = new RegExp(`^.*${searchNameValue.split('').join('.*')}.*$`)
@@ -82,12 +104,6 @@ function RoomSetting () {
     }
   }
 
-  // 依赖项为群人数，群人数变化，可能会超过21
-  useEffect(() => {
-    setState({
-      checkMoreFlag: roomMemberNum > 21 ? true : false
-    })
-  }, roomMemberNum)
 
   // 限制给定的群成员名称的长度，防止换行或扩充
   function limitLength (name) {
@@ -110,7 +126,7 @@ function RoomSetting () {
 
   return (
     <div>
-      <Card sx={{ maxWidth: 600, overflow: 'auto', height: 1000 }}>
+      <Card sx={{ width: 600, overflow: 'auto', height: 1000 }}>
         <CardContent sx={{ overflow: 'auto' }}>
           <div className='roomSetting' style={{ fontFamily: 'cursive' }}>
             Room Setting
@@ -210,7 +226,7 @@ function RoomSetting () {
           </div>
           <br></br>
           {displayAll ? <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>{roomMemberInfo.slice(0, 21).map((item, index) => (
-            <div style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '10px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
+            <div style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '15px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
               <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' }} >
               </Avatar>
               <div style={{ fontFamily: 'cursive', textAlign: 'center', marginTop: '10px' }} >
@@ -220,7 +236,7 @@ function RoomSetting () {
             // 设置每个元素的宽度为14.28%，即100/7%
           ))}</div> :
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>{roomMemberInfo.slice(0, 21).filter(member => searchName(member.name)).map((item, index) => (
-              <div style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '10px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
+              <div style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '15px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
                 <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' }} >
                 </Avatar>
                 <div style={{ textAlign: 'center', marginTop: 10 }}>
