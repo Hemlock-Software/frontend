@@ -50,9 +50,9 @@ export default function RoomEnter() {
         if(roomID.length === 6)
         setActiveStep(activeStep + 1);
         else
-        alert('Please enter the valid RoomID!')
+        alert('Please enter the valid Room ID!')
       }else {
-        alert('RoomID can not be void!')
+        alert('Room ID can not be void!')
       }
     }
     else
@@ -61,7 +61,7 @@ export default function RoomEnter() {
         if (response.data.code === 200){
           //成功加入
           setState({roomEnterOpen: false})
-          console.log("Enter Success")
+          console.log("Successfully Entered Chat Room")
         }
         else{
           console.log(response)
