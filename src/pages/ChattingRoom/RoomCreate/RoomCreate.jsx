@@ -55,7 +55,15 @@ export default function RoomCreate() {
       }
     } else {
       // create()
-      setState({ roomCreateOpen: false })
+      create().then((response) => {
+        // 请求成功的处理
+        if (response.status !== 200) {
+          alert(response.data)
+        } else {
+          console.log("create success")
+          navigate('/room/main')
+        }
+      })
       // setActiveStep(activeStep + 1)
     }
   };
