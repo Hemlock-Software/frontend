@@ -159,7 +159,7 @@ function Register() {
                 htmlFor="outlined-adornment-password"
                 variant="standard"
                 error={!checkFlag}>
-                {checkFlag ? 'Passwords match' : 'Passwords do not match'}
+                {checkFlag ? 'Confirm password' : 'Passwords do not match'}
               </InputLabel>
               <Input
                 variant="standard"
