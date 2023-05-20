@@ -46,7 +46,7 @@ function Register() {
 
   function submitMail() {
     if(mail===''){
-      alert('please enter email')
+      alert('Please enter your email.')
       return
     }
     console.log({
