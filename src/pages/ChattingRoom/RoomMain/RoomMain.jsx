@@ -128,7 +128,8 @@ function RoomMain() {
     setIsListScrollable(event.target.scrollHeight > event.target.clientHeight);
   };
 
-  const socket = new WebSocket('ws://localhost:15100/websocket/00000008/3052791719@qq.com');
+  // const socket = new WebSocket('ws://localhost:15100/websocket/00000008/3052791719@qq.com');
+  const socket = new WebSocket('ws://10.162.231.164:15100/websocket/00000008/3052791719@qq.com');
 
   async function send() {
     // 发送消息
@@ -266,80 +267,90 @@ function RoomMain() {
 
         {/* 右侧栏 */}
         <Grid item xs={9} sx={{ backgroundColor: '#deefe9', display: 'flex', flexDirection: 'column' }}>
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '110px',
-            position: 'relative', // 让子组件可以使用绝对定位
-          }}>
-            <Box sx={{
-              backgroundColor: '#f3f3f3',
-              borderRadius: '16px',
-              padding: '16px',
-              display: 'flex',
-              flexDirection: 'column',
-              width: '95%',
-              justifyContent: 'center',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Chip label="Now Chatting" color="primary" sx={{mr: 2}}/>
-                <Avatar {...stringAvatar(roomInfor.name)}/>
-                <div style={{ flex: 1 }}>
-                  <Typography variant="h6">{roomInfor.name}</Typography>
-                  <Typography variant="body1" sx={{ fontSize: '8px' }}>belonger: {roomInfor.owner.nickname}</Typography>
-                </div>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mr: 2}}>
-                  <Typography variant="h6">{roomInfor.id}</Typography>
-                  <IconButton sx={{ mr: 1}}>
-                    <FolderOpenIcon />
-                  </IconButton>
-                  <IconButton sx={{ mr: 1 }}>
-                    <PersonAddAltIcon />
-                  </IconButton>
-                  <IconButton sx={{ mr: 1 }} onClick={() => setState({ roomSettingOpen: true })} >
-                    <SettingsIcon/>
-                  </IconButton>
+          {
+            roomInfor.ID === 123 ? (
+              <div>
+                <Box sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '110px',
+                  position: 'relative', // 让子组件可以使用绝对定位
+                }}>
+                  <Box sx={{
+                    backgroundColor: '#f3f3f3',
+                    borderRadius: '16px',
+                    padding: '16px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '95%',
+                    justifyContent: 'center',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Chip label="Now Chatting" color="primary" sx={{mr: 2}}/>
+                      <Avatar {...stringAvatar(roomInfor.name)}/>
+                      <div style={{ flex: 1 }}>
+                        <Typography variant="h6">{roomInfor.name}</Typography>
+                        <Typography variant="body1" sx={{ fontSize: '8px' }}>belonger: {roomInfor.owner.nickname}</Typography>
+                      </div>
+                      <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mr: 2}}>
+                        <Typography variant="h6">{roomInfor.id}</Typography>
+                        <IconButton sx={{ mr: 1}}>
+                          <FolderOpenIcon />
+                        </IconButton>
+                        <IconButton sx={{ mr: 1 }}>
+                          <PersonAddAltIcon />
+                        </IconButton>
+                        <IconButton sx={{ mr: 1 }} onClick={() => setState({ roomSettingOpen: true })} >
+                          <SettingsIcon/>
+                        </IconButton>
+                      </Box>
+                      <Drawer
+                        anchor={'right'}
+                        open={roomSettingOpen}
+                        onClose={() => setState({ roomSettingOpen: false })}
+                      >
+                        <RoomSetting />
+                      </Drawer>
+                    </div>
+                  </Box>
                 </Box>
-                <Drawer
-                  anchor={'right'}
-                  open={roomSettingOpen}
-                  onClose={() => setState({ roomSettingOpen: false })}
-                >
-                  <RoomSetting />
-                </Drawer>
+                {/* 消息栏 */}
+                <Box sx={{ p: 2, flex: 1, height: 0 }}>
+                  <Box sx={{ height: 'calc(100vh - 250px - 50px)', overflow: 'auto' }}>
+                    {messages.map((message, index) => (
+                      <ChatMessage key={index} message={message} />
+                    ))}
+                  </Box>
+                </Box>
+                {/* 输入框 */}
+                <Box sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#f3f3f3',
+                  p: 2,
+                  height: '50px',
+                }}>
+                  <TextField
+                    label="Type your message"
+                    text={inputMessage}
+                    variant="outlined"
+                    fullWidth
+                    sx={{ mr: 1 }}
+                    onChange={(e)=>setState({inputMessage: e.target.value})}
+                  />
+                  <Button variant="contained" color="primary" onClick={send}>
+                    Send
+                  </Button>
+                </Box>
               </div>
-            </Box>
-          </Box>
-          {/* 消息栏 */}
-          <Box sx={{ p: 2, flex: 1, height: 0 }}>
-            <Box sx={{ height: 'calc(100vh - 250px - 50px)', overflow: 'auto' }}>
-              {messages.map((message, index) => (
-                <ChatMessage key={index} message={message} />
-              ))}
-            </Box>
-          </Box>
-          {/* 输入框 */}
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#f3f3f3',
-            p: 2,
-            height: '50px',
-          }}>
-            <TextField
-              label="Type your message"
-              text={inputMessage}
-              variant="outlined"
-              fullWidth
-              sx={{ mr: 1 }}
-              onChange={(e)=>setState({inputMessage: e.target.value})}
-            />
-            <Button variant="contained" color="primary" onClick={send}>
-              Send
-            </Button>
-          </Box>
+            ):(
+              <div>
+                  123
+              </div>
+            )
+          }
         </Grid>
       </Grid>
     </div>
