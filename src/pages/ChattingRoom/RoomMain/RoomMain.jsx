@@ -31,21 +31,21 @@ import RoomEnter from '../RoomEnter/RoomEnter';
 import { useStoreActions, useStoreState} from 'easy-peasy';
 import {useCookies} from 'react-cookie';
 
-  function stringToColor(string) {
-    let hash = 0;
-    let i, chr;
-    for (i = 0; i < string.length; i++) {
-      chr = string.charCodeAt(i);
-      hash = ((hash << 5) - hash) + chr;
-      hash |= 0;
-    }
-    hash = hash & 0xffffff; // 修改这行代码
-    hash = Math.abs(hash);
-    const r = (hash % 255);
-    const g = ((hash >> 8) % 255);
-    const b = ((hash >> 16) % 255);
-    return `rgb(${r}, ${g}, ${b})`;
+function stringToColor(string) {
+  let hash = 0;
+  let i, chr;
+  for (i = 0; i < string.length; i++) {
+    chr = string.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash |= 0;
   }
+  hash = hash & 0xffffff; // 修改这行代码
+  hash = Math.abs(hash);
+  const r = (hash % 255);
+  const g = ((hash >> 8) % 255);
+  const b = ((hash >> 16) % 255);
+  return `rgb(${r}, ${g}, ${b})`;
+}
 
 function stringAvatar(name) {
   let abbr;
@@ -107,14 +107,15 @@ function RoomMain() {
     roomCreateOpen, 
     roomSettingOpen, 
     roomEnterOpen,
+    inputMessage,
   } 
   = useStoreState((state) => state.roomMainModel)
   const { 
     setState,
     getRoomList,
     getRoomInfo,
-  } 
-  = useStoreActions((actions) => actions.roomMainModel)
+  }
+    = useStoreActions((actions) => actions.roomMainModel)
 
   const [Cookie] = useCookies(['E-mail']);
 
@@ -127,12 +128,26 @@ function RoomMain() {
     setIsListScrollable(event.target.scrollHeight > event.target.clientHeight);
   };
 
+  const socket = new WebSocket('ws://localhost:15100/websocket/00000008/3052791719@qq.com');
+
+  async function send() {
+    // 发送消息
+    socket.send(inputMessage);
+
+    // 接收消息
+    socket.onmessage = (event) => {
+      console.log('收到消息:', event.data);
+    };
+
+  }
+
+
   return (
     <div>
       <Grid container sx={{ height: '100%' }}>
         <Grid item xs={3}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '110px'}}>
-            <Box sx={{ 
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '110px' }}>
+            <Box sx={{
               backgroundColor: '#f3f3f3',
               borderRadius: '16px',
               padding: '16px',
@@ -141,8 +156,8 @@ function RoomMain() {
               width: '70%',
               justifyContent: 'center',
             }}>
-              <div style={{ display: 'flex', alignItems: 'center',}}>
-              <Avatar {...stringAvatar("IEeya")}/>
+              <div style={{ display: 'flex', alignItems: 'center', }}>
+                <Avatar {...stringAvatar("IEeya")} />
                 <div>
                   <Typography variant="h6">
                     {Cookie['E-mail'].nickname}
@@ -161,7 +176,7 @@ function RoomMain() {
           </Grid>
 
 
-          <Box sx={{ 
+          <Box sx={{
             borderRadius: '16px',
             padding: '16px',
             display: 'flex',
@@ -170,7 +185,7 @@ function RoomMain() {
             justifyContent: 'center',
           }}>
             <div style={{ height: '500px', overflow: 'auto' }}>
-              <List 
+              <List
                 onScroll={handleListScroll} // 监听List组件的滚动事件
                 sx={{
                   height: isListScrollable ? '100%' : 'auto', // 动态设置List组件的高度
@@ -187,6 +202,7 @@ function RoomMain() {
                 }}
               >
                 {roomList.map((item) => (
+
                   <ListItem key={item.ID} onClick={() => getRoomInfo(item.ID)}>
                     <ListItemButton>
                     <ListItemIcon>
@@ -206,19 +222,19 @@ function RoomMain() {
 
           <List>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={() => setState({ roomCreateOpen: true })} >
                 <ListItemIcon>
                   <CreateIcon />
                 </ListItemIcon>
-                <ListItemText primary="Create New Chat Room" onClick={() => setState({ roomCreateOpen: true })}/>
+                <ListItemText primary="Create New Chatting Room" />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={() => setState({ roomEnterOpen: true })}>
                 <ListItemIcon>
                   <AddIcon />
                 </ListItemIcon>
-                <ListItemText primary="Enter Chat Room" onClick={() => setState({ roomEnterOpen: true })} />
+                <ListItemText primary="Enter Chatting Room" />
               </ListItemButton>
             </ListItem>
           </List>
@@ -248,16 +264,16 @@ function RoomMain() {
           <Divider orientation="vertical" sx={{ borderStyle: 'dashed', borderWidth: 3 }} />
         </Grid> */}
 
-{/* 右侧栏 */}
-        <Grid item xs={9} sx={{ backgroundColor: '#deefe9',  display: 'flex', flexDirection: 'column' }}>
-          <Box sx={{ 
+        {/* 右侧栏 */}
+        <Grid item xs={9} sx={{ backgroundColor: '#deefe9', display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             height: '110px',
             position: 'relative', // 让子组件可以使用绝对定位
           }}>
-            <Box sx={{ 
+            <Box sx={{
               backgroundColor: '#f3f3f3',
               borderRadius: '16px',
               padding: '16px',
@@ -278,19 +294,19 @@ function RoomMain() {
                   <IconButton sx={{ mr: 1}}>
                     <FolderOpenIcon />
                   </IconButton>
-                  <IconButton sx={{ mr: 1}}>
+                  <IconButton sx={{ mr: 1 }}>
                     <PersonAddAltIcon />
                   </IconButton>
-                  <IconButton sx={{ mr: 1}}>
-                    <SettingsIcon onClick={() =>setState({roomSettingOpen: true})}/>
+                  <IconButton sx={{ mr: 1 }} onClick={() => setState({ roomSettingOpen: true })} >
+                    <SettingsIcon/>
                   </IconButton>
                 </Box>
                 <Drawer
                   anchor={'right'}
                   open={roomSettingOpen}
-                  onClose={() =>setState({roomSettingOpen: false})}
+                  onClose={() => setState({ roomSettingOpen: false })}
                 >
-                  <RoomSetting/>
+                  <RoomSetting />
                 </Drawer>
               </div>
             </Box>
@@ -304,7 +320,7 @@ function RoomMain() {
             </Box>
           </Box>
           {/* 输入框 */}
-          <Box sx={{ 
+          <Box sx={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -314,11 +330,13 @@ function RoomMain() {
           }}>
             <TextField
               label="Type your message"
+              text={inputMessage}
               variant="outlined"
               fullWidth
               sx={{ mr: 1 }}
+              onChange={(e)=>setState({inputMessage: e.target.value})}
             />
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={send}>
               Send
             </Button>
           </Box>
