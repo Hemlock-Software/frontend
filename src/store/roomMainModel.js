@@ -4,14 +4,14 @@ import { RoomGetInfo, RoomGetList} from '../services/api';
 export const roomMainModel = {
   hasEnterRoom: false,
   roomInfor: {
-    roomId: 1,
-    roomName: 'Chatting room 1',
-    roomOwner: {
+    id: 123,
+    name: 'Chatting room 1',
+    owner: {
       mail: "",
       nickname: "",
     },
-    roomMaxUsers: 1,
-    roomMemberList: [
+    maxUsers: 1,
+    members: [
       {
         mail: "",
         nickname: "",
@@ -20,16 +20,8 @@ export const roomMainModel = {
   },
   roomList: [
     {
-      roomId: 1,
-      roomName: "123",
-    },
-    {
-      roomId: 2,
-      roomName: "234",
-    },
-    {
-      roomId: 3,
-      roomName: "456",
+      ID: 1,
+      name: "123",
     },
   ],
   messages: [
@@ -57,7 +49,11 @@ export const roomMainModel = {
 // 请求room_list
   getRoomList: thunk(async(actions, payload, { getState }) => {
     const response = await RoomGetList()
-    return response
+    if (response.status !== 200) {
+      alert(response.data);
+    } else {
+      actions.setState({roomList: response.data});
+    }
   }),
 
 // 请求room_info
@@ -69,9 +65,9 @@ export const roomMainModel = {
     )
     if(response.status === 200){
       // 更新Infor
-      getState.roomInfor = response.data
-      getState.hasEnterRoom = true
-      console.log(getState.roomInfor)
+      response.data.id = payload;
+      actions.setState({roomInfor: response.data})
+      actions.setState({hasEnterRoom: true})
     }
     else{
       alert(response.data)

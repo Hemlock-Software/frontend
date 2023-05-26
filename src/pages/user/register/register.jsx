@@ -46,7 +46,7 @@ function Register() {
 
   function submitMail() {
     if(mail===''){
-      alert('please enter email')
+      alert('Please enter your email.')
       return
     }
     console.log({
@@ -57,7 +57,7 @@ function Register() {
       type: 1,
     })
     if (!mailFlag) {
-      alert('mail format invalid!')
+      alert('Email address format invalid.')
       return
     }
     sendMail()
@@ -75,7 +75,7 @@ function Register() {
       !checkFlag ||
       !passwordFlag
     ) {
-      alert('please enter the valid information!')
+      alert('The information you have entered is invalid.')
       return
     }
     register().then((response) => {
@@ -83,7 +83,7 @@ function Register() {
       if (response.status !== 200) {
         alert(response.data)
       } else {
-        alert("register success")
+        alert("You have successfully registered.")
         navigate('/login')
       }
     })
@@ -105,7 +105,7 @@ function Register() {
             noValidate
             autoComplete="off">
             <TextField
-              label={mailFlag ? 'E-mail address' : 'invalid e-mail'}
+              label={mailFlag ? 'Email address' : 'Invalid email'}
               variant="standard"
               onChange={(e) => onMailChange(e.target.value)}
               error={!mailFlag}
@@ -117,14 +117,14 @@ function Register() {
             <br />
 
             <TextField
-              label={verifyCodeFlag ? 'verify code' : errorVerifyCodeMsg}
+              label={verifyCodeFlag ? 'Verification code' : errorVerifyCodeMsg}
               variant="standard"
               onChange={(e) => onVerifyCodeChange(e.target.value)}
               error={!verifyCodeFlag}
             />
             <br></br>
             <TextField
-              label={nameFlag ? '*nickname' : errorNameMsg}
+              label={nameFlag ? '* Nickname' : errorNameMsg}
               variant="standard"
               onChange={(e) => setState({
                 nickname:e.target.value,
@@ -140,7 +140,7 @@ function Register() {
                 htmlFor="outlined-adornment-password"
                 variant="standard"
                 error={!passwordFlag}>
-                {passwordFlag ? 'valid password' : errorMsg}
+                {passwordFlag ? 'Password' : errorMsg}
               </InputLabel>
               <Input
                 label="password"
@@ -150,7 +150,7 @@ function Register() {
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label="toggle password visibility"
+                      aria-label="Toggle password visibility"
                       onClick={() => setState({ showPassword: !showPassword })}
                       edge="end">
                       {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -168,7 +168,7 @@ function Register() {
                 htmlFor="outlined-adornment-password"
                 variant="standard"
                 error={!checkFlag}>
-                {checkFlag ? 'password matched' : 'password not checked'}
+                {checkFlag ? 'Confirm password' : 'Passwords do not match'}
               </InputLabel>
               <Input
                 variant="standard"
@@ -177,7 +177,7 @@ function Register() {
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label="toggle password visibility"
+                      aria-label="Toggle password visibility"
                       onClick={() =>
                         setState({ showCheckPassword: !showCheckPassword })
                       }

@@ -27,7 +27,9 @@ import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import './RoomMain.scss';
 import RoomCreate from '../RoomCreate/RoomCreate';
 import RoomSetting from '../RoomSetting/RoomSetting';
-import { useStoreActions, useStoreState } from 'easy-peasy';
+import RoomEnter from '../RoomEnter/RoomEnter';
+import { useStoreActions, useStoreState} from 'easy-peasy';
+import {useCookies} from 'react-cookie';
 
 function stringToColor(string) {
   let hash = 0;
@@ -101,29 +103,24 @@ function RoomMain() {
   const {
     roomInfor,
     roomList,
-    messages,
-    roomCreateOpen,
-    roomSettingOpen,
+    messages, 
+    roomCreateOpen, 
+    roomSettingOpen, 
+    roomEnterOpen,
     inputMessage,
-  }
-    = useStoreState((state) => state.roomMainModel)
-  const {
+  } 
+  = useStoreState((state) => state.roomMainModel)
+  const { 
     setState,
     getRoomList,
     getRoomInfo,
   }
     = useStoreActions((actions) => actions.roomMainModel)
 
+  const [Cookie] = useCookies(['E-mail']);
+
   useEffect(() => {
-    getRoomList().then((response) => {
-      // 请求成功的处理
-      if (response.status !== 200) {
-        console.log(response);
-        alert(response.data);
-      } else {
-        setState({ roomList: response.body });
-      }
-    });
+    getRoomList();
   }, []);
 
   const handleListScroll = (event) => {
@@ -163,10 +160,10 @@ function RoomMain() {
                 <Avatar {...stringAvatar("IEeya")} />
                 <div>
                   <Typography variant="h6">
-                    {"IEeya"}
+                    {Cookie['E-mail'].nickname}
                   </Typography>
                   <Typography variant="body1" sx={{ fontSize: '8px' }}>
-                    {"1287472657@qq.com"}
+                    {Cookie['E-mail'].email}
                   </Typography>
                 </div>
               </div>
@@ -205,12 +202,13 @@ function RoomMain() {
                 }}
               >
                 {roomList.map((item) => (
-                  <ListItem key={item.roomId}>
-                    <ListItemButton onClick={() => getRoomInfo(item.roomId)}>
-                      <ListItemIcon>
-                        <ChatIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={item.roomName} />
+
+                  <ListItem key={item.ID} onClick={() => getRoomInfo(item.ID)}>
+                    <ListItemButton>
+                    <ListItemIcon>
+                      <ChatIcon />
+                    </ListItemIcon>
+                      <ListItemText primary={item.name}/>
                     </ListItemButton>
                   </ListItem>
                 ))}
@@ -242,12 +240,22 @@ function RoomMain() {
           </List>
 
           <Dialog open={roomCreateOpen} onClose={() => setState({ roomCreateOpen: false })}>
-            <DialogTitle>Create a new chatting room</DialogTitle>
+            <DialogTitle>Create a new chat room</DialogTitle>
             <DialogContent>
               <RoomCreate />
             </DialogContent>
             <DialogActions>
               <Button onClick={() => setState({ roomCreateOpen: false })}>close</Button>
+            </DialogActions>
+          </Dialog>
+
+          <Dialog open={roomEnterOpen} onClose={() => setState({ roomEnterOpen: false })}>
+            <DialogTitle>Enter a new chat room</DialogTitle>
+            <DialogContent>
+              <RoomEnter />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setState({ roomEnterOpen: false })}>close</Button>
             </DialogActions>
           </Dialog>
         </Grid>
@@ -275,14 +283,15 @@ function RoomMain() {
               justifyContent: 'center',
             }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Chip label="Now Chatting" color="primary" sx={{ mr: 2 }} />
-                <Avatar {...stringAvatar(roomInfor.roomName)} />
+                <Chip label="Now Chatting" color="primary" sx={{mr: 2}}/>
+                <Avatar {...stringAvatar(roomInfor.name)}/>
                 <div style={{ flex: 1 }}>
-                  <Typography variant="h6">{roomInfor.roomName}</Typography>
-                  <Typography variant="body1" sx={{ fontSize: '8px' }}>belonger: {roomInfor.roomOwner.nickname}</Typography>
+                  <Typography variant="h6">{roomInfor.name}</Typography>
+                  <Typography variant="body1" sx={{ fontSize: '8px' }}>belonger: {roomInfor.owner.nickname}</Typography>
                 </div>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mr: 2 }}>
-                  <IconButton sx={{ mr: 1 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mr: 2}}>
+                  <Typography variant="h6">{roomInfor.id}</Typography>
+                  <IconButton sx={{ mr: 1}}>
                     <FolderOpenIcon />
                   </IconButton>
                   <IconButton sx={{ mr: 1 }}>

@@ -139,7 +139,7 @@ export default function Retrivepassword() {
             <br/>
             <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
               <InputLabel htmlFor="password" error={!checkFlag}> 
-                {checkFlag ? 'Repeat password' : 'Password not matched'}
+                {checkFlag ? 'Confirm password' : 'Password not matched'}
               </InputLabel>
               <Input
               id="Repeat password"
@@ -149,7 +149,7 @@ export default function Retrivepassword() {
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
-                    aria-label="toggle password visibility"
+                    aria-label="Toggle password visibility"
                     onClick={() => setState({ showCheckPassword: !showCheckPassword })}
                   >
                     {showCheckPassword ? <VisibilityOff /> : <Visibility />}

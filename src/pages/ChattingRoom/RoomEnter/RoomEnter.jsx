@@ -39,33 +39,35 @@ export default function RoomEnter() {
   const {
     Enter,
   } = useStoreActions((actions) => actions.roomEnterModel)
+  const {
+    setState
+  } = useStoreActions((actions) => actions.roomMainModel)
 
   const handleNext = () => {
     if(activeStep !== steps.length - 1)
     {
       if(roomID !== ""){
-        if(roomID.length === 6)
+        if(roomID.length === 8)
         setActiveStep(activeStep + 1);
         else
-        alert('Please enter the valid RoomID!')
+        alert('Please enter the valid Room ID!')
       }else {
-        alert('RoomID can not be void!')
+        alert('Room ID can not be void!')
       }
     }
     else
     {
       Enter().then((response) => {
-        if (response.result === true){
+        if (response.status === 200){
           //成功加入
-          navigate('/room/main')
-          console.log("Enter Success")
+          setState({roomEnterOpen: false})
+          console.log("Successfully Entered Chat Room")
         }
         else{
           console.log(response)
-          alert(response.message)
+          alert(response.data)
         }
       })
-      setActiveStep(activeStep + 1)
     }
   };
 

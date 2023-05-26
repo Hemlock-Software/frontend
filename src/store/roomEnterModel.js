@@ -1,5 +1,6 @@
 import { action, thunk } from 'easy-peasy';
 import { RoomEnter} from '../services/api';
+import CryptoJS from 'crypto-js'
 export const roomEnterModel = {
   roomID: "",
   idFlag:true,
@@ -16,10 +17,11 @@ export const roomEnterModel = {
   
   Enter: thunk(async(actions, payload, { getState }) => {
     const {roomID, password} = getState()
+    const sha256Password = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
     const response = await RoomEnter(
       {
         roomID: roomID,
-        password: password,
+        password: sha256Password,
       }
     )
     return response
@@ -28,9 +30,9 @@ export const roomEnterModel = {
   onRoomIdChange: action((state, payload) => {
     state.roomID = payload
     state.idFlag =  true
-    if (payload.length !== 6 ) {
+    if (payload.length !== 8 ) {
         state.idFlag = false;
-        state.errorIdMsg = 'RoomID length must be 6 figures';
+        state.errorIdMsg = 'RoomID length must be 8 figures';
     }
     else if (/^[0-9]/.test(payload) === false) {
         state.nameFlag = false;
