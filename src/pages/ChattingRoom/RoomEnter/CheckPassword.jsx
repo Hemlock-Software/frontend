@@ -17,7 +17,7 @@ export default function CheckPassword() {
     return(
         <React.Fragment>
             <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-                 Check Password(If Public, Click Create)
+                 Check Password(If Public, Click Enter)
             </Typography>
             <Grid container spacing={3} ml={3}>
         <Grid item xs={12} sm={7}>
