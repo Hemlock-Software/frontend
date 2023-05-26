@@ -30,7 +30,7 @@ export const roomMainModel = {
   roomCreateOpen: false,
   roomEnterOpen: false,
   roomSettingOpen: false,
-
+  ws_socket: null,
   inputMessage: "Type your message",
 
 // 定义一些action函数，state有点像this的作用，调用本类
@@ -52,23 +52,30 @@ export const roomMainModel = {
   getRoomInfo: thunk(async(actions, payload, { getState }) => {
     const response = await RoomGetInfo(
       {
-        roomID: payload
+        roomID: payload.id
       }
     )
     if(response.status === 200){
       // 更新Infor
-      response.data.id = payload;
+      response.data.id = payload.id;
       actions.setState({roomInfor: response.data})
       actions.setState({hasEnterRoom: true})
 
       const responseMessage = await RoomGetMessageTest(
         {
-          id: payload
+          id: payload.id
         }
       )
       if(responseMessage.status === 200){
         // 更新Infor
-        actions.setState({messages: responseMessage.data})
+        let temp_data = responseMessage.data;
+        temp_data.reverse();
+        actions.setState({messages: temp_data})
+        actions.setState({ws_socket: new WebSocket('ws://10.162.231.164:15100/websocket/'+ getState().roomInfor.id + '/' + payload.cookie)})
+        getState().ws_socket.onmessage = (event) => {
+          let temp = JSON.parse(event.data)
+          actions.setState({messages: [...getState().messages, temp] });
+        };
       }
       else{
         alert(responseMessage.data)

@@ -104,6 +104,7 @@ function RoomMain() {
   const {
     roomInfor,
     roomList,
+    ws_socket,
     messages, 
     roomCreateOpen, 
     roomSettingOpen, 
@@ -124,28 +125,25 @@ function RoomMain() {
     getRoomList();
   }, []);
 
+  useEffect(() => {
+  }, [messages]);
+
   const handleListScroll = (event) => {
     // 判断List组件是否需要滚动
     setIsListScrollable(event.target.scrollHeight > event.target.clientHeight);
   };
 
-  var socket = null
-
   // const socket = new WebSocket('ws://localhost:15100/websocket/00000008/3052791719@qq.com');
-  function enterRoom(id){
-    getRoomInfo(id)
-    socket = new WebSocket('ws://10.162.231.164:15100/websocket/'+ roomInfor.id + '/' + Cookie['E-mail'].email);
+  function enterRoom(id) {
+    getRoomInfo({id: id, cookie: Cookie['E-mail'].email});
+  }
 
-    socket.onmessage = (event) => {
-      console.log('收到消息:', event.data);
-      setState({messages: [...messages, event.data]})
-    };
-  
-  } 
-
-  async function send() {
+  function send() {
     // 发送消息
-    socket.send(inputMessage);
+    console.log(ws_socket)
+    if (ws_socket && ws_socket.readyState === WebSocket.OPEN) {
+      ws_socket.send(inputMessage);
+    }
   }
 
   return (
