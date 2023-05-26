@@ -1,10 +1,10 @@
 import { action, thunk } from 'easy-peasy';
-import { RoomGetInfo, RoomGetList} from '../services/api';
+import { RoomGetInfo, RoomGetList, RoomGetMessageTest} from '../services/api';
 
 export const roomMainModel = {
   hasEnterRoom: false,
   roomInfor: {
-    id: 123,
+    id: "123",
     name: 'Chatting room 1',
     owner: {
       mail: "",
@@ -21,18 +21,10 @@ export const roomMainModel = {
   roomList: [
     {
       ID: 1,
-      name: "123",
+      name: "00000009",
     },
   ],
   messages: [
-    {
-      user: 'Alice',
-      text: 'Hello, Bob!',
-    },
-    {
-      user: 'Bob',
-      text: 'Hi, Alice!',
-    },
   ],
 
   roomCreateOpen: false,
@@ -68,10 +60,22 @@ export const roomMainModel = {
       response.data.id = payload;
       actions.setState({roomInfor: response.data})
       actions.setState({hasEnterRoom: true})
+
+      const responseMessage = await RoomGetMessageTest(
+        {
+          id: payload
+        }
+      )
+      if(responseMessage.status === 200){
+        // 更新Infor
+        actions.setState({messages: responseMessage.data})
+      }
+      else{
+        alert(responseMessage.data)
+      }
     }
     else{
       alert(response.data)
     }
   }),
-
 };

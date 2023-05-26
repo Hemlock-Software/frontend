@@ -30,6 +30,7 @@ import RoomSetting from '../RoomSetting/RoomSetting';
 import RoomEnter from '../RoomEnter/RoomEnter';
 import { useStoreActions, useStoreState} from 'easy-peasy';
 import {useCookies} from 'react-cookie';
+import logo from '../../../assets/logo.png';
 
 function stringToColor(string) {
   let hash = 0;
@@ -75,7 +76,7 @@ function ChatMessage(props) {
   const { message } = props;
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-      <Avatar {...stringAvatar(message.user)} />
+      <Avatar {...stringAvatar(message.sender.nickname)} />
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography variant="body1">
           {message.user}
@@ -90,7 +91,7 @@ function ChatMessage(props) {
             maxWidth: '70%',
           }}
         >
-          <Typography variant="body2">{message.text}</Typography>
+          <Typography variant="body2">{message.content}</Typography>
         </Box>
       </Box>
     </Box>
@@ -128,20 +129,24 @@ function RoomMain() {
     setIsListScrollable(event.target.scrollHeight > event.target.clientHeight);
   };
 
+  var socket = null
+
   // const socket = new WebSocket('ws://localhost:15100/websocket/00000008/3052791719@qq.com');
-  const socket = new WebSocket('ws://10.162.231.164:15100/websocket/00000008/3052791719@qq.com');
+  function enterRoom(id){
+    getRoomInfo(id)
+    socket = new WebSocket('ws://10.162.231.164:15100/websocket/'+ roomInfor.id + '/' + Cookie['E-mail'].email);
+
+    socket.onmessage = (event) => {
+      console.log('收到消息:', event.data);
+      setState({messages: [...messages, event.data]})
+    };
+  
+  } 
 
   async function send() {
     // 发送消息
     socket.send(inputMessage);
-
-    // 接收消息
-    socket.onmessage = (event) => {
-      console.log('收到消息:', event.data);
-    };
-
   }
-
 
   return (
     <div>
@@ -204,7 +209,7 @@ function RoomMain() {
               >
                 {roomList.map((item) => (
 
-                  <ListItem key={item.ID} onClick={() => getRoomInfo(item.ID)}>
+                  <ListItem key={item.ID} onClick={() => enterRoom(item.ID)}>
                     <ListItemButton>
                     <ListItemIcon>
                       <ChatIcon />
@@ -268,8 +273,8 @@ function RoomMain() {
         {/* 右侧栏 */}
         <Grid item xs={9} sx={{ backgroundColor: '#deefe9', display: 'flex', flexDirection: 'column' }}>
           {
-            roomInfor.ID === 123 ? (
-              <div>
+            roomInfor.id !== "123" ? (
+              <React.Fragment>
                 <Box sx={{
                   display: 'flex',
                   justifyContent: 'center',
@@ -291,10 +296,10 @@ function RoomMain() {
                       <Avatar {...stringAvatar(roomInfor.name)}/>
                       <div style={{ flex: 1 }}>
                         <Typography variant="h6">{roomInfor.name}</Typography>
-                        <Typography variant="body1" sx={{ fontSize: '8px' }}>belonger: {roomInfor.owner.nickname}</Typography>
+                        <Typography variant="body1" sx={{ fontSize: '8px' }}>Owner: {roomInfor.owner.nickname}</Typography>
                       </div>
                       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mr: 2}}>
-                        <Typography variant="h6">{roomInfor.id}</Typography>
+                        <Typography variant="p">Room ID: {roomInfor.id}</Typography>
                         <IconButton sx={{ mr: 1}}>
                           <FolderOpenIcon />
                         </IconButton>
@@ -318,6 +323,13 @@ function RoomMain() {
                 {/* 消息栏 */}
                 <Box sx={{ p: 2, flex: 1, height: 0 }}>
                   <Box sx={{ height: 'calc(100vh - 250px - 50px)', overflow: 'auto' }}>
+                    {
+                      messages.length !== 0 ? (""): (
+                        <center>
+                          <Typography variant="caption" color="textSecondary" style={{ marginBottom: '20px'}}>-- Welcome to { roomInfor.name } , please enter a message to start chatting --</Typography>
+                        </center>
+                      )
+                    }
                     {messages.map((message, index) => (
                       <ChatMessage key={index} message={message} />
                     ))}
@@ -344,10 +356,32 @@ function RoomMain() {
                     Send
                   </Button>
                 </Box>
-              </div>
+              </React.Fragment>
             ):(
               <div>
-                  123
+                  <Grid
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    style={{ height: '100vh', textAlign: 'center', 
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  >
+                    <Grid>
+                      <img src={logo} alt="My Logo" style={{ width: '150px', height: '150px'}} />
+                    </Grid>
+                    <Grid>
+                      <h1 style={{ fontFamily: '"Segoe UI Emoji"' , fontSize: '48px', fontColor: '#66CCFF'}}>
+                        Welcome to HemLock Chat!
+                      </h1>
+                    </Grid>
+                    <Typography variant="caption" color="textSecondary" style={{ marginBottom: '20px'}}>© 2023 The Website designed by G01</Typography>
+                    <Grid>
+                      Select a chat room from the chat room list.
+                    </Grid>
+                  </Grid>
               </div>
             )
           }

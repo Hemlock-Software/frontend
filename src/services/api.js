@@ -25,13 +25,13 @@ export const UserRegister = (info) => request({
 })
 
 export const RoomCreate = (info) => request({
-  url: '/room/create',
+  url: '/room/create-room',
   data: info,
   method: 'post',
 })
 
 export const RoomEnter = (info) => request({
-  url: '/room/enter',
+  url: '/room/enter-room',
   data: info,
   method: 'post',
 })
@@ -53,3 +53,10 @@ export const RoomSetting = (info) => request({
   data: info,
   method: 'post',
 })
+
+export const RoomGetMessageTest = (info) => request({
+  url: '/room/getMessageTest',
+  data: info,
+  method: 'post',
+})
+
