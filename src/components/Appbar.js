@@ -10,17 +10,22 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { useCookies } from 'react-cookie'
 import { Label, Room } from '@mui/icons-material'
 
-export default function MyAppBar () {
+export default function MyAppBar() {
 
   const navigate = useNavigate()
-  const [Cookie] = useCookies(['E-mail'])
+  const [Cookie, removeCookie] = useCookies(['E-mail'])
 
-  function JumpLogin () {
+  function JumpLogin() {
     navigate('/login')
   }
 
-  function Jumpregister () {
+  function Jumpregister() {
     navigate('/register')
+  }
+
+  function Logout() {
+    removeCookie('E-mail', "");
+    navigate('/login')
   }
 
   return (
@@ -39,7 +44,11 @@ export default function MyAppBar () {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Home
           </Typography>
-          {Cookie['E-mail'] ? (<Label>{Cookie['E-mail'].nickname}</Label>) : (
+          {Cookie['E-mail'] ? (
+            <React.Fragment>
+              <Button color="inherit">{Cookie['E-mail'].nickname}</Button>
+              <Button color="inherit" onClick={Logout}>Logout</Button>
+            </React.Fragment>) : (
             <React.Fragment>
               <Button color="inherit" onClick={JumpLogin}>Login</Button>
               <Button color="inherit" onClick={Jumpregister}>Register</Button>
