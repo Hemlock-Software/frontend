@@ -431,7 +431,9 @@ function RoomSetting () {
           <Divider></Divider>
           <br></br>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}>Exit group chat</IconButton>
+            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}>
+              Exit group chat
+              </IconButton>
           </div>
         </CardContent>
       </Card >
