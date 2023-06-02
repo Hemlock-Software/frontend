@@ -19,9 +19,13 @@ import InputBase from '@mui/material/InputBase'
 import { Typography } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import CardContent from '@mui/material/CardContent'
+import { useCookies } from 'react-cookie'
+import Popover from '@mui/material/Popover';
+import Grid from '@mui/material/Grid';
 
 function RoomSetting () {
   const ariaLabel = { 'aria-label': 'description' }
+  const [Cookie] = useCookies(['E-mail'])
   const {
     roomMemberNum,
     roomMemberInfo,
@@ -34,6 +38,9 @@ function RoomSetting () {
     roomName,
     roomID,
     nickName,
+    loginUserNickname,
+    loginUserEmail,
+    roomOwner,
     // roomMemberInfoHandled,
   } = useStoreState((state) => state.roomSettingModel)
 
@@ -56,13 +63,32 @@ function RoomSetting () {
           //...member,
           name: member.nickname,
           //nickname: undefined
+          mail:member.mail,
         }
       }),
       roomMemberNum: roomInfor.members.length,
       checkMoreFlag: roomMemberNum > 18 ? true : false,
+      loginUserEmail:Cookie['E-mail'].email,
+      loginUserNickname:Cookie['E-mail'].nickname,
+      roomOwner:roomInfor.owner,
     })
   }, [roomInfor])
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const handleAvatarClick = (event, user) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedUser(user);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setSelectedUser(null);
+  };
+
+  const open = Boolean(anchorEl);
+  
   function searchName (name) {
     const pattern = new RegExp(`^.*${searchNameValue.split('').join('.*')}.*$`)
     return pattern.test(name)
@@ -121,9 +147,12 @@ function RoomSetting () {
     return name
   }
 
+  function testClick(){
+    console.log('test')
+  }
   return (
     <div>
-      <Card sx={{ width: 600, overflow: 'auto', height: 1000 }}>
+      <Card sx={{ width: 600, overflow: 'auto', height: 750 }}>
         <CardContent sx={{ overflow: 'auto' }}>
           <div className='roomSetting' style={{ fontFamily: 'cursive' }}>
             Room Setting
@@ -131,7 +160,8 @@ function RoomSetting () {
           <Stack direction="row" spacing={2}>
             <ListItem>
               <ListItemAvatar>
-                <Avatar {...stringAvatar(roomName)} variant="square" style={{ borderRadius: '10px' }}>
+                <Avatar {...stringAvatar(roomName)} variant="square" style={{ borderRadius: '10px' 
+               }} onClick={handleAvatarClick}>
                   {/* 用 src=''来表示群头像 */}
                 </Avatar>
               </ListItemAvatar>
@@ -224,8 +254,40 @@ function RoomSetting () {
           <br></br>
           {displayAll ? <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>{roomMemberInfo.slice(0, 21).map((item, index) => (
             <div style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '15px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
-              <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' }} >
+              <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' ,cursor:'pointer'}} 
+              onClick={(event)=>handleAvatarClick(event,item.mail)}>
               </Avatar>
+              <Popover
+              open={open && selectedUser === item.mail}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transforOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+              >
+              {/* 将这里的内容替换为用户信息卡片的具体内容 */}
+              <div style={{ display: 'flex', alignItems: 'center', width: '300px' }}>
+                <div style={{ flexGrow: 1 }}>
+                  <div style={{ marginLeft: '8px' }}>
+                    <h3>{item.name}</h3>
+                    <p>{item.mail}</p>
+                  </div>
+                </div>
+              <div style={{ marginRight: '8px' }}>
+          <Avatar {...stringAvatar(item.name)} alt={item.name} />
+          </div></div>
+          <Divider></Divider>
+          {loginUserEmail===roomOwner.mail?<div style={{ display: 'flex', justifyContent: 'center' }}>
+            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}>
+              Kick From Chat Room
+            </IconButton>
+          </div>:null}
+          </Popover>
               <div style={{ fontFamily: 'cursive', textAlign: 'center', marginTop: '10px' }} >
                 {limitLength(item.name)}
               </div>
@@ -234,9 +296,41 @@ function RoomSetting () {
           ))}</div> :
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>{roomMemberInfo.slice(0, 21).filter(member => searchName(member.name)).map((item, index) => (
               <div style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '15px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
-                <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' }} >
-                </Avatar>
-                <div style={{ textAlign: 'center', marginTop: 10 }}>
+                <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' ,cursor:'pointer'}} 
+              onClick={(event)=>handleAvatarClick(event,item.mail)}>
+              </Avatar>
+              <Popover
+              open={open && selectedUser === item.mail}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transforOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+              >
+              {/* 将这里的内容替换为用户信息卡片的具体内容 */}
+              <div style={{ display: 'flex', alignItems: 'center', width: '300px' }}>
+                <div style={{ flexGrow: 1 }}>
+                  <div style={{ marginLeft: '8px' }}>
+                    <h3>{item.name}</h3>
+                    <p>{item.mail}</p>
+                  </div>
+                </div>
+              <div style={{ marginRight: '8px' }}>
+          <Avatar {...stringAvatar(item.name)} alt={item.name} />
+          </div></div>
+          <Divider></Divider>
+          {loginUserEmail===roomOwner.mail?<div style={{ display: 'flex', justifyContent: 'center' }}>
+            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}>
+              Kick From Chat Room
+            </IconButton>
+          </div>:null}
+          </Popover>
+                <div style={{ fontFamily: 'cursive',textAlign: 'center', marginTop: 10 }}>
                   {limitLength(item.name)}
                 </div>
               </div>
@@ -331,7 +425,7 @@ function RoomSetting () {
           </Stack>
           <Divider></Divider>
           <br></br>
-          <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
+          {/* <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
             <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
               test block
@@ -429,10 +523,10 @@ function RoomSetting () {
             </Typography>} />
           </Stack>
           <Divider></Divider>
-          <br></br>
+          <br></br> */}
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}>
-              Exit group chat
+              {roomOwner.mail===loginUserEmail?'Dismiss Group Chat':'Exit Group Chat'}
               </IconButton>
           </div>
         </CardContent>

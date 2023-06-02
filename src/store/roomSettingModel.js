@@ -1,10 +1,16 @@
 import { action, thunk } from 'easy-peasy'
 
 export const roomSettingModel = {
+  // 当前正在操纵聊天室的用户
+  loginUserNickname: '',
+  loginUserEmail: '',
   roomID: "",
   roomName: '',
   roomMemberNum: 0,
+  // mail:''
+  // name:''
   roomMemberInfo: [],
+  roomOwner: {},
   // 控制是否显示'check more'按钮的flag变量
   checkMoreFlag: true,
   pinChatLoading: true,
