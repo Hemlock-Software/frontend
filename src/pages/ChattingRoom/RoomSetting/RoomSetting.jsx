@@ -53,19 +53,30 @@ function RoomSetting () {
     roomInfor,
   } = useStoreState((state) => state.roomMainModel)
 
+  function memberSort(members, ownerMail) {
+    const sortedMembers = members.map(member => ({
+      name: member.nickname,
+      mail: member.mail
+    }));
+  
+    sortedMembers.sort((a, b) => {
+      if (a.mail === ownerMail) {
+        return -1; // a在b之前
+      }
+      if (b.mail === ownerMail) {
+        return 1; // b在a之前
+      }
+      return 0; // 保持原有顺序
+    });
+  
+    return sortedMembers;
+  }
   //依赖项
   useEffect(() => {
     setState({
       roomID: roomInfor.id,
       roomName: roomInfor.name,
-      roomMemberInfo: roomInfor.members.map(member => {
-        return {
-          //...member,
-          name: member.nickname,
-          //nickname: undefined
-          mail:member.mail,
-        }
-      }),
+      roomMemberInfo: memberSort(roomInfor.members, roomInfor.owner.mail),
       roomMemberNum: roomInfor.members.length,
       checkMoreFlag: roomMemberNum > 18 ? true : false,
       loginUserEmail:Cookie['E-mail'].email,
@@ -195,7 +206,7 @@ function RoomSetting () {
                         }
                       >
                         <div style={{ height: 0, display: 'flex', alignItems: 'center', fontFamily: 'cursive' }}>
-                          Cancle
+                          Cancel
                         </div>
                       </IconButton>
                     ) : (
@@ -253,7 +264,7 @@ function RoomSetting () {
           </div>
           <br></br>
           {displayAll ? <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>{roomMemberInfo.slice(0, 21).map((item, index) => (
-            <div style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '15px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
+            <div key={item.mail} style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '15px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
               <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' ,cursor:'pointer'}} 
               onClick={(event)=>handleAvatarClick(event,item.mail)}>
               </Avatar>
@@ -282,11 +293,11 @@ function RoomSetting () {
           <Avatar {...stringAvatar(item.name)} alt={item.name} />
           </div></div>
           <Divider></Divider>
-          {loginUserEmail===roomOwner.mail?<div style={{ display: 'flex', justifyContent: 'center' }}>
+          {loginUserEmail===roomOwner.mail?(loginUserEmail!==item.mail?<div style={{ display: 'flex', justifyContent: 'center' }}>
             <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}>
               Kick From Chat Room
             </IconButton>
-          </div>:null}
+          </div>:null):null}
           </Popover>
               <div style={{ fontFamily: 'cursive', textAlign: 'center', marginTop: '10px' }} >
                 {limitLength(item.name)}
@@ -295,7 +306,7 @@ function RoomSetting () {
             // 设置每个元素的宽度为14.28%，即100/7%
           ))}</div> :
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>{roomMemberInfo.slice(0, 21).filter(member => searchName(member.name)).map((item, index) => (
-              <div style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '15px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
+              <div key={item.mail} style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '15px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
                 <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' ,cursor:'pointer'}} 
               onClick={(event)=>handleAvatarClick(event,item.mail)}>
               </Avatar>
@@ -324,11 +335,11 @@ function RoomSetting () {
           <Avatar {...stringAvatar(item.name)} alt={item.name} />
           </div></div>
           <Divider></Divider>
-          {loginUserEmail===roomOwner.mail?<div style={{ display: 'flex', justifyContent: 'center' }}>
+          {loginUserEmail===roomOwner.mail?(loginUserEmail!==item.mail?<div style={{ display: 'flex', justifyContent: 'center' }}>
             <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}>
               Kick From Chat Room
             </IconButton>
-          </div>:null}
+          </div>:null):null}
           </Popover>
                 <div style={{ fontFamily: 'cursive',textAlign: 'center', marginTop: 10 }}>
                   {limitLength(item.name)}
