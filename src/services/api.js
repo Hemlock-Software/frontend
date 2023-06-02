@@ -7,13 +7,13 @@ export const UserLogin = (info) => request({
 })
 
 export const SendMail = (info) => request({
-  url: '/user/send-mail',
+  url: '/user/send_mail',
   data: info,
   method: 'post'
 })
 
 export const RetrievePassword = (info) => request({
-  url: '/user/findPassword',
+  url: '/user/find_password',
   data: info,
   method: 'post'
 })
@@ -25,25 +25,25 @@ export const UserRegister = (info) => request({
 })
 
 export const RoomCreate = (info) => request({
-  url: '/room/create-room',
+  url: '/room/create_room',
   data: info,
   method: 'post',
 })
 
 export const RoomEnter = (info) => request({
-  url: '/room/enter-room',
+  url: '/room/enter_room',
   data: info,
   method: 'post',
 })
 
 export const RoomGetInfo = (info) => request({
-  url: '/room/getRoomInfo',
+  url: '/room/get_room_info',
   data: info,
   method: 'post',
 })
 
 export const RoomGetList = (info) => request({
-  url: '/room/getList',
+  url: '/room/get_list',
   data: info,
   method: 'post',
 })
@@ -55,7 +55,7 @@ export const RoomSetting = (info) => request({
 })
 
 export const RoomGetMessageTest = (info) => request({
-  url: '/room/getMessageTest',
+  url: '/room/get_message_test',
   data: info,
   method: 'post',
 })

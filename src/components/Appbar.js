@@ -2,25 +2,25 @@ import * as React from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
-import { useCookies } from 'react-cookie';
-import { Label } from '@mui/icons-material';
+import { useCookies } from 'react-cookie'
+import { Label, Room } from '@mui/icons-material'
 
-export default function MyAppBar() {
+export default function MyAppBar () {
 
-  const navigate = useNavigate();
-  const [Cookie] = useCookies(['E-mail']);
+  const navigate = useNavigate()
+  const [Cookie] = useCookies(['E-mail'])
 
-  function JumpLogin() {
-    navigate('/login');
+  function JumpLogin () {
+    navigate('/login')
   }
 
-  function Jumpregister() {
-    navigate('/register');
+  function Jumpregister () {
+    navigate('/register')
   }
 
   return (
