@@ -19,12 +19,7 @@ export const roomMainModel = {
       },
     ]
   },
-  roomList: [
-    {
-      ID: 1,
-      name: "00000009",
-    },
-  ],
+  roomList: [],
   messages: [
   ],
 
