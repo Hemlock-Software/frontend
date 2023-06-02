@@ -43,6 +43,7 @@ export default function RoomCreate() {
   } = useStoreActions((actions) => actions.roomCreateModel)
   const { 
     setState,
+    getRoomList,
   } 
   = useStoreActions((actions) => actions.roomMainModel)
 
@@ -61,6 +62,7 @@ export default function RoomCreate() {
           alert(response.data)
         } else {
           console.log("Successfully created")
+          getRoomList()
           setState({ roomCreateOpen: false })
         }
       })

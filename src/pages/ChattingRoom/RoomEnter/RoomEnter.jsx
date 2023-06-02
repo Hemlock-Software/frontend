@@ -40,7 +40,8 @@ export default function RoomEnter() {
     Enter,
   } = useStoreActions((actions) => actions.roomEnterModel)
   const {
-    setState
+    setState,
+    getRoomList
   } = useStoreActions((actions) => actions.roomMainModel)
 
   const handleNext = () => {
@@ -62,6 +63,7 @@ export default function RoomEnter() {
           //成功加入
           setState({roomEnterOpen: false})
           console.log("Successfully Entered Chat Room")
+          getRoomList()
         }
         else{
           console.log(response)

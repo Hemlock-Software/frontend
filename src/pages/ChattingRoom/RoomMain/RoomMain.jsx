@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import{ useEffect, useRef } from 'react';
 import {
   Grid,
   Divider,
@@ -74,26 +74,71 @@ function stringAvatar(name) {
 
 function ChatMessage(props) {
   const { message } = props;
+  const isRightAligned = (message.sender.nickname === props.nickname);
+  const timestamp = message.time;
+  const timeWithoutDate = timestamp.substring(timestamp.indexOf(":") + 1).trim();
+
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-      <Avatar {...stringAvatar(message.sender.nickname)} />
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Typography variant="body1">
-          {message.user}
-        </Typography>
-        <Box
-          sx={{
-            bgcolor: 'background.paper',
-            borderRadius: '16px',
-            px: 2,
-            py: 1,
-            mt: 1,
-            maxWidth: '70%',
-          }}
-        >
-          <Typography variant="body2">{message.content}</Typography>
-        </Box>
-      </Box>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        mt: 2,
+        justifyContent: isRightAligned ? 'flex-end' : 'flex-start', // 根据条件确定对齐方式
+      }}
+    >
+      {!isRightAligned?(
+        <React.Fragment>
+          <Avatar {...stringAvatar(message.sender.nickname)} />
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="body2" sx={{ fontSize: '8px', ml: 1,}}>
+              {message.sender.nickname + " " + timeWithoutDate}
+            </Typography>
+            <Box
+              sx={{
+                bgcolor: 'background.paper',
+                borderRadius: '16px',
+                px: 2,
+                py: 1,
+                mt: 1,
+                mb: 1,
+                maxWidth: '70%',
+                alignSelf: 'flex-start', // 根据条件确定消息框的对齐方式
+              }}
+            >
+              <Typography variant="body2" style={{ wordWrap: 'break-word' }}>
+                {message.content}
+              </Typography>
+            </Box>
+          </Box>
+        </React.Fragment>
+      ):
+      (
+        <React.Fragment>
+          <Box sx={{ display: 'flex', flexDirection: 'column' , mr: 2}}>
+            <Typography variant="body2" sx={{ fontSize: '8px', mr: 1, alignSelf: 'flex-end'}}>
+              {timeWithoutDate + " " + message.sender.nickname}
+            </Typography>
+            <Box
+              sx={{
+                bgcolor: 'background.paper',
+                borderRadius: '16px',
+                px: 2,
+                py: 1,
+                mt: 1,
+                mb: 1,
+                maxWidth: '70%',
+                alignSelf: 'flex-end', // 根据条件确定消息框的对齐方式
+              }}
+            >
+              <Typography variant="body2" style={{ wordWrap: 'break-word' }}>
+                {message.content}
+              </Typography>
+            </Box>
+          </Box>
+          <Avatar {...stringAvatar(message.sender.nickname)} />
+        </React.Fragment>
+      )}
     </Box>
   );
 }
@@ -120,6 +165,7 @@ function RoomMain() {
     = useStoreActions((actions) => actions.roomMainModel)
 
   const [Cookie] = useCookies(['E-mail']);
+  const boxRef = useRef(null);
 
   useEffect(() => {
     getRoomList();
@@ -127,6 +173,19 @@ function RoomMain() {
 
   useEffect(() => {
   }, [messages]);
+
+  useEffect(() => {
+  }, [roomList]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    if (boxRef.current) {
+      boxRef.current.scrollTop = boxRef.current.scrollHeight;
+    }
+  };
 
   const handleListScroll = (event) => {
     // 判断List组件是否需要滚动
@@ -138,11 +197,19 @@ function RoomMain() {
     getRoomInfo({id: id, cookie: Cookie['E-mail'].email});
   }
 
+  function isWhitespace(str) {
+    return /^\s*$/.test(str);
+  }
+
   function send() {
     // 发送消息
-    console.log(ws_socket)
+    if(isWhitespace(inputMessage)){
+      alert("Message must not be empty!")
+      return
+    }
     if (ws_socket && ws_socket.readyState === WebSocket.OPEN) {
       ws_socket.send(inputMessage);
+      setState({inputMessage: ""})
     }
   }
 
@@ -161,7 +228,7 @@ function RoomMain() {
               justifyContent: 'center',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', }}>
-                <Avatar {...stringAvatar("IEeya")} />
+                <Avatar {...stringAvatar(Cookie['E-mail'].nickname)} />
                 <div>
                   <Typography variant="h6">
                     {Cookie['E-mail'].nickname}
@@ -320,17 +387,18 @@ function RoomMain() {
                 </Box>
                 {/* 消息栏 */}
                 <Box sx={{ p: 2, flex: 1, height: 0 }}>
-                  <Box sx={{ height: 'calc(100vh - 250px - 50px)', overflow: 'auto' }}>
+                  <Box ref={boxRef} sx={{ height: 'calc(100vh - 250px - 50px)', overflow: 'auto' }}>
                     {
-                      messages.length !== 0 ? (""): (
+                      messages.length !== 0 ? (
+                        messages.map((message, index) => (
+                          <ChatMessage key={index} message={message} nickname={Cookie['E-mail'].nickname} />
+                        ))
+                      ): (
                         <center>
                           <Typography variant="caption" color="textSecondary" style={{ marginBottom: '20px'}}>-- Welcome to { roomInfor.name } , please enter a message to start chatting --</Typography>
                         </center>
                       )
                     }
-                    {messages.map((message, index) => (
-                      <ChatMessage key={index} message={message} />
-                    ))}
                   </Box>
                 </Box>
                 {/* 输入框 */}
@@ -344,7 +412,7 @@ function RoomMain() {
                 }}>
                   <TextField
                     label="Type your message"
-                    text={inputMessage}
+                    value={ inputMessage}
                     variant="outlined"
                     fullWidth
                     sx={{ mr: 1 }}
