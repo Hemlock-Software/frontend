@@ -45,7 +45,7 @@ export const roomEnterModel = {
     state.passwordFlag =  true
     const regex = /^[a-zA-Z0-9.]{6,16}$/;
     
-    if (payload.length < 6 || payload.length > 16) {
+    if (payload.length < 8 || payload.length > 16) {
         state.passwordFlag = false;
         state.errorPasswordMsg = 'Password length must be 6-16';
     }
