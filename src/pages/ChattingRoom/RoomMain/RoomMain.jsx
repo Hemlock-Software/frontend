@@ -31,6 +31,7 @@ import RoomEnter from '../RoomEnter/RoomEnter';
 import { useStoreActions, useStoreState} from 'easy-peasy';
 import {useCookies} from 'react-cookie';
 import logo from '../../../assets/logo.png';
+import { MuiFileInput } from 'mui-file-input'
 
 function stringToColor(string) {
   let hash = 0;
@@ -77,7 +78,9 @@ function ChatMessage(props) {
   const isRightAligned = (message.sender.nickname === props.nickname);
   const timestamp = message.time;
   const timeWithoutDate = timestamp.substring(timestamp.indexOf(":") + 1).trim();
-
+  let isImg = true
+  const regex = /^http:\/\/.*\.(jpg|png|jpeg)$/i;
+  isImg = regex.test(message.content);
   return (
     <Box
       sx={{
@@ -106,9 +109,13 @@ function ChatMessage(props) {
                 alignSelf: 'flex-start', // 根据条件确定消息框的对齐方式
               }}
             >
-              <Typography variant="body2" style={{ wordWrap: 'break-word' }}>
-                {message.content}
-              </Typography>
+              {isImg ? (
+                <img src={message.content} alt="mi" style={{ maxWidth: '100px'}}/>
+              ) : (
+                <Typography variant="body2" style={{ wordWrap: 'break-word' }}>
+                  {message.content}
+                </Typography>
+              )}
             </Box>
           </Box>
         </React.Fragment>
@@ -131,9 +138,13 @@ function ChatMessage(props) {
                 alignSelf: 'flex-end', // 根据条件确定消息框的对齐方式
               }}
             >
-              <Typography variant="body2" style={{ wordWrap: 'break-word' }}>
-                {message.content}
-              </Typography>
+              {isImg ? (
+                <img src={message.content} alt="mi" style={{ maxWidth: '100px'}}/>
+              ) : (
+                <Typography variant="body2" style={{ wordWrap: 'break-word' }}>
+                  {message.content}
+                </Typography>
+              )}
             </Box>
           </Box>
           <Avatar {...stringAvatar(message.sender.nickname)} />
@@ -161,15 +172,22 @@ function RoomMain() {
     setState,
     getRoomList,
     getRoomInfo,
+    storeImage,
   }
     = useStoreActions((actions) => actions.roomMainModel)
 
   const [Cookie] = useCookies(['E-mail']);
   const boxRef = useRef(null);
+  const [value, setValue] = React.useState(null)
+
+  const handleChange = (newValue) => {
+    storeImage(newValue)
+    setValue("")
+  }
 
   useEffect(() => {
     getRoomList();
-  }, []);
+  }, []); //eslint-disable-line
 
   useEffect(() => {
   }, [messages]);
@@ -418,6 +436,7 @@ function RoomMain() {
                     sx={{ mr: 1 }}
                     onChange={(e)=>setState({inputMessage: e.target.value})}
                   />
+                  <MuiFileInput label="Upload image" sx={{ mr: 1, width: "20%"}} value={value} onChange={handleChange} />
                   <Button variant="contained" color="primary" onClick={send}>
                     Send
                   </Button>

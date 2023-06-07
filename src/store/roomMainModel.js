@@ -1,6 +1,7 @@
 import { action, thunk } from 'easy-peasy'
 import { RoomGetInfo, RoomGetList, RoomGetMessageTest } from '../services/api'
 import config from '../constant/config'
+import axios from 'axios'
 
 export const roomMainModel = {
   hasEnterRoom: false,
@@ -74,7 +75,6 @@ export const roomMainModel = {
         actions.setState({ ws_socket: new WebSocket('ws' + config.baseURL.replace("http", "") + '/websocket/' + getState().roomInfor.id + '/' + payload.cookie) })
         getState().ws_socket.onmessage = (event) => {
           let temp = JSON.parse(event.data)
-          console.log(getState().ws_socket)
           actions.setState({ messages: [...getState().messages, temp] })
         }
       }
@@ -86,4 +86,30 @@ export const roomMainModel = {
       alert(response.data)
     }
   }),
+
+  storeImage: thunk(async (actions, payload, { getState }) => {
+    const formData = new FormData();
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"]; // 允许的图片类型
+    if(!allowedTypes.includes(payload.type)){
+      alert("This is not a jpg/png/jpeg file!")
+      return
+    }
+
+    formData.append('file', payload);
+  
+    const response = await axios.post('http://localhost:42069/api/v1/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  
+    if (response.status !== 200) {
+      alert(response.data);
+    } else {
+      if (getState().ws_socket && getState().ws_socket.readyState === WebSocket.OPEN) {
+        getState().ws_socket.send(response.data.file_url);
+      }
+    }
+  }),
+
 }
