@@ -8,12 +8,11 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useCookies } from 'react-cookie'
-import { Label, Room } from '@mui/icons-material'
 
 export default function MyAppBar() {
 
   const navigate = useNavigate()
-  const [Cookie, removeCookie] = useCookies(['E-mail'])
+  const [Cookie, setCookie] = useCookies(['E-mail'])
 
   function JumpLogin() {
     navigate('/login')
@@ -23,8 +22,8 @@ export default function MyAppBar() {
     navigate('/register')
   }
 
-  function Logout() {
-    removeCookie('E-mail', "");
+  const Logout = () => {
+    setCookie('E-mail', '', { expires: new Date(0) });
     navigate('/login')
   }
 

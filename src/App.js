@@ -1,6 +1,6 @@
 import './App.css'
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, HashRouter } from 'react-router-dom'
 import routes from './routes'
 import './mock/mock'
 import MyAppBar from './components/Appbar'
@@ -8,25 +8,24 @@ import MyAppBar from './components/Appbar'
 import { StoreProvider } from 'easy-peasy';
 import { globalModel } from './store/globalStoreModel';
 
-function App () {
+function App() {
   return (
     <StoreProvider store={globalModel}>
       <div>
-        <Router>
+        <HashRouter>
           <MyAppBar />
           {/* router 界面 */}
-
           <Routes>
             {routes.map((route, index) => (
-              <Route
-                key={index}
-                path={route.path}
-                element={route.element}
-                exact={route.exact}
-              />
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={route.element}
+                  exact={route.exact}
+                />
             ))}
           </Routes>
-        </Router>
+        </HashRouter>
       </div>
     </StoreProvider>
   )
