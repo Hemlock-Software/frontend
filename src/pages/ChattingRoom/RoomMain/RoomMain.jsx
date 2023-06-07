@@ -184,6 +184,9 @@ function RoomMain() {
     storeImage(newValue)
     setValue("")
   }
+  const sendMessage = () => {
+    send()
+  };
 
   useEffect(() => {
     getRoomList();
@@ -198,6 +201,21 @@ function RoomMain() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter") {
+        sendMessage()
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  // eslint-disable-next-line
+  }, [inputMessage]);
 
   const scrollToBottom = () => {
     if (boxRef.current) {

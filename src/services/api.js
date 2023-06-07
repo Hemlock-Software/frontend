@@ -59,10 +59,3 @@ export const RoomGetMessageTest = (info) => request({
   data: info,
   method: 'post',
 })
-
-export const StoreImage = (info) => request({
-  url: '/api/v1/upload',
-  data: info,
-  method: 'post',
-})
-

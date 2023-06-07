@@ -1,5 +1,6 @@
 import './App.css'
 import React from 'react'
+// eslint-disable-next-line
 import { BrowserRouter as Router, Routes, Route, HashRouter } from 'react-router-dom'
 import routes from './routes'
 import './mock/mock'

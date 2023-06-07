@@ -1,4 +1,5 @@
 import React from 'react';
+import{ useEffect } from 'react';
 import { Grid } from '@mui/material';
 import logo from '../../assets/logo.png';
 import background from '../../assets/background.jpg';
@@ -17,6 +18,14 @@ function Welcome() {
   function submitRegister(){
     navigate('/register')
   }
+
+  useEffect(() => {
+    const hasCookie = document.cookie.includes('E-mail');
+    if (hasCookie) {
+      navigate('/room/main')
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Grid
