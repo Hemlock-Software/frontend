@@ -97,7 +97,7 @@ export const roomMainModel = {
 
     formData.append('file', payload);
   
-    const response = await axios.post('http://localhost:42069/api/v1/upload', formData, {
+    const response = await axios.post(config.imageURL + 'api/v1/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
