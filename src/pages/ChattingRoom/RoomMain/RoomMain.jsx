@@ -76,6 +76,7 @@ function stringAvatar(name) {
 function ChatMessage(props) {
   const { message } = props;
   const isRightAligned = (message.sender.nickname === props.nickname);
+  const isOwner = (message.sender.nickname === props.owner);
   const timestamp = message.time;
   const timeWithoutDate = timestamp.substring(timestamp.indexOf(":") + 1).trim();
   let isImg = true
@@ -94,9 +95,26 @@ function ChatMessage(props) {
         <React.Fragment>
           <Avatar {...stringAvatar(message.sender.nickname)} />
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="body2" sx={{ fontSize: '8px', ml: 1,}}>
-              {message.sender.nickname + " " + timeWithoutDate}
-            </Typography>
+          <Typography variant="body2" sx={{ fontSize: '8px' }}>
+            {isOwner ? (
+              <span>
+                 <Box
+                  sx={{
+                      backgroundColor: 'gold',
+                      color: 'white',
+                      borderRadius: '8px',
+                      padding: '2px 8px',
+                      display: 'inline-block',
+                      fontWeight: 'bold',
+                      mr: 1
+                    }}
+                  >
+                    Owner
+                  </Box>
+              </span>
+            ) : (<span></span>)}
+            {message.sender.nickname+ ' ' + timeWithoutDate}
+          </Typography>
             <Box
               sx={{
                 bgcolor: 'background.paper',
@@ -124,7 +142,24 @@ function ChatMessage(props) {
         <React.Fragment>
           <Box sx={{ display: 'flex', flexDirection: 'column' , mr: 2}}>
             <Typography variant="body2" sx={{ fontSize: '8px', mr: 1, alignSelf: 'flex-end'}}>
-              {timeWithoutDate + " " + message.sender.nickname}
+              {isOwner ? (
+                <span>
+                  <Box
+                    sx={{
+                        backgroundColor: 'gold',
+                        color: 'white',
+                        borderRadius: '8px',
+                        padding: '2px 8px',
+                        display: 'inline-block',
+                        fontWeight: 'bold',
+                        mr: 1
+                      }}
+                  >
+                    Owner
+                  </Box>
+                </span>
+              ) : (<span></span>)}
+              {message.sender.nickname+ ' ' + timeWithoutDate}
             </Typography>
             <Box
               sx={{
@@ -427,7 +462,7 @@ function RoomMain() {
                     {
                       messages.length !== 0 ? (
                         messages.map((message, index) => (
-                          <ChatMessage key={index} message={message} nickname={Cookie['E-mail'].nickname} />
+                          <ChatMessage key={index} message={message} nickname={Cookie['E-mail'].nickname} owner={roomInfor.owner.nickname}/>
                         ))
                       ): (
                         <center>
