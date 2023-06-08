@@ -6,8 +6,8 @@ import axios from 'axios'
 export const roomMainModel = {
   hasEnterRoom: false,
   roomInfor: {
-    id: "123",
-    name: 'Chatting room 1',
+    id: null,
+    name: null,
     owner: {
       mail: "",
       nickname: "",
@@ -35,6 +35,10 @@ export const roomMainModel = {
     state = Object.assign(state, payload)
   }),
 
+  setExtraState: action((state, payload) => {
+    state = Object.assign(state, payload)
+  }),
+
   // 请求room_list
   getRoomList: thunk(async (actions, payload, { getState }) => {
     const response = await RoomGetList()
@@ -48,7 +52,8 @@ export const roomMainModel = {
   // 请求room_info
   getRoomInfo: thunk(async (actions, payload, { getState }) => {
     // 关闭之前的ws_socket
-    if (getState().ws_socket != null && getState().ws_socket.readyState === WebSocket.OPEN) {
+    const needWSChange = payload.flag
+    if (getState().ws_socket != null && getState().ws_socket.readyState === WebSocket.OPEN && needWSChange) {
       getState().ws_socket.close()
     }
     const response = await RoomGetInfo(
@@ -61,7 +66,6 @@ export const roomMainModel = {
       response.data.id = payload.id
       actions.setState({ roomInfor: response.data })
       actions.setState({ hasEnterRoom: true })
-
       const responseMessage = await RoomGetMessageTest(
         {
           id: payload.id
@@ -72,7 +76,9 @@ export const roomMainModel = {
         let temp_data = responseMessage.data
         if (temp_data.length > 0) temp_data.reverse()
         actions.setState({ messages: temp_data })
-        actions.setState({ ws_socket: new WebSocket('ws' + config.baseURL.replace("http", "") + '/websocket/' + getState().roomInfor.id + '/' + payload.cookie) })
+        if(needWSChange){
+          actions.setState({ ws_socket: new WebSocket('ws' + config.baseURL.replace("http", "") + '/websocket/' + getState().roomInfor.id + '/' + payload.cookie) })
+        }
         getState().ws_socket.onmessage = (event) => {
           let temp = JSON.parse(event.data)
           actions.setState({ messages: [...getState().messages, temp] })

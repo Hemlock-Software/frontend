@@ -1,4 +1,5 @@
 import { action, thunk } from 'easy-peasy'
+import { QuitRoom, RoomDismiss, RemoveMember } from '../services/api'
 
 export const roomSettingModel = {
   // 当前正在操纵聊天室的用户
@@ -28,6 +29,34 @@ export const roomSettingModel = {
   // 定义一些action函数，state有点像this的作用，调用本类
   setState: action((state, payload) => {
     state = Object.assign(state, payload)
+  }),
+
+  quitRoom: thunk(async (actions, payload, { getState }) => {
+    const response = await QuitRoom(
+      {
+        roomID: payload
+      }
+    )
+    return response
+  }),
+
+  dismissRoom: thunk(async (actions, payload, { getState }) => {
+    const response = await RoomDismiss(
+      {
+        roomID: payload
+      }
+    )
+    return response
+  }),
+
+  removeMember: thunk(async (actions, payload, { getState }) => {
+    const response = await RemoveMember(
+      {
+        roomID: payload.id,
+        mail: payload.mail
+      }
+    )
+    return response
   }),
 };
 

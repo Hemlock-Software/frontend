@@ -62,7 +62,6 @@ export default function RoomEnter() {
         if (response.status === 200){
           //成功加入
           setState({roomEnterOpen: false})
-          console.log("Successfully Entered Chat Room")
           getRoomList()
         }
         else{

@@ -33,6 +33,7 @@ import {useCookies} from 'react-cookie';
 import logo from '../../../assets/logo.png';
 import { MuiFileInput } from 'mui-file-input'
 
+
 function stringToColor(string) {
   let hash = 0;
   let i, chr;
@@ -73,6 +74,27 @@ function stringAvatar(name) {
   };
 }
 
+const MAX_LENGTH = 100;
+function formatMessageContent(content){
+  if (content.length <= MAX_LENGTH) {
+    return content; // 如果消息长度不超过最大长度，则直接返回原始内容
+  }
+
+  // 插入换行符的逻辑
+  let formattedContent = '';
+  let count = 0;
+  for (let i = 0; i < content.length; i++) {
+    formattedContent += content[i];
+    count++;
+    if (count === MAX_LENGTH) {
+      formattedContent += '\n'; // 在达到最大长度时插入换行符
+      count = 0; // 重置计数器
+    }
+  }
+
+  return formattedContent;
+};
+
 function ChatMessage(props) {
   const { message } = props;
   const isRightAligned = (message.sender.nickname === props.nickname);
@@ -82,6 +104,32 @@ function ChatMessage(props) {
   let isImg = true
   const regex = /^http:\/\/.*\.(jpg|png|jpeg)$/i;
   isImg = regex.test(message.content);
+  if (message.sender.mail === "$notice$"){
+    let tempContent = ""
+    switch(message.content){
+      case "enter":
+        tempContent = (message.sender.nickname + "has enter the room!")
+        RoomMain.getRoomInfo({ id: RoomMain.roomInfor.id, flag: false })
+        break
+      case "quit":
+        tempContent = (message.sender.nickname + "has leave the room!")
+        RoomMain.getRoomInfo({ id: RoomMain.roomInfor.id, flag: false })
+        break
+      // 注意，这里是没有break的，因为在这一步之后房间会刷新
+      case "dismiss":
+        alert("the room has been closed")
+        RoomMain.getRoomList()
+        RoomMain.setState({roomSettingOpen: false})
+        RoomMain.setState({roomInfor: null})
+      default:
+        return <div></div>
+    }
+    return (
+      <center>
+        <Typography variant="caption" color="textSecondary" style={{ marginBottom: '20px'}}>-- {tempContent} --</Typography>
+      </center>
+    )
+  }
   return (
     <Box
       sx={{
@@ -95,10 +143,10 @@ function ChatMessage(props) {
         <React.Fragment>
           <Avatar {...stringAvatar(message.sender.nickname)} />
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Typography variant="body2" sx={{ fontSize: '8px' }}>
+          <Box sx={{ fontSize: '8px' }}>
             {isOwner ? (
               <span>
-                 <Box
+                  <Box
                   sx={{
                       backgroundColor: 'gold',
                       color: 'white',
@@ -114,7 +162,7 @@ function ChatMessage(props) {
               </span>
             ) : (<span></span>)}
             {message.sender.nickname+ ' ' + timeWithoutDate}
-          </Typography>
+          </Box>
             <Box
               sx={{
                 bgcolor: 'background.paper',
@@ -123,15 +171,15 @@ function ChatMessage(props) {
                 py: 1,
                 mt: 1,
                 mb: 1,
-                maxWidth: '70%',
+                maxWidth: '100%',
                 alignSelf: 'flex-start', // 根据条件确定消息框的对齐方式
               }}
             >
               {isImg ? (
                 <img src={message.content} alt="mi" style={{ maxWidth: '100px'}}/>
               ) : (
-                <Typography variant="body2" style={{ wordWrap: 'break-word' }}>
-                  {message.content}
+                <Typography variant="body2" style={{ whiteSpace: 'pre-line' }}>
+                  {formatMessageContent(message.content)}
                 </Typography>
               )}
             </Box>
@@ -141,7 +189,7 @@ function ChatMessage(props) {
       (
         <React.Fragment>
           <Box sx={{ display: 'flex', flexDirection: 'column' , mr: 2}}>
-            <Typography variant="body2" sx={{ fontSize: '8px', mr: 1, alignSelf: 'flex-end'}}>
+            <Box sx={{ fontSize: '8px', mr: 1, alignSelf: 'flex-end'}}>
               {isOwner ? (
                 <span>
                   <Box
@@ -160,7 +208,7 @@ function ChatMessage(props) {
                 </span>
               ) : (<span></span>)}
               {message.sender.nickname+ ' ' + timeWithoutDate}
-            </Typography>
+            </Box>
             <Box
               sx={{
                 bgcolor: 'background.paper',
@@ -169,15 +217,15 @@ function ChatMessage(props) {
                 py: 1,
                 mt: 1,
                 mb: 1,
-                maxWidth: '70%',
+                maxWidth: '100%',
                 alignSelf: 'flex-end', // 根据条件确定消息框的对齐方式
               }}
             >
               {isImg ? (
                 <img src={message.content} alt="mi" style={{ maxWidth: '100px'}}/>
               ) : (
-                <Typography variant="body2" style={{ wordWrap: 'break-word' }}>
-                  {message.content}
+                <Typography variant="body2" style={{ whiteSpace: 'pre-line' }}>
+                  {formatMessageContent(message.content)}
                 </Typography>
               )}
             </Box>
@@ -231,7 +279,7 @@ function RoomMain() {
   }, [messages]);
 
   useEffect(() => {
-  }, [roomList]);
+  }, [roomInfor]);
 
   useEffect(() => {
     scrollToBottom();
@@ -239,7 +287,7 @@ function RoomMain() {
 
   useEffect(() => {
     const handleKeyPress = (event) => {
-      if (event.key === "Enter") {
+      if (event.key === "Enter" && !roomCreateOpen && !roomSettingOpen && !roomEnterOpen) {
         sendMessage()
       }
     };
@@ -265,7 +313,7 @@ function RoomMain() {
 
   // const socket = new WebSocket('ws://localhost:15100/websocket/00000008/3052791719@qq.com');
   function enterRoom(id) {
-    getRoomInfo({id: id, cookie: Cookie['E-mail'].email});
+    getRoomInfo({id: id, cookie: Cookie['E-mail'].email, flag: true});
   }
 
   function isWhitespace(str) {
@@ -409,7 +457,7 @@ function RoomMain() {
         {/* 右侧栏 */}
         <Grid item xs={9} sx={{ backgroundColor: '#deefe9', display: 'flex', flexDirection: 'column' }}>
           {
-            roomInfor.id !== "123" ? (
+            (roomInfor !== null && roomInfor.id !== null) ? (
               <React.Fragment>
                 <Box sx={{
                   display: 'flex',

@@ -59,3 +59,21 @@ export const RoomGetMessageTest = (info) => request({
   data: info,
   method: 'post',
 })
+
+export const QuitRoom = (info) => request({
+  url: '/room/quit_room',
+  data: info,
+  method: 'post',
+})
+
+export const RemoveMember = (info) => request({
+  url: '/room/remove_member',
+  data: info,
+  method: 'post',
+})
+
+export const RoomDismiss = (info) => request({
+  url: '/room/dismiss_room',
+  data: info,
+  method: 'post',
+})

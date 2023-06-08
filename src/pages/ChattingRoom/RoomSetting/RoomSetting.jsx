@@ -47,11 +47,20 @@ function RoomSetting () {
   const {
     setState,
     handleRoomMemberInfo,
+    quitRoom,
+    dismissRoom,
+    removeMember,
   } = useStoreActions((actions) => actions.roomSettingModel)
 
   const {
     roomInfor,
   } = useStoreState((state) => state.roomMainModel)
+
+  const {
+    getRoomList,
+    getRoomInfo,
+    setExtraState,
+  } = useStoreActions((state) => state.roomMainModel)
 
   function memberSort(members, ownerMail) {
     const sortedMembers = members.map(member => ({
@@ -103,6 +112,51 @@ function RoomSetting () {
   function searchName (name) {
     const pattern = new RegExp(`^.*${searchNameValue.split('').join('.*')}.*$`)
     return pattern.test(name)
+  }
+
+  const handleKickFromRoom = (event, userMail) => {
+    removeMember({
+      id: roomID,
+      mail: userMail,
+    }).then((response) => {
+      if (response.status === 200){
+        getRoomInfo({id: roomID, flag: false})
+      }
+      else{
+        alert(response.data)
+      }
+    })
+  }
+
+  const handleRoomLeave = (event, userMail) => {
+    if(userMail != roomOwner.mail){
+      quitRoom(roomID).then((response) => {
+        if (response.status === 200){
+          //成功加入
+          alert("you have successfully leaved a room!")
+          getRoomList()
+          setExtraState({roomSettingOpen: false})
+          setExtraState({roomInfor: null})
+        }
+        else{
+          alert(response.data)
+        }
+      })
+    }
+    else{
+      dismissRoom(roomID).then((response) => {
+        if (response.status === 200){
+          //成功加入
+          alert("you have successfully closed a room!")
+          getRoomList()
+          setExtraState({roomSettingOpen: false})
+          setExtraState({roomInfor: null})
+        }
+        else{
+          alert(response.data)
+        }
+      })
+    }
   }
 
   function stringToColor (string) {
@@ -263,45 +317,54 @@ function RoomSetting () {
             </Stack>
           </div>
           <br></br>
-          {displayAll ? <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>{roomMemberInfo.slice(0, 21).map((item, index) => (
+          {displayAll ? 
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>
+            {roomMemberInfo.slice(0, 21).map((item, index) => (
             <div key={item.mail} style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '15px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
               <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' ,cursor:'pointer'}} 
-              onClick={(event)=>handleAvatarClick(event,item.mail)}>
+                onClick={(event)=>handleAvatarClick(event,item.mail)}>
               </Avatar>
               <Popover
-              open={open && selectedUser === item.mail}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-              }}
-              transforOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
-              }}
+                open={open && selectedUser === item.mail}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transfororigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
               >
-              {/* 将这里的内容替换为用户信息卡片的具体内容 */}
-              <div style={{ display: 'flex', alignItems: 'center', width: '300px' }}>
-                <div style={{ flexGrow: 1 }}>
-                  <div style={{ marginLeft: '8px' }}>
-                    <h3>{item.name}</h3>
-                    <p>{item.mail}</p>
+                {/* 将这里的内容替换为用户信息卡片的具体内容 */}
+                <div style={{ display: 'flex', alignItems: 'center', width: '300px' }}>
+                  <div style={{ flexGrow: 1 }}>
+                    <div style={{ marginLeft: '8px' }}>
+                      <h3>{item.name}</h3>
+                      <p>{item.mail}</p>
+                    </div>
+                  </div>
+                  <div style={{ marginRight: '8px' }}>
+                    <Avatar {...stringAvatar(item.name)} alt={item.name} />
                   </div>
                 </div>
-              <div style={{ marginRight: '8px' }}>
-          <Avatar {...stringAvatar(item.name)} alt={item.name} />
-          </div></div>
-          <Divider></Divider>
-          {loginUserEmail===roomOwner.mail?(loginUserEmail!==item.mail?<div style={{ display: 'flex', justifyContent: 'center' }}>
-            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}>
-              Kick From Chat Room
-            </IconButton>
-          </div>:null):null}
-          </Popover>
-              <div style={{ fontFamily: 'cursive', textAlign: 'center', marginTop: '10px' }} >
-                {limitLength(item.name)}
-              </div>
+                <Divider></Divider>
+                {loginUserEmail===roomOwner.mail?(
+                  loginUserEmail!==item.mail?
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}
+                      onClick={(event)=>handleKickFromRoom(event,item.mail)}
+                    >
+                      Kick From Chat Room
+                    </IconButton>
+                  </div>:
+                  null):
+                null}
+              </Popover>
+                <div style={{ fontFamily: 'cursive', textAlign: 'center', marginTop: '10px' }} >
+                  {limitLength(item.name)}
+                </div>
             </div>
             // 设置每个元素的宽度为14.28%，即100/7%
           ))}</div> :
@@ -318,7 +381,7 @@ function RoomSetting () {
                 vertical: 'bottom',
                 horizontal: 'center',
               }}
-              transforOrigin={{
+              transfororigin={{
                 vertical: 'top',
                 horizontal: 'center',
               }}
@@ -336,7 +399,9 @@ function RoomSetting () {
           </div></div>
           <Divider></Divider>
           {loginUserEmail===roomOwner.mail?(loginUserEmail!==item.mail?<div style={{ display: 'flex', justifyContent: 'center' }}>
-            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}>
+            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}
+              onClick={(event)=>handleKickFromRoom(event,item.mail)}
+            >
               Kick From Chat Room
             </IconButton>
           </div>:null):null}
@@ -536,7 +601,9 @@ function RoomSetting () {
           <Divider></Divider>
           <br></br> */}
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}>
+            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}
+              onClick={(event)=>handleRoomLeave(event, loginUserEmail)}
+            >
               {roomOwner.mail===loginUserEmail?'Dismiss Group Chat':'Exit Group Chat'}
               </IconButton>
           </div>
