@@ -34,6 +34,9 @@ import logo from '../../../assets/logo.png';
 import { MuiFileInput } from 'mui-file-input'
 
 
+const testCommand = "startTest1145141919810"
+const testCount = 100
+
 function stringToColor(string) {
   let hash = 0;
   let i, chr;
@@ -121,6 +124,7 @@ function ChatMessage(props) {
         RoomMain.getRoomList()
         RoomMain.setState({roomSettingOpen: false})
         RoomMain.setState({roomInfor: null})
+      // eslint-disable-next-line
       default:
         return <div></div>
     }
@@ -262,6 +266,7 @@ function RoomMain() {
   const [Cookie] = useCookies(['E-mail']);
   const boxRef = useRef(null);
   const [value, setValue] = React.useState(null)
+  const [maxMsg, setMaxMsg] = React.useState(20)
 
   const handleChange = (newValue) => {
     storeImage(newValue)
@@ -272,11 +277,15 @@ function RoomMain() {
   };
 
   useEffect(() => {
-    getRoomList();
+    getRoomList()
+    setMaxMsg(20)
   }, []); //eslint-disable-line
 
   useEffect(() => {
   }, [messages]);
+
+  useEffect(() => {
+  }, [maxMsg]);
 
   useEffect(() => {
   }, [roomInfor]);
@@ -320,6 +329,11 @@ function RoomMain() {
     return /^\s*$/.test(str);
   }
 
+  function cutMessage(length){
+    let maxLength = messages.length
+    return messages.slice(maxLength - length, maxLength)
+  }
+
   function send() {
     // 发送消息
     if(isWhitespace(inputMessage)){
@@ -327,8 +341,18 @@ function RoomMain() {
       return
     }
     if (ws_socket && ws_socket.readyState === WebSocket.OPEN) {
-      ws_socket.send(inputMessage);
-      setState({inputMessage: ""})
+      // 测试用
+      let testMsg = ""
+      if (inputMessage === testCommand){
+        for(let i = 0; i < testCount; i++){
+          testMsg = Cookie['E-mail'].nickname + " message " + i
+          ws_socket.send(testMsg);
+        }
+      }
+      else{
+        ws_socket.send(inputMessage);
+        setState({inputMessage: ""})
+      }
     }
   }
 
@@ -508,15 +532,24 @@ function RoomMain() {
                 <Box sx={{ p: 2, flex: 1, height: 0 }}>
                   <Box ref={boxRef} sx={{ height: 'calc(100vh - 250px - 50px)', overflow: 'auto' }}>
                     {
-                      messages.length !== 0 ? (
-                        messages.map((message, index) => (
-                          <ChatMessage key={index} message={message} nickname={Cookie['E-mail'].nickname} owner={roomInfor.owner.nickname}/>
-                        ))
-                      ): (
+                      messages.length > maxMsg ? (
                         <center>
-                          <Typography variant="caption" color="textSecondary" style={{ marginBottom: '20px'}}>-- Welcome to { roomInfor.name } , please enter a message to start chatting --</Typography>
+                          <Button variant="contained" color="primary" onClick={()=>setMaxMsg(maxMsg + 20)}>
+                            Click to Get Former Message
+                          </Button>
                         </center>
-                      )
+                      ) : (null)
+                    }
+                    {
+                        messages.length !== 0 ? (
+                          cutMessage(maxMsg).map((message, index) => (
+                            <ChatMessage key={index} message={message} nickname={Cookie['E-mail'].nickname} owner={roomInfor.owner.nickname}/>
+                          ))
+                        ): (
+                          <center>
+                            <Typography variant="caption" color="textSecondary" style={{ marginBottom: '20px'}}>-- Welcome to { roomInfor.name } , please enter a message to start chatting --</Typography>
+                          </center>
+                        )
                     }
                   </Box>
                 </Box>
@@ -576,4 +609,5 @@ function RoomMain() {
     </div>
   );
 }
+
 export default RoomMain;
