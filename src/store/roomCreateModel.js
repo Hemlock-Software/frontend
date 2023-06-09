@@ -84,7 +84,7 @@ export const roomCreateModel = {
       {
         name: name,
         password: sha256Password,
-        maxUserNumber: maxUserNumber,
+        maxUsers: maxUserNumber,
       }
     )
     return response
