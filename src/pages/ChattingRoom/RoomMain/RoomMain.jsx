@@ -111,19 +111,14 @@ function ChatMessage(props) {
     let tempContent = ""
     switch(message.content){
       case "enter":
-        tempContent = (message.sender.nickname + "has enter the room!")
-        RoomMain.getRoomInfo({ id: RoomMain.roomInfor.id, flag: false })
+        tempContent = (message.sender.nickname + " has entered the room!")
         break
       case "quit":
-        tempContent = (message.sender.nickname + "has leave the room!")
-        RoomMain.getRoomInfo({ id: RoomMain.roomInfor.id, flag: false })
+        tempContent = (message.sender.nickname + " has left the room!")
         break
       // 注意，这里是没有break的，因为在这一步之后房间会刷新
       case "dismiss":
         alert("the room has been closed")
-        RoomMain.getRoomList()
-        RoomMain.setState({roomSettingOpen: false})
-        RoomMain.setState({roomInfor: null})
       // eslint-disable-next-line
       default:
         return <div></div>

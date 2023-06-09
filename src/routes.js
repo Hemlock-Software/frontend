@@ -11,7 +11,18 @@ import RoomMain from './pages/ChattingRoom/RoomMain/RoomMain'
  * @param {boolean} exact - 路由精确匹配或者模糊匹配
  * @param {element} element - 导入的组件
  */
-
+const protectedroutes = [
+  {
+    path: '/room/create',
+    exact: true,
+    element: <RoomCreate />
+  },
+  {
+    path: '/room/main',
+    exact: true,
+    element: <RoomMain />
+  }
+]
 const routes = [
   {
     path: '/',
@@ -32,17 +43,7 @@ const routes = [
     path: '/retrievePassword',
     exact: true,
     element: <RetrievePassword />
-  },
-  {
-    path: '/room/create',
-    exact: true,
-    element: <RoomCreate />
-  },
-  {
-    path: '/room/main',
-    exact: true,
-    element: <RoomMain />
   }
 ];
-
+export {protectedroutes};
 export default routes;
