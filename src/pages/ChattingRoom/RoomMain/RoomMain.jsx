@@ -489,7 +489,7 @@ function RoomMain() {
                     sx={{ mr: 1 }}
                     onChange={(e)=>setState({inputMessage: e.target.value})}
                   />
-                  <MuiFileInput label="Upload image" sx={{ mr: 1, width: "20%"}} value={value} onChange={handleChange} />
+                  <MuiFileInput placeholder="Upload image" sx={{ mr: 1, width: "32%"}} value={value} onChange={handleChange} />
                   <Button variant="contained" color="primary" onClick={send}>
                     Send
                   </Button>
