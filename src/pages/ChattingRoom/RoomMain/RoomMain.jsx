@@ -334,6 +334,21 @@ function RoomMain() {
     return messages.slice(maxLength - length, maxLength)
   }
 
+  function sendMessageWithDelay(ws_socket) {
+    let i = 0;
+  
+    function sendDelayedMessage() {
+      if (i < testCount) {
+        const testMsg = Cookie['E-mail'].nickname + " message " + i;
+        ws_socket.send(testMsg);
+        i++;
+        setTimeout(sendDelayedMessage, 200); // 延迟 200 ms 发送下一条消息
+      }
+    }
+  
+    sendDelayedMessage();
+  }
+
   function send() {
     // 发送消息
     if(isWhitespace(inputMessage)){
@@ -342,12 +357,8 @@ function RoomMain() {
     }
     if (ws_socket && ws_socket.readyState === WebSocket.OPEN) {
       // 测试用
-      let testMsg = ""
       if (inputMessage === testCommand){
-        for(let i = 0; i < testCount; i++){
-          testMsg = Cookie['E-mail'].nickname + " message " + i
-          ws_socket.send(testMsg);
-        }
+        sendMessageWithDelay(ws_socket)
       }
       else{
         ws_socket.send(inputMessage);
