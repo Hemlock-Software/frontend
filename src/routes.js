@@ -45,5 +45,4 @@ const routes = [
     element: <RetrievePassword />
   }
 ];
-export {protectedroutes};
-export default routes;
+export {routes, protectedroutes};
