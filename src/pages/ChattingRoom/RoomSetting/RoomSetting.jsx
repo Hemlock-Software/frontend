@@ -179,6 +179,9 @@ function RoomSetting () {
     let abbr
     let bgcolor
 
+    if(name===''){
+      name='anonymous'
+    }
     // 判断是否为中文
     if (/^[\u4e00-\u9fa5]+$/.test(name)) {
       abbr = name.substring(0, 1)
@@ -199,6 +202,9 @@ function RoomSetting () {
 
   // 限制给定的群成员名称的长度，防止换行或扩充
   function limitLength (name) {
+    if(name===''){
+      name='anonymous'
+    }
     let maxLength = 3
     if (/^[\u4e00-\u9fa5]+$/.test(name)) {
       maxLength = 2
@@ -341,7 +347,7 @@ function RoomSetting () {
                 <div style={{ display: 'flex', alignItems: 'center', width: '300px' }}>
                   <div style={{ flexGrow: 1 }}>
                     <div style={{ marginLeft: '8px' }}>
-                      <h3>{item.name}</h3>
+                      <h3>{item.name===''?'anonymous':item.name}</h3>
                       <p>{item.mail}</p>
                     </div>
                   </div>
@@ -390,7 +396,7 @@ function RoomSetting () {
               <div style={{ display: 'flex', alignItems: 'center', width: '300px' }}>
                 <div style={{ flexGrow: 1 }}>
                   <div style={{ marginLeft: '8px' }}>
-                    <h3>{item.name}</h3>
+                    <h3>{item.name===''?'anonymous':item.name}</h3>
                     <p>{item.mail}</p>
                   </div>
                 </div>
