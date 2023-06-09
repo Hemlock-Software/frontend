@@ -81,6 +81,7 @@ export const roomMainModel = {
         }
         getState().ws_socket.onmessage = (event) => {
           let temp = JSON.parse(event.data)
+          console.log(temp)
           actions.setState({ messages: [...getState().messages, temp] })
         }
       }
