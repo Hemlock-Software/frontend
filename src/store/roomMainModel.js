@@ -74,7 +74,6 @@ export const roomMainModel = {
       if (responseMessage.status === 200) {
         // 更新Infor
         let temp_data = responseMessage.data
-        if (temp_data.length > 0) temp_data.reverse()
         actions.setState({ messages: temp_data })
         if(needWSChange){
           actions.setState({ ws_socket: new WebSocket('ws' + config.baseURL.replace("http", "") + '/websocket/' + getState().roomInfor.id + '/' + payload.cookie) })
