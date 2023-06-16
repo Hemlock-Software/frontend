@@ -65,7 +65,7 @@ export default function RoomEnter() {
           getRoomList()
         }
         else{
-          console.log(response)
+          // console.log(response)
           alert(response.data)
         }
       })

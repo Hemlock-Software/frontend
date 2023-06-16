@@ -219,7 +219,7 @@ function RoomSetting () {
   }
 
   function testClick(){
-    console.log('test')
+    // console.log('test')
   }
   return (
     <div>
