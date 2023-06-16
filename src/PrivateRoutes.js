@@ -16,7 +16,7 @@ const PrivateRoutes = ({cookies }) => {
       //console.log('Email cookie:', email);
       authentication = true;
     }
-  console.log(email);
+  // console.log(email);
   //let authentication = document.cookie.includes('E-mail');
 
   return(

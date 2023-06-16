@@ -219,13 +219,13 @@ function RoomSetting () {
   }
 
   function testClick(){
-    console.log('test')
+    // console.log('test')
   }
   return (
     <div>
       <Card sx={{ width: 600, overflow: 'auto', height: 750 }}>
         <CardContent sx={{ overflow: 'auto' }}>
-          <div className='roomSetting' style={{ fontFamily: 'cursive' }}>
+          <div className='roomSetting' style={{ }}>
             Room Setting
           </div>
           <Stack direction="row" spacing={2}>
@@ -236,7 +236,7 @@ function RoomSetting () {
                   {/* 用 src=''来表示群头像 */}
                 </Avatar>
               </ListItemAvatar>
-              <div style={{ fontFamily: 'cursive', textAlign: 'center', marginTop: '0px' }}>
+              <div style={{ textAlign: 'center', marginTop: '0px' }}>
                 {roomName}
               </div>
             </ListItem>
@@ -247,7 +247,7 @@ function RoomSetting () {
           <div className='parent'>
             <Stack direction="row" spacing={2}>
               <Stack direction='column' spacing={1}></Stack>
-              <div style={{ fontFamily: 'cursive', textAlign: 'center', marginTop: '0px' }}>
+              <div style={{  textAlign: 'center', marginTop: '0px' }}>
                 {'Room Member ' + roomMemberNum + ' people'}
               </div>
               <Stack direction="row" spacing={2}>
@@ -265,7 +265,7 @@ function RoomSetting () {
                           })
                         }
                       >
-                        <div style={{ height: 0, display: 'flex', alignItems: 'center', fontFamily: 'cursive' }}>
+                        <div style={{ height: 0, display: 'flex', alignItems: 'center',  }}>
                           Cancel
                         </div>
                       </IconButton>
@@ -359,7 +359,7 @@ function RoomSetting () {
                 {loginUserEmail===roomOwner.mail?(
                   loginUserEmail!==item.mail?
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}
+                    <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red',  }}
                       onClick={(event)=>handleKickFromRoom(event,item.mail)}
                     >
                       Kick From Chat Room
@@ -368,7 +368,7 @@ function RoomSetting () {
                   null):
                 null}
               </Popover>
-                <div style={{ fontFamily: 'cursive', textAlign: 'center', marginTop: '10px' }} >
+                <div style={{  textAlign: 'center', marginTop: '10px' }} >
                   {limitLength(item.name)}
                 </div>
             </div>
@@ -405,14 +405,14 @@ function RoomSetting () {
           </div></div>
           <Divider></Divider>
           {loginUserEmail===roomOwner.mail?(loginUserEmail!==item.mail?<div style={{ display: 'flex', justifyContent: 'center' }}>
-            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}
+            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red',  }}
               onClick={(event)=>handleKickFromRoom(event,item.mail)}
             >
               Kick From Chat Room
             </IconButton>
           </div>:null):null}
           </Popover>
-                <div style={{ fontFamily: 'cursive',textAlign: 'center', marginTop: 10 }}>
+                <div style={{ textAlign: 'center', marginTop: 10 }}>
                   {limitLength(item.name)}
                 </div>
               </div>
@@ -428,7 +428,7 @@ function RoomSetting () {
           <br></br>
           <Stack direction="row" spacing={2} alignItems="center">
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               nickname in this room
             </Typography>} />
             <TextField
@@ -447,7 +447,7 @@ function RoomSetting () {
           <br></br>
           <Stack direction="row" spacing={2}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               pin chat
             </Typography>} />
             <FormControlLabel
@@ -470,7 +470,7 @@ function RoomSetting () {
           <br></br>
           <Stack direction="row" spacing={2}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               mute notifications
             </Typography>} />
             <FormControlLabel
@@ -493,7 +493,7 @@ function RoomSetting () {
           <br></br>
           <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               room label
             </Typography>} />
           </Stack>
@@ -501,7 +501,7 @@ function RoomSetting () {
           <br></br>
           <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               room type
             </Typography>} />
           </Stack>
@@ -509,42 +509,42 @@ function RoomSetting () {
           <br></br>
           {/* <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
           <Divider></Divider>
           <br></br><Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
           <Divider></Divider>
           <br></br><Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
           <Divider></Divider>
           <br></br><Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
           <Divider></Divider>
           <br></br><Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
           <Divider></Divider>
           <br></br><Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
@@ -552,7 +552,7 @@ function RoomSetting () {
           <br></br>
           <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
@@ -560,7 +560,7 @@ function RoomSetting () {
           <br></br>
           <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
@@ -568,7 +568,7 @@ function RoomSetting () {
           <br></br>
           <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
@@ -576,7 +576,7 @@ function RoomSetting () {
           <br></br>
           <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
@@ -584,7 +584,7 @@ function RoomSetting () {
           <br></br>
           <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
@@ -592,7 +592,7 @@ function RoomSetting () {
           <br></br>
           <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
@@ -600,14 +600,14 @@ function RoomSetting () {
           <br></br>
           <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
-            <ListItemText primary={<Typography variant="body1" style={{ fontFamily: 'cursive' }}>
+            <ListItemText primary={<Typography variant="body1" style={{  }}>
               test block
             </Typography>} />
           </Stack>
           <Divider></Divider>
           <br></br> */}
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red', fontFamily: 'cursive' }}
+            <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red',  }}
               onClick={(event)=>handleRoomLeave(event, loginUserEmail)}
             >
               {roomOwner.mail===loginUserEmail?'Dismiss Group Chat':'Exit Group Chat'}
