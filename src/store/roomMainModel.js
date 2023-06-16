@@ -76,7 +76,7 @@ export const roomMainModel = {
         let temp_data = responseMessage.data
         actions.setState({ messages: temp_data })
         if(needWSChange){
-          actions.setState({ ws_socket: new WebSocket('ws' + config.baseURL.replace("http", "") + '/websocket/' + getState().roomInfor.id + '/' + payload.cookie) })
+          actions.setState({ ws_socket: new WebSocket('ws' + config.baseURL.replace("http", "") + '/websocket?roomid=' + getState().roomInfor.id + '&username=' + payload.cookie) })
         }
         getState().ws_socket.onmessage = (event) => {
           let temp = JSON.parse(event.data)
