@@ -326,6 +326,7 @@ function RoomMain() {
 
   function cutMessage(length){
     let maxLength = messages.length
+    if(maxLength <= length) return messages
     return messages.slice(maxLength - length, maxLength)
   }
 
