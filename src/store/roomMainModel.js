@@ -115,9 +115,10 @@ export const roomMainModel = {
 
   storeImage: thunk(async (actions, payload, { getState }) => {
     const formData = new FormData();
-    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"]; // 允许的图片类型
+    console.log(payload.type)
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif", "image/ico", "image/bmp", "image/webp"]; // 允许的图片类型
     if(!allowedTypes.includes(payload.type)){
-      alert("This is not a jpg/png/jpeg file!")
+      alert("This is not a image file!")
       return
     }
 

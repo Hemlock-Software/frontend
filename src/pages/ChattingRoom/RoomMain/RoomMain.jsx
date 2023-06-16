@@ -105,7 +105,7 @@ function ChatMessage(props) {
   const timestamp = message.time;
   const timeWithoutDate = timestamp.substring(timestamp.indexOf(":") + 1).trim();
   let isImg = true
-  const regex = /^http:\/\/.*\.(jpg|png|jpeg)$/i;
+  const regex = /^http:\/\/.*\.(jpg|png|jpeg|gif|ico|bmp|webp|)$/i;
   isImg = regex.test(message.content);
   if (message.sender.mail === "$notice$"){
     let tempContent = ""
@@ -324,6 +324,17 @@ function RoomMain() {
     return /^\s*$/.test(str);
   }
 
+  function imageError(str) {
+    const imageExtensions = ['png', 'jpg', 'jpeg', 'svg', 'bmp', 'gif', 'webp', 'ico'];
+    const endsWithImageExtension = imageExtensions.some(extension => str.toLowerCase().endsWith(extension));
+  
+    if (!endsWithImageExtension) {
+      // 在这里处理图片错误的逻辑
+      return false;
+    }
+    return true;
+  }
+
   function cutMessage(length){
     let maxLength = messages.length
     if(maxLength <= length) return messages
@@ -349,6 +360,10 @@ function RoomMain() {
     // 发送消息
     if(isWhitespace(inputMessage)){
       alert("Message must not be empty!")
+      return
+    }
+    if(imageError(inputMessage)){
+      alert("Message illegal!")
       return
     }
     if (ws_socket && ws_socket.readyState === WebSocket.OPEN) {
