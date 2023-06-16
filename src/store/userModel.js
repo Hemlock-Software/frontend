@@ -147,7 +147,6 @@ onVerifyCodeChange: action((state, payload) => {
     }else {
         state.checkFlag = false
     }
-    console.log(2)
   }),
 
 // 表单空验证

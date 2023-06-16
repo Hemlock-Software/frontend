@@ -61,7 +61,7 @@ export default function RoomCreate() {
         if (response.status !== 200) {
           alert(response.data)
         } else {
-          console.log("Successfully created")
+          // console.log("Successfully created")
           getRoomList()
           setState({ roomCreateOpen: false })
         }

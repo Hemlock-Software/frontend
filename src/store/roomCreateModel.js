@@ -62,9 +62,9 @@ export const roomCreateModel = {
       if(/[^0-9]/.test(payload) || isNaN(num)){
         state.maxUserNumberFlag = false
         state.errorMaxUserNumberMsg = 'Can only contain a integer'
-      }else if(num < 1 || num > 500){
+      }else if(num < 1 || num > 100000){
         state.maxUserNumberFlag = false
-        state.errorMaxUserNumberMsg = 'Maximum number of users must be 1-500'
+        state.errorMaxUserNumberMsg = 'Maximum number of users must be 1-100000'
       }
     }
   }),
@@ -84,7 +84,7 @@ export const roomCreateModel = {
       {
         name: name,
         password: sha256Password,
-        maxUserNumber: maxUserNumber,
+        maxUsers: maxUserNumber,
       }
     )
     return response

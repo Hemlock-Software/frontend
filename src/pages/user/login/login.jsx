@@ -119,12 +119,12 @@ function Login(){
   <Grid item xs={12}>
     <Grid container spacing={4} justifyContent="space-between">
       <Grid item >
-        <Link href="/retrievePassword" variant="standard">
+        <Link href="/#/retrievePassword" variant="standard">
           Forgot password?
         </Link>
       </Grid>
       <Grid item>
-        <Link href="/register" variant="standard">
+        <Link href="/#/register" variant="standard">
           No account? Register
         </Link>
       </Grid>
