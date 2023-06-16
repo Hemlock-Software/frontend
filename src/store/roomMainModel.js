@@ -77,7 +77,7 @@ export const roomMainModel = {
         let temp_data = responseMessage.data
         actions.setState({ messages: temp_data })
         if(needWSChange){
-          actions.setState({ ws_socket: new WebSocket('ws' + config.baseURL.replace("http", "") + 'websocket?roomid=' + getState().roomInfor.id + '&username=' + payload.cookie) })
+          actions.setState({ ws_socket: new WebSocket('ws' + config.baseURL.replace("http", "") + 'websocket?roomid=' + getState().roomInfor.id + '&username=' + payload.cookie + '&token=' + localStorage.getItem('token')) })
         }
         getState().ws_socket.onmessage = (event) => {
           let temp = JSON.parse(event.data);
@@ -123,13 +123,13 @@ export const roomMainModel = {
     }
 
     formData.append('file', payload);
-  
+
     const response = await axios.post(config.imageURL + 'api/v1/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-  
+
     if (response.status !== 200) {
       alert(response.data);
     } else {
