@@ -33,8 +33,8 @@ function Welcome() {
       direction="column"
       justifyContent="center"
       alignItems="center"
-      style={{ height: '100vh', textAlign: 'center', 
-        backgroundImage: `url(${background})`, 
+      style={{ height: '100vh', textAlign: 'center',
+        backgroundImage: `url(${background})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -47,10 +47,10 @@ function Welcome() {
           Welcome to HemLock Chat!
         </h1>
       </Grid>
-      <Typography variant="caption" color="textSecondary" style={{ marginBottom: '20px'}}>© 2023 The Website designed by G01</Typography>
+      <Typography variant="caption" color="textSecondary" style={{ marginBottom: '20px'}}>© 2023 This Website was designed by G01</Typography>
       <Grid>
         <Button variant="contained" color="primary" onClick={submitLogin}>
-          Login
+          Log in
         </Button>
         <span style={{ margin: '0 10px' }}></span>
         <Button variant="outlined" color="primary" onClick={submitRegister}>

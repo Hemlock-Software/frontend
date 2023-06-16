@@ -25,7 +25,7 @@ export default function CheckPassword() {
             required
             fullWidth
             id="password"
-            label={passwordFlag ? 'enter password' : errorPasswordMsg}
+            label={passwordFlag ? 'Enter password' : errorPasswordMsg}
             variant="standard"
             onChange={(e) => onPasswordChange(e.target.value)}
             error={!passwordFlag}
@@ -33,7 +33,7 @@ export default function CheckPassword() {
             </Grid>
         </Grid>
 
-            
+
         </React.Fragment>
     );
-}  
+}

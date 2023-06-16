@@ -46,10 +46,10 @@ export default function MyAppBar() {
           {Cookie['E-mail'] ? (
             <React.Fragment>
               <Button color="inherit">{Cookie['E-mail'].nickname}</Button>
-              <Button color="inherit" onClick={Logout}>Logout</Button>
+              <Button color="inherit" onClick={Logout}>Log out</Button>
             </React.Fragment>) : (
             <React.Fragment>
-              <Button color="inherit" onClick={JumpLogin}>Login</Button>
+              <Button color="inherit" onClick={JumpLogin}>Log in</Button>
               <Button color="inherit" onClick={Jumpregister}>Register</Button>
             </React.Fragment>
           )}
@@ -58,4 +58,3 @@ export default function MyAppBar() {
     </Box>
   )
 }
-

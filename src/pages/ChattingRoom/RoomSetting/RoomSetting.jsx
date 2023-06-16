@@ -67,7 +67,7 @@ function RoomSetting () {
       name: member.nickname,
       mail: member.mail
     }));
-  
+
     sortedMembers.sort((a, b) => {
       if (a.mail === ownerMail) {
         return -1; // a在b之前
@@ -77,7 +77,7 @@ function RoomSetting () {
       }
       return 0; // 保持原有顺序
     });
-  
+
     return sortedMembers;
   }
   //依赖项
@@ -108,7 +108,7 @@ function RoomSetting () {
   };
 
   const open = Boolean(anchorEl);
-  
+
   function searchName (name) {
     const pattern = new RegExp(`^.*${searchNameValue.split('').join('.*')}.*$`)
     return pattern.test(name)
@@ -133,7 +133,7 @@ function RoomSetting () {
       quitRoom(roomID).then((response) => {
         if (response.status === 200){
           //成功加入
-          alert("you have successfully leaved a room!")
+          alert("You have successfully left the room!")
           getRoomList()
           setExtraState({roomSettingOpen: false})
           setExtraState({roomInfor: null})
@@ -147,7 +147,7 @@ function RoomSetting () {
       dismissRoom(roomID).then((response) => {
         if (response.status === 200){
           //成功加入
-          alert("you have successfully closed a room!")
+          alert("You have successfully deleted the room!")
           getRoomList()
           setExtraState({roomSettingOpen: false})
           setExtraState({roomInfor: null})
@@ -218,20 +218,17 @@ function RoomSetting () {
     return name
   }
 
-  function testClick(){
-    // console.log('test')
-  }
   return (
     <div>
       <Card sx={{ width: 600, overflow: 'auto', height: 750 }}>
         <CardContent sx={{ overflow: 'auto' }}>
           <div className='roomSetting' style={{ }}>
-            Room Setting
+            Room Settings
           </div>
           <Stack direction="row" spacing={2}>
             <ListItem>
               <ListItemAvatar>
-                <Avatar {...stringAvatar(roomName)} variant="square" style={{ borderRadius: '10px' 
+                <Avatar {...stringAvatar(roomName)} variant="square" style={{ borderRadius: '10px'
                }} onClick={handleAvatarClick}>
                   {/* 用 src=''来表示群头像 */}
                 </Avatar>
@@ -248,7 +245,7 @@ function RoomSetting () {
             <Stack direction="row" spacing={2}>
               <Stack direction='column' spacing={1}></Stack>
               <div style={{  textAlign: 'center', marginTop: '0px' }}>
-                {'Room Member ' + roomMemberNum + ' people'}
+                {'Room Members: ' + roomMemberNum + ' people'}
               </div>
               <Stack direction="row" spacing={2}>
                 <div className='child' style={{ display: 'flex' }}>
@@ -323,11 +320,11 @@ function RoomSetting () {
             </Stack>
           </div>
           <br></br>
-          {displayAll ? 
+          {displayAll ?
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>
             {roomMemberInfo.slice(0, 21).map((item, index) => (
             <div key={item.mail} style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '15px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
-              <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' ,cursor:'pointer'}} 
+              <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' ,cursor:'pointer'}}
                 onClick={(event)=>handleAvatarClick(event,item.mail)}>
               </Avatar>
               <Popover
@@ -362,7 +359,7 @@ function RoomSetting () {
                     <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red',  }}
                       onClick={(event)=>handleKickFromRoom(event,item.mail)}
                     >
-                      Kick From Chat Room
+                      Kick from chat room
                     </IconButton>
                   </div>:
                   null):
@@ -376,7 +373,7 @@ function RoomSetting () {
           ))}</div> :
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>{roomMemberInfo.slice(0, 21).filter(member => searchName(member.name)).map((item, index) => (
               <div key={item.mail} style={{ display: 'flex', flexBasis: '10%', flexDirection: 'column', margin: '15px', alignItems: 'center', flexBasis: '10%', flexGrow: 0 }}>
-                <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' ,cursor:'pointer'}} 
+                <Avatar {...stringAvatar(item.name)} variant="square" style={{ borderRadius: '10px' ,cursor:'pointer'}}
               onClick={(event)=>handleAvatarClick(event,item.mail)}>
               </Avatar>
               <Popover
@@ -408,7 +405,7 @@ function RoomSetting () {
             <IconButton color="primary" typography="body2" style={{ fontSize: '20px', color: 'red',  }}
               onClick={(event)=>handleKickFromRoom(event,item.mail)}
             >
-              Kick From Chat Room
+              Kick from chat room
             </IconButton>
           </div>:null):null}
           </Popover>
@@ -421,7 +418,7 @@ function RoomSetting () {
           {/* 如果人数超过18，则显示'check more'按钮 */}
           {
             checkMoreFlag ? <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <IconButton color="primary" typography="body2" style={{ fontSize: '12px' }}>Check More</IconButton>
+              <IconButton color="primary" typography="body2" style={{ fontSize: '12px' }}>Show more</IconButton>
             </div> : null
           }
           <Divider></Divider>
@@ -429,7 +426,7 @@ function RoomSetting () {
           <Stack direction="row" spacing={2} alignItems="center">
             <Stack direction='column' spacing={1}></Stack>
             <ListItemText primary={<Typography variant="body1" style={{  }}>
-              nickname in this room
+              Chat room nickname
             </Typography>} />
             <TextField
               id="standard-password-input"
@@ -448,7 +445,7 @@ function RoomSetting () {
           <Stack direction="row" spacing={2}>
             <Stack direction='column' spacing={1}></Stack>
             <ListItemText primary={<Typography variant="body1" style={{  }}>
-              pin chat
+              Pin chat
             </Typography>} />
             <FormControlLabel
               sx={{
@@ -471,7 +468,7 @@ function RoomSetting () {
           <Stack direction="row" spacing={2}>
             <Stack direction='column' spacing={1}></Stack>
             <ListItemText primary={<Typography variant="body1" style={{  }}>
-              mute notifications
+              Mute notifications
             </Typography>} />
             <FormControlLabel
               sx={{
@@ -494,7 +491,7 @@ function RoomSetting () {
           <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
             <ListItemText primary={<Typography variant="body1" style={{  }}>
-              room label
+              Room label
             </Typography>} />
           </Stack>
           <Divider></Divider>
@@ -502,7 +499,7 @@ function RoomSetting () {
           <Stack direction="row" spacing={2} sx={{ height: "50%", pt: 0, pb: 1 }}>
             <Stack direction='column' spacing={1}></Stack>
             <ListItemText primary={<Typography variant="body1" style={{  }}>
-              room type
+              Room type
             </Typography>} />
           </Stack>
           <Divider></Divider>

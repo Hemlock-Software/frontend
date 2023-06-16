@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router'
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
 
-const steps = ['Room Enter', 'Check password'];
+const steps = ['Room ID Enter', 'Check Password'];
 
 function getStepContent(step) {
   switch (step) {
@@ -51,7 +51,7 @@ export default function RoomEnter() {
         if(roomID.length === 8)
         setActiveStep(activeStep + 1);
         else
-        alert('Please enter the valid Room ID!')
+        alert('Please enter a valid room ID!')
       }else {
         alert('Room ID can not be void!')
       }
@@ -73,7 +73,7 @@ export default function RoomEnter() {
   };
 
   const handleBack = () => {
-    setActiveStep(activeStep - 1);  
+    setActiveStep(activeStep - 1);
   };
 
   return (
@@ -81,7 +81,7 @@ export default function RoomEnter() {
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper elevation={4} sx={{ my: { xs: 3, md: 6 }, p: { xs: 3, md: 3 } }}>
           <Typography component="h1" variant="h4" align="center">
-            Enter Room  
+            Enter Room
           </Typography>
           {/*step部分 */ }
           <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 , pl: 6, pr: 3}}>
@@ -97,7 +97,7 @@ export default function RoomEnter() {
             <React.Fragment>
               {getStepContent(activeStep)}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                {activeStep !== 0 && 
+                {activeStep !== 0 &&
                 (
                   <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
                     Back

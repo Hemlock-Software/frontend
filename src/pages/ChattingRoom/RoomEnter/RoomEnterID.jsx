@@ -18,7 +18,7 @@ export default function RoomEnterID() {
             <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
                  RoomID
             </Typography>
-            <Grid container spacing={3} ml={3}>        
+            <Grid container spacing={3} ml={3}>
         <Grid item xs={12} sm={7}>
           <TextField
             required
@@ -30,7 +30,7 @@ export default function RoomEnterID() {
             error={!idFlag}
           />
             </Grid>
-        </Grid> 
+        </Grid>
         </React.Fragment>
     );
-}  
+}

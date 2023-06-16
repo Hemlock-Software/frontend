@@ -17,7 +17,7 @@ export default function Review() {
       <Grid container spacing={3} ml={3}>
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom ml={6}>
-            Room summary
+            Room Summary
           </Typography>
         </Grid>
 

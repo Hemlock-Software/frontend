@@ -118,7 +118,7 @@ function ChatMessage(props) {
         break
       // 注意，这里是没有break的，因为在这一步之后房间会刷新
       case "dismiss":
-        alert("the room has been closed")
+        alert("The room has been closed!")
       // eslint-disable-next-line
       default:
         return <div></div>
@@ -243,14 +243,14 @@ function RoomMain() {
     roomInfor,
     roomList,
     ws_socket,
-    messages, 
-    roomCreateOpen, 
-    roomSettingOpen, 
+    messages,
+    roomCreateOpen,
+    roomSettingOpen,
     roomEnterOpen,
     inputMessage,
-  } 
+  }
   = useStoreState((state) => state.roomMainModel)
-  const { 
+  const {
     setState,
     getRoomList,
     getRoomInfo,
@@ -327,7 +327,7 @@ function RoomMain() {
   function imageError(str) {
     const imageExtensions = ['png', 'jpg', 'jpeg', 'svg', 'bmp', 'gif', 'webp', 'ico'];
     const endsWithImageExtension = imageExtensions.some(extension => str.toLowerCase().endsWith(extension));
-  
+
     if (!endsWithImageExtension) {
       // 在这里处理图片错误的逻辑
       return false;
@@ -343,7 +343,7 @@ function RoomMain() {
 
   function sendMessageWithDelay(ws_socket) {
     let i = 0;
-  
+
     function sendDelayedMessage() {
       if (i < testCount) {
         const testMsg = Cookie['E-mail'].nickname + " message " + i;
@@ -352,7 +352,7 @@ function RoomMain() {
         setTimeout(sendDelayedMessage, 200); // 延迟 200 ms 发送下一条消息
       }
     }
-  
+
     sendDelayedMessage();
   }
 
@@ -462,7 +462,7 @@ function RoomMain() {
                 <ListItemIcon>
                   <CreateIcon />
                 </ListItemIcon>
-                <ListItemText primary="Create New Chatting Room" />
+                <ListItemText primary="Create New Chat Room" />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
@@ -470,7 +470,7 @@ function RoomMain() {
                 <ListItemIcon>
                   <AddIcon />
                 </ListItemIcon>
-                <ListItemText primary="Enter Chatting Room" />
+                <ListItemText primary="Enter Chat Room" />
               </ListItemButton>
             </ListItem>
           </List>
@@ -481,7 +481,7 @@ function RoomMain() {
               <RoomCreate />
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => setState({ roomCreateOpen: false })}>close</Button>
+              <Button onClick={() => setState({ roomCreateOpen: false })}>Close</Button>
             </DialogActions>
           </Dialog>
 
@@ -491,7 +491,7 @@ function RoomMain() {
               <RoomEnter />
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => setState({ roomEnterOpen: false })}>close</Button>
+              <Button onClick={() => setState({ roomEnterOpen: false })}>Close</Button>
             </DialogActions>
           </Dialog>
         </Grid>
@@ -557,7 +557,7 @@ function RoomMain() {
                       messages.length > maxMsg ? (
                         <center>
                           <Button variant="contained" color="primary" onClick={()=>setMaxMsg(maxMsg + 20)}>
-                            Click to Get Former Message
+                            Click to Get Previous Messages
                           </Button>
                         </center>
                       ) : (null)
@@ -605,7 +605,7 @@ function RoomMain() {
                     direction="column"
                     justifyContent="center"
                     alignItems="center"
-                    style={{ height: '100vh', textAlign: 'center', 
+                    style={{ height: '100vh', textAlign: 'center',
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                     }}
@@ -618,7 +618,7 @@ function RoomMain() {
                         Welcome to HemLock Chat!
                       </h1>
                     </Grid>
-                    <Typography variant="caption" color="textSecondary" style={{ marginBottom: '20px'}}>© 2023 The Website designed by G01</Typography>
+                    <Typography variant="caption" color="textSecondary" style={{ marginBottom: '20px'}}>© 2023 This Website was designed by G01</Typography>
                     <Grid>
                       Select a chat room from the chat room list.
                     </Grid>

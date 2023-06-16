@@ -35,7 +35,7 @@ export default function RoomDetail() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom ml={6}>
-        Room information
+        Room Information
       </Typography>
       <Grid container spacing={3} ml={3}>
         <Grid item xs={12} sm={7}>

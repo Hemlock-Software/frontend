@@ -41,10 +41,10 @@ export default function RoomCreate() {
   const {
     create,
   } = useStoreActions((actions) => actions.roomCreateModel)
-  const { 
+  const {
     setState,
     getRoomList,
-  } 
+  }
   = useStoreActions((actions) => actions.roomMainModel)
 
   const handleNext = () => {

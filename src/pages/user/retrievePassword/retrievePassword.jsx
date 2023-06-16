@@ -45,7 +45,7 @@ export default function Retrivepassword() {
 
   function submitMail(){
     if (!mailFlag) {
-      alert('E-mail format invalid!')
+      alert('Email format invalid!')
       return
     }
     setState({type: 2})
@@ -63,7 +63,7 @@ export default function Retrivepassword() {
       !passwordFlag ||
       !verifyCodeFlag
     ) {
-      alert('Please enter the valid information!')
+      alert('Please enter valid information!')
       return
     }
     retrievePassword().then(res=>{
@@ -82,7 +82,7 @@ export default function Retrivepassword() {
         <Paper elevation={4}>
           <br/>
           <Typography variant="h3" gutterBottom color={'#1976d2'}>
-            Retrive Password
+            Retrieve Password
           </Typography>
           <Box
             component="form"
@@ -94,7 +94,7 @@ export default function Retrivepassword() {
           >
             <TextField
               id="standard-basic"
-              label={mailFlag ? 'E-mail address' : 'Invalid e-mail'}
+              label={mailFlag ? 'Email address' : 'Invalid email'}
               variant="standard"
               onChange={(e) => onMailChange(e.target.value)}
               error={!mailFlag}
@@ -102,12 +102,12 @@ export default function Retrivepassword() {
 
             <br/>
             <Button size='small' onClick={submitMail}>
-              Get code
+              Get verification code
             </Button>
 
             <br/>
             <TextField
-              label={verifyCodeFlag ? 'verify code' : errorVerifyCodeMsg}
+              label={verifyCodeFlag ? 'Verification code' : errorVerifyCodeMsg}
               variant="standard"
               onChange={(e) => onVerifyCodeChange(e.target.value)}
               error={!verifyCodeFlag}
@@ -126,7 +126,7 @@ export default function Retrivepassword() {
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
-                    aria-label="toggle password visibility"
+                    aria-label="Toggle password visibility"
                     onClick={() => setState({ showPassword: !showPassword })}
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -138,8 +138,8 @@ export default function Retrivepassword() {
 
             <br/>
             <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-              <InputLabel htmlFor="password" error={!checkFlag}> 
-                {checkFlag ? 'Confirm password' : 'Password not matched'}
+              <InputLabel htmlFor="password" error={!checkFlag}>
+                {checkFlag ? 'Confirm password' : 'Passwords do not match!'}
               </InputLabel>
               <Input
               id="Repeat password"

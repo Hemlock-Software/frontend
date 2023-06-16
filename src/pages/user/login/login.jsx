@@ -20,23 +20,23 @@ import { useCookies } from 'react-cookie';
 
 
 function Login(){
-  const  [ Cookie, setCookie ]  =  useCookies ( [ 'E-mail' ] ) ; // DO NOT DELETE 'COOKIES', OR IT WILL CRAPT
+  const  [ Cookie, setCookie ]  =  useCookies ( [ 'E-mail' ] ) ; // DO NOT DELETE 'COOKIES', OR IT WILL CRASH
   const navigate = useNavigate()
   const {
     mail,
     password,
-    passwordFlag, 
-    mailFlag, 
-    errorMsg, 
+    passwordFlag,
+    mailFlag,
+    errorMsg,
     showPassword
-  } 
+  }
   = useStoreState((state) => state.user)
-  const { 
-    setState, 
-    login, 
-    onMailChange, 
+  const {
+    setState,
+    login,
+    onMailChange,
     onPasswordChange
-  } 
+  }
   = useStoreActions((actions) => actions.user)
 
   function submitLogin() {
@@ -68,7 +68,7 @@ function Login(){
         <Paper elevation={4}>
         <br/>
       <Typography variant="h3" gutterBottom color={'#1976d2'}>
-        Login
+        Log in
       </Typography>
       <Box
         component="form"
@@ -78,12 +78,12 @@ function Login(){
         noValidate
         autoComplete="off">
         <TextField
-          label={mailFlag ? 'Email address' : 'Invalid e-mail'}
+          label={mailFlag ? 'Email address' : 'Invalid email'}
           variant="standard"
           onChange={(e) => onMailChange(e.target.value)}
           error={!mailFlag}
         />
-        
+
         <br />
         <FormControl
           sx={{ m: 1, width: '25ch' }}
@@ -125,16 +125,16 @@ function Login(){
       </Grid>
       <Grid item>
         <Link href="/#/register" variant="standard">
-          No account? Register
+          No account? Click here to register
         </Link>
       </Grid>
     </Grid>
   </Grid>
 
         <br/>
-      <Typography 
-        variant="caption" 
-        color="textSecondary" 
+      <Typography
+        variant="caption"
+        color="textSecondary"
         style={{ marginBottom: '20px'}}
       >
         © 2023 Hemlock Software

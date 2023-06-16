@@ -112,7 +112,7 @@ function Register() {
             />
             <br />
             <Button size="small" onClick={submitMail}>
-              Get Verified code
+              Get Verification code
             </Button>
             <br />
 
