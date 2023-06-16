@@ -49,9 +49,9 @@ function Register() {
       alert('Please enter your email.')
       return
     }
-    console.log({
-      mail:mail,
-    })
+    // console.log({
+    //   mail:mail,
+    // })
     setState({
       mail: mail,
       type: 1,
@@ -64,7 +64,7 @@ function Register() {
   }
 
   function submitRegister() {
-    console.log(mail, password, checkPassword, verifyCode, nameFlag, verifyCodeFlag, mailFlag, checkFlag, passwordFlag)
+    // console.log(mail, password, checkPassword, verifyCode, nameFlag, verifyCodeFlag, mailFlag, checkFlag, passwordFlag)
     if (
       mail === '' ||
       password === '' ||
